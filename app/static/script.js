@@ -883,18 +883,18 @@ function addCopyButton(resultDiv, text) {
                 slackButton.innerHTML = '✅ Sent to Slack!';
                 slackButton.style.background = '#28a745';
                 setTimeout(() => {
-                    slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 3px;"> Send to Slack';
+                    slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 3px;"> Peer Review';
                     slackButton.style.background = 'linear-gradient(135deg, #4A154B 0%, #611f69 100%)';
                     slackButton.disabled = false;
                 }, 3000);
             } else {
-                throw new Error(result.detail || 'Failed to send to Slack');
+                throw new Error(result.detail || 'Failed to Peer Review');
             }
         } catch (err) {
             slackButton.innerHTML = '❌ Failed to Send';
             slackButton.style.background = '#dc3545';
             setTimeout(() => {
-                slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="50" height="50"> Send to Slack';
+                slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="50" height="50"> Peer Review';
                 slackButton.style.background = 'linear-gradient(135deg, #4A154B 0%, #611f69 100%)';
                 slackButton.disabled = false;
             }, 3000);
@@ -1107,8 +1107,8 @@ function addCopyButton(resultDiv, text) {
     
     // Add buttons to containers
     primaryButtonContainer.appendChild(copyButton);
-    secondaryButtonContainer.appendChild(slackButton);
     secondaryButtonContainer.appendChild(pagerdutyAddNoteButton);
+    secondaryButtonContainer.appendChild(slackButton);
     secondaryButtonContainer.appendChild(statusUpdateButton);
 }
 
