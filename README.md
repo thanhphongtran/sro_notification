@@ -1,4 +1,4 @@
-# PagerDuty Notification Generator - Web UI
+# SRO Notification System
 
 A modern web interface for generating PagerDuty incident notifications, managing status updates, and adding notes, built with FastAPI.
 
@@ -20,7 +20,7 @@ A modern web interface for generating PagerDuty incident notifications, managing
 ### 1. Install Dependencies
 
 ```bash
-cd pager_duty_notification
+cd sro_notification
 pip install -r requirements.txt
 ```
 
@@ -75,7 +75,7 @@ The application can be configured using environment variables:
 ### Project Structure
 
 ```
-pager_duty_notification/
+sro_notification/
 ├── app/
 │   ├── main.py                    # FastAPI application entry point
 │   ├── api/
@@ -207,4 +207,4 @@ uvicorn app.main:app --reload --log-level debug
 
 ## License
 
-This project is part of your PagerDuty notification system.
+This project is part of your SRO notification system.
