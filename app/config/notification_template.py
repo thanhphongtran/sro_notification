@@ -16,7 +16,7 @@ Update Template Variables:
 - {created_at}      - Formatted creation/update timestamp. (set to incident creation date for update 1, and current date for subsequent updates)
 
 Bullet Template Variables:
-- {alert_title}     - Alert title minus the first two pipes (removes brand and region)
+- {alert_title}     - Alert title minus info before pipes (removes brand and region)
 - {team_name}       - Team name (e.g., "Platform Team", "Infrastructure Team")
 - {new_severity}    - New severity level (for downgraded incidents)
 
@@ -35,7 +35,7 @@ CUSTOM_TEMPLATE = NotificationTemplate(
     header_template="🚨 SEV {severity} | {title} | {incident_url}",
     bullet_templates={
         "initial_sro_report": '🔍 SRO US received a report stating "{alert_title}".',
-        "team_engaged": "👥 The {team_name} team has engaged to investigate the incident.",
+        "team_engaged": "👥 The {team_name} team has been engaged to investigate the incident.",
         "resolved": "✅ This incident is resolved."
     }
 )
@@ -44,7 +44,7 @@ CUSTOM_TEMPLATE = NotificationTemplate(
 ACTIVE_TEMPLATE = CUSTOM_TEMPLATE
 """
 
-from typing import Dict, List
+from typing import Dict
 from dataclasses import dataclass
 
 

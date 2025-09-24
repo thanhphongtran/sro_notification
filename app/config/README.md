@@ -56,7 +56,7 @@ CUSTOM_TEMPLATE = NotificationTemplate(
     update_template="📝 {update_prefix}Update {update_number} | {created_at}",
     bullet_templates={
         "initial_sro_report": '🔍 SRO US received a report stating "{alert_title}".',
-        "team_engaged": "👥 The {team_name} team has engaged to investigate the incident.",
+        "team_engaged": "👥 The {team_name} team has been engaged to investigate the incident.",
         "team_has": "👥 The {team_name} team has",
         "downgraded": "⬇️ The severity of this incident has been downgraded to a SEV {new_severity}.",
         "resolved": "✅ This incident is resolved.",

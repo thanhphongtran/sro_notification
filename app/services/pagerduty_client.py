@@ -266,16 +266,12 @@ class PagerDutyClient:
             # Clean up escalation policy name
             trimmed_policy = escalation_policy.split(' - ')[0] if ' - ' in escalation_policy else escalation_policy
             
-            # Clean up title for the SRO message - remove everything before second pipe
+            # Clean up title for the SRO message - use everything after the last pipe, or whole string if no pipe
             alert_title = title
-            pipe_count = title.count('|')
-            if pipe_count >= 2:
-                # Find the second pipe
-                first_pipe = title.find('|')
-                second_pipe = title.find('|', first_pipe + 1)
-                if second_pipe != -1:
-                    # Get everything after the second pipe and strip whitespace
-                    alert_title = title[second_pipe + 1:].strip()
+            last_pipe = title.rfind('|')
+            if last_pipe != -1:
+                # Get everything after the last pipe and strip whitespace
+                alert_title = title[last_pipe + 1:].strip()
             
             # Create notification message using template
             # Build bullet points based on update number and flags

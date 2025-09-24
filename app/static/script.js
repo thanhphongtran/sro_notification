@@ -205,7 +205,7 @@ async function loadNotificationTemplate() {
                 update_template: "{update_prefix}Update {update_number} | {created_at}",
                 bullet_templates: {
                     "initial_sro_report": 'SRO US received a report stating "{alert_title}".',
-                    "team_engaged": "The {team_name} team has engaged to investigate the incident.",
+                    "team_engaged": "The {team_name} team has been engaged to investigate the incident.",
                     "team_has": "The {team_name} team has",
                     "downgraded": "The severity of this incident has been downgraded to a SEV {new_severity}.",
                     "resolved": "This incident is resolved.",
@@ -256,15 +256,11 @@ function generateNotificationMessageLocally(incidentData, ticketNumber, updateNu
         // Clean up escalation policy name
         const trimmedPolicy = escalationPolicy.split(' - ')[0];
         
-        // Clean up title for the SRO message - remove everything before second pipe
+        // Clean up title for the SRO message - use everything after the last pipe, or whole string if no pipe
         let alertTitle = title;
-        const pipeCount = (title.match(/\|/g) || []).length;
-        if (pipeCount >= 2) {
-            const firstPipe = title.indexOf('|');
-            const secondPipe = title.indexOf('|', firstPipe + 1);
-            if (secondPipe !== -1) {
-                alertTitle = title.substring(secondPipe + 1).trim();
-            }
+        const lastPipe = title.lastIndexOf('|');
+        if (lastPipe !== -1) {
+            alertTitle = title.substring(lastPipe + 1).trim();
         }
         
         // Create notification message using template
@@ -361,7 +357,7 @@ async function fetchAndDisplayResponders(ticketNumber) {
     const mobileRespondersContainer = document.getElementById('responders-container-mobile');
     
     if (!ticketNumber) {
-        const placeholder = '<div class="responders-placeholder"><p>Enter a ticket number to see responders</p></div>';
+        const placeholder = '<div class="text-center text-gray-500 italic py-8"><p>Enter a ticket number to see responders</p></div>';
         if (respondersContainer) respondersContainer.innerHTML = placeholder;
         if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = placeholder;
         return;
@@ -399,22 +395,22 @@ async function fetchAndDisplayResponders(ticketNumber) {
                 if (result.responders && result.responders.length > 0) {
                     displayResponders(result.responders);
                 } else {
-                    const noRespondersMsg = '<div class="responders-placeholder"><p>No responders found for this incident</p></div>';
+                    const noRespondersMsg = '<div class="text-center text-gray-500 italic py-8"><p>No responders found for this incident</p></div>';
                     if (respondersContainer) respondersContainer.innerHTML = noRespondersMsg;
                     if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = noRespondersMsg;
                 }
             } else {
-                const errorMsg = '<div class="responders-placeholder"><p>Error loading responders</p></div>';
+                const errorMsg = '<div class="text-center text-gray-500 italic py-8"><p>Error loading responders</p></div>';
                 if (respondersContainer) respondersContainer.innerHTML = errorMsg;
                 if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = errorMsg;
             }
         } else {
-            const notFoundMsg = '<div class="responders-placeholder"><p>Incident not found</p></div>';
+            const notFoundMsg = '<div class="text-center text-gray-500 italic py-8"><p>Incident not found</p></div>';
             if (respondersContainer) respondersContainer.innerHTML = notFoundMsg;
             if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = notFoundMsg;
         }
     } catch (error) {
-        const errorMsg = '<div class="responders-placeholder"><p>Error loading responders</p></div>';
+        const errorMsg = '<div class="text-center text-gray-500 italic py-8"><p>Error loading responders</p></div>';
         if (respondersContainer) respondersContainer.innerHTML = errorMsg;
         if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = errorMsg;
     }
@@ -457,6 +453,21 @@ function extractEscalationPolicyColors(responders) {
         }
     });
     return colors;
+}
+
+// Function to clear responders section
+function clearResponders() {
+    const respondersContainer = document.getElementById('responders-container');
+    const mobileRespondersContainer = document.getElementById('responders-container-mobile');
+    
+    const loadingMsg = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div>Loading responders...</div>';
+    
+    if (respondersContainer) {
+        respondersContainer.innerHTML = loadingMsg;
+    }
+    if (mobileRespondersContainer) {
+        mobileRespondersContainer.innerHTML = loadingMsg;
+    }
 }
 
 // Function to display responders
@@ -737,7 +748,7 @@ ticketNumberInput.addEventListener('input', function(e) {
             }, 500);
         }
     } else {
-        const placeholder = '<div class="responders-placeholder"><p>Enter a ticket number to see responders</p></div>';
+        const placeholder = '<div class="text-center text-gray-500 italic py-8"><p>Enter a ticket number to see responders</p></div>';
         const respondersContainer = document.getElementById('responders-container');
         const mobileRespondersContainer = document.getElementById('responders-container-mobile');
         if (respondersContainer) respondersContainer.innerHTML = placeholder;
@@ -796,7 +807,7 @@ document.getElementById('incidentForm').addEventListener('submit', async functio
         show_users: true  // Always show users now
     };
     
-    const resultDiv = document.getElementById('result');
+    const resultDiv = document.getElementById('notification-message');
     const resultContainer = document.getElementById('result-container');
     const welcomeMessage = document.getElementById('welcome-message');
     
@@ -817,6 +828,9 @@ document.getElementById('incidentForm').addEventListener('submit', async functio
         resultDiv.innerHTML = '<div class="spinner"></div>Gathering incident information...';
         resultContainer.classList.remove('hidden');
         welcomeMessage.classList.add('hidden');
+        
+        // Clear responders section while loading
+        clearResponders();
         
         
         try {
@@ -910,25 +924,26 @@ function addCopyButton(resultDiv, text) {
     
     // Create copy button
     const copyButton = document.createElement('button');
-    copyButton.className = 'copy-button';
+    copyButton.className = 'copy-button tooltip-below';
+    copyButton.setAttribute('data-tooltip', 'Copy notification message to clipboard');
     copyButton.innerHTML = `
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
         </svg>
-        Copy PR to Clipboard
+        Copy
     `;
     copyButton.style.cssText = `
         background: #6b7280;
         color: white;
         border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
+        padding: 6px 12px;
+        border-radius: 6px;
         cursor: pointer;
         font-size: 0.875rem;
         font-weight: 500;
         transition: all 0.2s ease;
-        min-width: 140px;
-        height: 36px;
+        min-width: 80px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -939,11 +954,24 @@ function addCopyButton(resultDiv, text) {
     copyButton.addEventListener('mouseenter', function() {
         this.style.background = '#4b5563';
         this.style.transform = 'translateY(-1px)';
+        // Highlight the notification message area
+        const notificationDiv = document.getElementById('notification-message');
+        if (notificationDiv) {
+            notificationDiv.style.borderColor = '#3b82f6';
+            notificationDiv.style.backgroundColor = '#eff6ff';
+            notificationDiv.style.transition = 'all 0.2s ease';
+        }
     });
     
     copyButton.addEventListener('mouseleave', function() {
         this.style.background = '#6b7280';
         this.style.transform = 'translateY(0)';
+        // Remove highlight from notification message area
+        const notificationDiv = document.getElementById('notification-message');
+        if (notificationDiv) {
+            notificationDiv.style.borderColor = '#e5e7eb';
+            notificationDiv.style.backgroundColor = '#f9fafb';
+        }
     });
     
     copyButton.addEventListener('click', async function() {
@@ -963,7 +991,7 @@ function addCopyButton(resultDiv, text) {
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                     </svg>
-                    Copy PR to Clipboard
+                    Copy
                 `;
                 copyButton.style.background = '#6b7280';
             }, 2000);
@@ -983,7 +1011,7 @@ function addCopyButton(resultDiv, text) {
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                     </svg>
-                    Copy PR to Clipboard
+                    Copy
                 `;
                 copyButton.style.background = '#6b7280';
             }, 2000);
@@ -992,7 +1020,8 @@ function addCopyButton(resultDiv, text) {
     
     // Create Slack button
     const slackButton = document.createElement('button');
-    slackButton.className = 'slack-button';
+    slackButton.className = 'slack-button tooltip-below';
+    slackButton.setAttribute('data-tooltip', 'Sends the message above to configured Slack channel');
     slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 4px; object-fit: contain; display: block;">Peer Review';
     slackButton.style.cssText = `
         background: #4A154B;
@@ -1066,14 +1095,14 @@ function addCopyButton(resultDiv, text) {
     
     // Create PagerDuty ack button
     const pagerdutyAckButton = document.createElement('button');
-    pagerdutyAckButton.className = 'ack-button';
+    pagerdutyAckButton.className = 'ack-button tooltip-below';
     pagerdutyAckButton.innerHTML = `
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
         </svg>
         Ack
     `;
-    pagerdutyAckButton.setAttribute('data-tooltip', "Add a note to the incident saying 'SRO US acknowledged'");
+    pagerdutyAckButton.setAttribute('data-tooltip', "Adds a note to the incident saying 'SRO US acknowledged'");
     pagerdutyAckButton.style.cssText = `
         background: #10b981;
         color: white;
@@ -1172,7 +1201,7 @@ function addCopyButton(resultDiv, text) {
     
     // Create PagerDuty add note button
     const pagerdutyAddNoteButton = document.createElement('button');
-    pagerdutyAddNoteButton.className = 'add-note-button';
+    pagerdutyAddNoteButton.className = 'add-note-button tooltip-below';
     pagerdutyAddNoteButton.innerHTML = `
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -1292,9 +1321,9 @@ function addCopyButton(resultDiv, text) {
     
     // Create PagerDuty send status update button
     const statusUpdateButton = document.createElement('button');
-    statusUpdateButton.className = 'status-update-button';
+    statusUpdateButton.className = 'status-update-button tooltip-below';
     statusUpdateButton.textContent = '📢 Send Status Update';
-    statusUpdateButton.setAttribute('data-tooltip', "Send a status update of the message above, and also add it as a note in the incident");
+    statusUpdateButton.setAttribute('data-tooltip', "Sends a status update of the message above, and also adds it as a note in the incident");
     statusUpdateButton.style.cssText = `
         background: #f59e0b;
         color: white;
@@ -1619,7 +1648,7 @@ function resetToOriginalState() {
         // Hide result container and show welcome message
         const resultContainer = document.getElementById('result-container');
         const welcomeMessage = document.getElementById('welcome-message');
-        const resultDiv = document.getElementById('result');
+        const resultDiv = document.getElementById('notification-message');
         resultContainer.classList.add('hidden');
         welcomeMessage.classList.remove('hidden');
     resultDiv.textContent = '';
@@ -1627,7 +1656,7 @@ function resetToOriginalState() {
     resultDiv.contentEditable = false;
     
     // Clear responders
-    const placeholder = '<div class="responders-placeholder"><p>Enter a ticket number to see responders</p></div>';
+    const placeholder = '<div class="text-center text-gray-500 italic py-8"><p>Enter a ticket number to see responders</p></div>';
     const respondersContainer = document.getElementById('responders-container');
     const mobileRespondersContainer = document.getElementById('responders-container-mobile');
     if (respondersContainer) respondersContainer.innerHTML = placeholder;
@@ -1642,7 +1671,7 @@ function resetToOriginalState() {
 // Function to update notification if one is already loaded (instant, no API calls)
 function updateNotificationIfLoaded() {
     const resultContainer = document.getElementById('result-container');
-    const resultDiv = document.getElementById('result');
+    const resultDiv = document.getElementById('notification-message');
     
     // Only update if there's already a result displayed and we have cached data
     if (!resultContainer.classList.contains('hidden') && resultDiv.innerHTML.trim() !== '' && cachedIncidentData) {
@@ -1735,8 +1764,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const ticketNumber = document.getElementById('ticket_number').value.trim();
                 if (ticketNumber.length > 0) {
                     // Add loading state to search button
-                    const originalText = searchButton.textContent;
-                    searchButton.textContent = '⏳';
+                    const originalHTML = searchButton.innerHTML;
+                    searchButton.innerHTML = '⏳';
                     searchButton.disabled = true;
                     
                     // Clear cached data to force fresh API call
@@ -1752,7 +1781,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Restore button state after a short delay (the form submission will handle the actual loading)
                     setTimeout(() => {
-                        searchButton.textContent = originalText;
+                        searchButton.innerHTML = originalHTML;
                         searchButton.disabled = false;
                     }, 1000);
                 }
