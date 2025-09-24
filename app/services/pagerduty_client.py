@@ -155,7 +155,7 @@ class PagerDutyClient:
             incident_id: PagerDuty incident ID (not ticket number)
             
         Returns:
-            List of note log entries, ordered by creation time (oldest first)
+            List of note entries, ordered by creation time (oldest first)
         """
         try:
             more = True
@@ -163,10 +163,11 @@ class PagerDutyClient:
             notes = []
             
             while more:
-                url = f"https://api.pagerduty.com/incidents/{incident_id}/log_entries?{offset}"
+                url = f"https://api.pagerduty.com/incidents/{incident_id}/notes?{offset}"
                 response = requests.get(url, headers=self.headers)
                 
                 if response.status_code != 200:
+                    print(f"Error fetching notes: {response.status_code} - {response.text}")
                     break
                 
                 data = response.json()
@@ -174,10 +175,9 @@ class PagerDutyClient:
                 if more:
                     offset = f"offset={data['offset'] + data['limit']}"
                 
-                # Look for note entries
-                for entry in data.get('log_entries', []):
-                    if entry.get('type') == 'note_log_entry':
-                        notes.append(entry)
+                # Get note entries directly from the notes endpoint
+                for note in data.get('notes', []):
+                    notes.append(note)
             
             # Sort by creation time (oldest first)
             notes.sort(key=lambda x: x.get('created_at', ''))
