@@ -269,16 +269,32 @@ class PagerDutyClient:
             # Clean up title for the SRO message
             alert_title = title
             
-            # Check if title contains parentheses - if so, find the part with parentheses and keep it
+            # Check if title contains parentheses - if so, determine if it's part of the alert content
             if '(' in title:
-                # Find the part that contains parentheses (likely the actual alert)
+                # Split on pipes to check if parentheses are in the actual alert or just prefixes
                 parts = [part.strip() for part in title.split('|')]
                 
-                # Look for the part that contains parentheses
-                for part in parts:
-                    if '(' in part:
-                        alert_title = part
-                        break
+                # If we have multiple parts, check if the first part(s) look like brand/region prefixes
+                if len(parts) >= 2:
+                    # Check if first part(s) are likely brand/region prefixes (short, no special chars)
+                    first_part = parts[0]
+                    second_part = parts[1] if len(parts) > 1 else ""
+                    
+                    # If first two parts are short and don't contain parentheses or special chars,
+                    # they're likely brand/region prefixes to remove
+                    if (len(first_part) <= 20 and len(second_part) <= 20 and 
+                        not any(char in first_part + second_part for char in '()[]{}')):
+                        # Take everything from the third part onwards, or second part if only 2 parts
+                        if len(parts) >= 3:
+                            alert_title = ' | '.join(parts[2:])
+                        else:
+                            alert_title = parts[1]
+                    else:
+                        # The parentheses are part of the actual alert content, keep the whole title
+                        alert_title = title
+                else:
+                    # Only 1 part - parentheses are part of the alert, keep the whole title
+                    alert_title = title
             else:
                 # No parentheses found - look for patterns like "Brand | Region |" or "Brand |" at the start
                 parts = [part.strip() for part in title.split('|')]
