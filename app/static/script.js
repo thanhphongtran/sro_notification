@@ -368,13 +368,21 @@ async function fetchAndDisplayResponders(ticketNumber) {
     }
     
     try {
-        const response = await fetch(`/api/incident/${ticketNumber}`);
+        // Add cache-busting parameter to prevent browser caching
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`/api/incident/${ticketNumber}?t=${cacheBuster}`, {
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        });
         if (response.ok) {
             const incidentData = await response.json();
             const respondersResponse = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache'
                 },
                 body: JSON.stringify({
                     ticket_number: ticketNumber,
@@ -382,7 +390,8 @@ async function fetchAndDisplayResponders(ticketNumber) {
                     resolve: false,
                     downgrade: false,
                     show_users: true
-                })
+                }),
+                cache: 'no-cache'
             });
             
             if (respondersResponse.ok) {
@@ -682,7 +691,8 @@ function positionTooltipForViewport(element) {
 }
 
 // Add event listener for ticket number input
-document.getElementById('ticket_number').addEventListener('input', function(e) {
+const ticketNumberInput = document.getElementById('ticket_number');
+ticketNumberInput.addEventListener('input', function(e) {
     const ticketNumber = e.target.value.trim();
     
     // Clear cached data when ticket number changes
@@ -751,6 +761,26 @@ document.getElementById('ticket_number').addEventListener('input', function(e) {
     }
 });
 
+// Add Enter key support for ticket number input
+ticketNumberInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const ticketNumber = e.target.value.trim();
+        if (ticketNumber.length > 0) {
+            // Clear cached data to force fresh API call
+            cachedIncidentData = null;
+            lastTicketNumber = null;
+            if (statusUpdateTimer) {
+                clearInterval(statusUpdateTimer);
+                statusUpdateTimer = null;
+            }
+            
+            // Trigger the same functionality as auto-submit
+            document.getElementById('incidentForm').dispatchEvent(new Event('submit'));
+        }
+    }
+});
+
 // Track the last ticket number to detect changes
 let lastTicketNumber = null;
 
@@ -770,17 +800,21 @@ document.getElementById('incidentForm').addEventListener('submit', async functio
     const resultContainer = document.getElementById('result-container');
     const welcomeMessage = document.getElementById('welcome-message');
     
-    // Always make API call when refresh button is pressed to get fresh data
-    const isRefreshButton = e.submitter && e.submitter.textContent === 'Refresh Data';
+    // Determine if API call is needed
     const ticketNumberChanged = lastTicketNumber !== data.ticket_number;
-    const needsApiCall = isRefreshButton || ticketNumberChanged || !cachedIncidentData;
+    const needsApiCall = ticketNumberChanged || !cachedIncidentData;
+    
+    // Debug logging
+    console.log('Form submission debug:', {
+        ticketNumberChanged,
+        needsApiCall,
+        submitterText: e.submitter ? e.submitter.textContent : 'No submitter'
+    });
     
     if (needsApiCall) {
-        // Make API call for new ticket, when no cached data, or when refresh button is pressed
+        // Make API call for new ticket or when no cached data
         resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 loading';
-        resultDiv.innerHTML = isRefreshButton ? 
-            '<div class="spinner"></div>Refreshing incident data...' : 
-            '<div class="spinner"></div>Generating notification...';
+        resultDiv.innerHTML = '<div class="spinner"></div>Gathering incident information...';
         resultContainer.classList.remove('hidden');
         welcomeMessage.classList.add('hidden');
         
@@ -790,8 +824,10 @@ document.getElementById('incidentForm').addEventListener('submit', async functio
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                cache: 'no-cache'
             });
             
             const result = await response.json();
@@ -875,34 +911,39 @@ function addCopyButton(resultDiv, text) {
     // Create copy button
     const copyButton = document.createElement('button');
     copyButton.className = 'copy-button';
-    copyButton.textContent = '📋 Copy PR to Clipboard';
+    copyButton.innerHTML = `
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy PR to Clipboard
+    `;
     copyButton.style.cssText = `
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #6b7280;
         color: white;
         border: none;
         padding: 8px 16px;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 0.875rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        font-weight: 500;
+        transition: all 0.2s ease;
         min-width: 140px;
         height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     `;
     
     // Add hover effect for copy button
     copyButton.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-2px)';
-        this.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
+        this.style.background = '#4b5563';
+        this.style.transform = 'translateY(-1px)';
     });
     
     copyButton.addEventListener('mouseleave', function() {
+        this.style.background = '#6b7280';
         this.style.transform = 'translateY(0)';
-        this.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
     });
     
     copyButton.addEventListener('click', async function() {
@@ -910,11 +951,21 @@ function addCopyButton(resultDiv, text) {
             // Get the current content from the editable result div, preserving line breaks
             const currentContent = getFormattedTextContent(resultDiv);
             await navigator.clipboard.writeText(currentContent);
-            copyButton.textContent = '✅ Copied!';
-            copyButton.style.background = '#28a745';
+            copyButton.innerHTML = `
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Copied!
+            `;
+            copyButton.style.background = '#6b7280';
             setTimeout(() => {
-                copyButton.textContent = '📋 Copy PR to Clipboard';
-                copyButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                copyButton.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    Copy PR to Clipboard
+                `;
+                copyButton.style.background = '#6b7280';
             }, 2000);
         } catch (err) {
             // Fallback for older browsers
@@ -926,10 +977,15 @@ function addCopyButton(resultDiv, text) {
             document.execCommand('copy');
             document.body.removeChild(textArea);
             copyButton.textContent = '✅ Copied!';
-            copyButton.style.background = '#28a745';
+            copyButton.style.background = '#6b7280';
             setTimeout(() => {
-                copyButton.textContent = '📋 Copy PR to Clipboard';
-                copyButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                copyButton.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    Copy PR to Clipboard
+                `;
+                copyButton.style.background = '#6b7280';
             }, 2000);
         }
     });
@@ -937,34 +993,34 @@ function addCopyButton(resultDiv, text) {
     // Create Slack button
     const slackButton = document.createElement('button');
     slackButton.className = 'slack-button';
-    slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 3px;">Peer Review';
+    slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 4px; object-fit: contain; display: block;">Peer Review';
     slackButton.style.cssText = `
-        background: linear-gradient(135deg, #4A154B 0%, #611f69 100%);
+        background: #4A154B;
         color: white;
         border: none;
         padding: 8px 16px;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 0.875rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(74, 21, 75, 0.3);
+        font-weight: 500;
+        transition: all 0.2s ease;
         min-width: 140px;
         height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     `;
     
     // Add hover effect for Slack button
     slackButton.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-2px)';
-        this.style.boxShadow = '0 6px 20px rgba(74, 21, 75, 0.4)';
+        this.style.background = '#611f69';
+        this.style.transform = 'translateY(-1px)';
     });
     
     slackButton.addEventListener('mouseleave', function() {
+        this.style.background = '#4A154B';
         this.style.transform = 'translateY(0)';
-        this.style.boxShadow = '0 4px 15px rgba(74, 21, 75, 0.3)';
     });
     
     slackButton.addEventListener('click', async function() {
@@ -989,7 +1045,7 @@ function addCopyButton(resultDiv, text) {
                 slackButton.innerHTML = '✅ Sent to Slack!';
                 slackButton.style.background = '#28a745';
                 setTimeout(() => {
-                    slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 3px;"> Peer Review';
+                    slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 4px; object-fit: contain; display: block;">Peer Review';
                     slackButton.style.background = 'linear-gradient(135deg, #4A154B 0%, #611f69 100%)';
                     slackButton.disabled = false;
                 }, 3000);
@@ -1000,7 +1056,7 @@ function addCopyButton(resultDiv, text) {
             slackButton.innerHTML = '❌ Failed to Send';
             slackButton.style.background = '#dc3545';
             setTimeout(() => {
-                slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="50" height="50"> Peer Review';
+                slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 4px; object-fit: contain; display: block;">Peer Review';
                 slackButton.style.background = 'linear-gradient(135deg, #4A154B 0%, #611f69 100%)';
                 slackButton.disabled = false;
             }, 3000);
@@ -1011,35 +1067,40 @@ function addCopyButton(resultDiv, text) {
     // Create PagerDuty ack button
     const pagerdutyAckButton = document.createElement('button');
     pagerdutyAckButton.className = 'ack-button';
-    pagerdutyAckButton.textContent = '✔️ Ack';
+    pagerdutyAckButton.innerHTML = `
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Ack
+    `;
     pagerdutyAckButton.setAttribute('data-tooltip', "Add a note to the incident saying 'SRO US acknowledged'");
     pagerdutyAckButton.style.cssText = `
-        background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+        background: #10b981;
         color: white;
         border: none;
         padding: 8px 16px;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 0.875rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        font-weight: 500;
+        transition: all 0.2s ease;
         min-width: 140px;
         height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     `;
     
     // Add hover effect for ack button
     pagerdutyAckButton.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-2px)';
-        this.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)';
+        this.style.background = '#059669';
+        this.style.transform = 'translateY(-1px)';
     });
     
     pagerdutyAckButton.addEventListener('mouseleave', function() {
+        this.style.background = '#10b981';
         this.style.transform = 'translateY(0)';
-        this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)';
     });
     
     pagerdutyAckButton.addEventListener('click', async function() {
@@ -1079,7 +1140,12 @@ function addCopyButton(resultDiv, text) {
                 pagerdutyAckButton.textContent = '✔️ Ack Sent!';
                 pagerdutyAckButton.style.background = '#28a745';
                 setTimeout(() => {
-                    pagerdutyAckButton.textContent = '✔️ Ack';
+                    pagerdutyAckButton.innerHTML = `
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Ack
+    `;
                     pagerdutyAckButton.style.background = 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)';
                     pagerdutyAckButton.disabled = false;
                 }, 3000);
@@ -1090,7 +1156,12 @@ function addCopyButton(resultDiv, text) {
             pagerdutyAckButton.textContent = '❌ Failed to Send';
             pagerdutyAckButton.style.background = '#dc3545';
             setTimeout(() => {
-                pagerdutyAckButton.textContent = '✔️ Ack';
+                pagerdutyAckButton.innerHTML = `
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Ack
+    `;
                 pagerdutyAckButton.style.background = 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)';
                 pagerdutyAckButton.disabled = false;
             }, 3000);
@@ -1102,35 +1173,40 @@ function addCopyButton(resultDiv, text) {
     // Create PagerDuty add note button
     const pagerdutyAddNoteButton = document.createElement('button');
     pagerdutyAddNoteButton.className = 'add-note-button';
-    pagerdutyAddNoteButton.textContent = '📝 Add Note';
+    pagerdutyAddNoteButton.innerHTML = `
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        Add Note
+    `;
     pagerdutyAddNoteButton.setAttribute('data-tooltip', "Adds the notification message above as a note to the incident");
     pagerdutyAddNoteButton.style.cssText = `
-        background: linear-gradient(135deg, #06A77D 0%, #048A6F 100%);
+        background: #6366f1;
         color: white;
         border: none;
         padding: 8px 16px;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 0.875rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(6, 167, 125, 0.3);
+        font-weight: 500;
+        transition: all 0.2s ease;
         min-width: 140px;
         height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     `;
     
     // Add hover effect for PagerDuty button
     pagerdutyAddNoteButton.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-2px)';
-        this.style.boxShadow = '0 6px 20px rgba(6, 167, 125, 0.4)';
+        this.style.background = '#4f46e5';
+        this.style.transform = 'translateY(-1px)';
     });
     
     pagerdutyAddNoteButton.addEventListener('mouseleave', function() {
+        this.style.background = '#6366f1';
         this.style.transform = 'translateY(0)';
-        this.style.boxShadow = '0 4px 15px rgba(6, 167, 125, 0.3)';
     });
     
     pagerdutyAddNoteButton.addEventListener('click', async function() {
@@ -1184,7 +1260,12 @@ function addCopyButton(resultDiv, text) {
                 pagerdutyAddNoteButton.textContent = '✅ Note Added!';
                 pagerdutyAddNoteButton.style.background = '#28a745';
                 setTimeout(() => {
-                    pagerdutyAddNoteButton.textContent = '📝 Add Note';
+                    pagerdutyAddNoteButton.innerHTML = `
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        Add Note
+    `;
                     pagerdutyAddNoteButton.style.background = 'linear-gradient(135deg, #06A77D 0%, #048A6F 100%)';
                     pagerdutyAddNoteButton.disabled = false;
                 }, 3000);
@@ -1195,7 +1276,12 @@ function addCopyButton(resultDiv, text) {
             pagerdutyAddNoteButton.textContent = '❌ Failed to Send';
             pagerdutyAddNoteButton.style.background = '#dc3545';
             setTimeout(() => {
-                pagerdutyAddNoteButton.textContent = '📝 Add Note';
+                pagerdutyAddNoteButton.innerHTML = `
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        Add Note
+    `;
                 pagerdutyAddNoteButton.style.background = 'linear-gradient(135deg, #06A77D 0%, #048A6F 100%)';
                 pagerdutyAddNoteButton.disabled = false;
             }, 3000);
@@ -1210,32 +1296,32 @@ function addCopyButton(resultDiv, text) {
     statusUpdateButton.textContent = '📢 Send Status Update';
     statusUpdateButton.setAttribute('data-tooltip', "Send a status update of the message above, and also add it as a note in the incident");
     statusUpdateButton.style.cssText = `
-        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+        background: #f59e0b;
         color: white;
         border: none;
         padding: 8px 16px;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 0.875rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        font-weight: 500;
+        transition: all 0.2s ease;
         min-width: 140px;
         height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     `;
     
     // Add hover effect for status update button
     statusUpdateButton.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-2px)';
-        this.style.boxShadow = '0 6px 20px rgba(255, 107, 53, 0.4)';
+        this.style.background = '#d97706';
+        this.style.transform = 'translateY(-1px)';
     });
     
     statusUpdateButton.addEventListener('mouseleave', function() {
+        this.style.background = '#f59e0b';
         this.style.transform = 'translateY(0)';
-        this.style.boxShadow = '0 4px 15px rgba(255, 107, 53, 0.3)';
     });
     
     statusUpdateButton.addEventListener('click', async function() {
@@ -1331,6 +1417,7 @@ let statusUpdateTimer = null;
 
 // Function to load and display status updates trail
 async function loadStatusUpdatesTrail(incidentId) {
+    console.log('loadStatusUpdatesTrail called with incidentId:', incidentId);
     const statusUpdatesTrail = document.getElementById('status-updates-trail');
     const statusUpdatesDivider = document.getElementById('status-updates-divider');
     const statusUpdatesList = document.getElementById('status-updates-list');
@@ -1356,11 +1443,24 @@ async function loadStatusUpdatesTrail(incidentId) {
     }
     noStatusUpdates.classList.add('hidden');
     
+    // Show loading indicator for status updates
+    statusUpdatesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div>Loading status updates...</div>';
+    
     try {
-        const response = await fetch(`/api/incident/${incidentId}/status-updates`);
+        console.log('Fetching status updates from API for incident:', incidentId);
+        // Add cache-busting parameter to prevent browser caching
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`/api/incident/${incidentId}/status-updates?t=${cacheBuster}`, {
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        });
+        console.log('Status updates API response status:', response.status);
         if (response.ok) {
             const data = await response.json();
             const statusUpdates = data.status_updates || [];
+            console.log('Received status updates:', statusUpdates.length, 'updates');
             
             if (statusUpdates.length === 0) {
                 noStatusUpdates.classList.remove('hidden');
@@ -1398,10 +1498,32 @@ async function loadStatusUpdatesTrail(incidentId) {
                     `;
                 }).join('');
                 
-                // Start the timer for the most recent update
+                // Check the latest status update message for "update {number}" pattern
                 if (statusUpdates.length > 0) {
+                    const latestUpdate = statusUpdates[0];
+                    const message = latestUpdate.message || '';
+                    
+                    // Look for pattern "update {number}" (case insensitive)
+                    const updatePattern = /update\s+(\d+)/i;
+                    const match = message.match(updatePattern);
+                    
+                    if (match) {
+                        const foundUpdateNumber = parseInt(match[1]);
+                        const updateNumberInput = document.getElementById('update_number');
+                        if (updateNumberInput) {
+                            // Set the update number to found number + 1
+                            updateNumberInput.value = foundUpdateNumber + 1;
+                            
+                            // Trigger the template update logic to refresh the result div
+                            updateNotificationIfLoaded();
+                        }
+                    }
+                    
                     startStatusUpdateTimer(statusUpdates[0].created_at);
                 }
+                
+                // Show a brief success message when status updates are refreshed
+                console.log('Status updates refreshed successfully');
             }
         } else {
             throw new Error(`Failed to fetch status updates: ${response.status}`);
@@ -1594,6 +1716,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const downgradeCheckbox = document.getElementById('downgrade');
         const updateNumberInput = document.getElementById('update_number');
         const resetButton = document.getElementById('resetBtn');
+        const searchButton = document.getElementById('searchBtn');
         
         if (resolveCheckbox) {
             resolveCheckbox.addEventListener('change', updateNotificationIfLoaded);
@@ -1606,6 +1729,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (resetButton) {
             resetButton.addEventListener('click', resetToOriginalState);
+        }
+        if (searchButton) {
+            searchButton.addEventListener('click', function() {
+                const ticketNumber = document.getElementById('ticket_number').value.trim();
+                if (ticketNumber.length > 0) {
+                    // Add loading state to search button
+                    const originalText = searchButton.textContent;
+                    searchButton.textContent = '⏳';
+                    searchButton.disabled = true;
+                    
+                    // Clear cached data to force fresh API call
+                    cachedIncidentData = null;
+                    lastTicketNumber = null;
+                    if (statusUpdateTimer) {
+                        clearInterval(statusUpdateTimer);
+                        statusUpdateTimer = null;
+                    }
+                    
+                    // Trigger the same functionality as auto-submit
+                    document.getElementById('incidentForm').dispatchEvent(new Event('submit'));
+                    
+                    // Restore button state after a short delay (the form submission will handle the actual loading)
+                    setTimeout(() => {
+                        searchButton.textContent = originalText;
+                        searchButton.disabled = false;
+                    }, 1000);
+                }
+            });
         }
     }, 100);
 });

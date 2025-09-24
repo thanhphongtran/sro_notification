@@ -242,8 +242,8 @@
 .slack-button:hover,
 .add-note-button:hover,
 .status-update-button:hover {
-    transform: translateY(-2px);
-    transition: all 0.3s ease;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
 }
 
 /* Content editable focus styles */
@@ -300,4 +300,26 @@
     .main-content {
         padding: 1rem;
     }
+}
+
+/* Reduce line spacing in incident-info-section for better text wrapping */
+#incident-info-section .flex {
+    line-height: 1.2;
+}
+
+#incident-info-section .flex > div {
+    line-height: 1.2;
+}
+
+/* Maximize Slack logo size and remove white space */
+.slack-button img {
+    height: 45px;
+    width: 45px;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    object-fit: none;
+    object-position: center;
+    margin-left: -2px;
+    margin-right: 2px;
 }

@@ -13,10 +13,10 @@ Header Template Variables:
 Update Template Variables:
 - {update_prefix}   - Status prefixes (e.g., "Resolved |", "Downgraded |")
 - {update_number}   - Update number (1, 2, 3, etc.)
-- {created_at}      - Formatted creation/update timestamp
+- {created_at}      - Formatted creation/update timestamp. (set to incident creation date for update 1, and current date for subsequent updates)
 
 Bullet Template Variables:
-- {alert_title}     - Cleaned alert title (removes everything before second pipe)
+- {alert_title}     - Alert title minus the first two pipes (removes brand and region)
 - {team_name}       - Team name (e.g., "Platform Team", "Infrastructure Team")
 - {new_severity}    - New severity level (for downgraded incidents)
 
@@ -72,8 +72,8 @@ class NotificationTemplate:
         if self.bullet_templates is None:
             self.bullet_templates = {
                 "initial_sro_report": 'SRO US received a report stating "{alert_title}".',
-                "team_engaged": "The {team_name} team has engaged to investigate the incident.",
-                "team_has": "The {team_name} team ",
+                "team_engaged": "The {team_name} team has been engaged to investigate the incident.",
+                "team_has": "The {team_name} team",
                 # "downgraded": "The severity of this incident has been downgraded to a SEV {new_severity}.",
                 "downgraded": "The severity of this incident has been downgraded.",
                 "resolved": "This incident is resolved.",
@@ -98,7 +98,7 @@ DEFAULT_TEMPLATE = NotificationTemplate()
 #     update_template="📝 {update_prefix}Update {update_number} | {created_at}",
 #     bullet_templates={
 #         "initial_sro_report": '🔍 SRO US received a report stating "{alert_title}".',
-#         "team_engaged": "👥 The {team_name} team has engaged to investigate the incident.",
+#         "team_engaged": "👥 The {team_name} team has been engaged to investigate the incident.",
 #         "team_has": "👥 The {team_name} team has",
 #         "downgraded": "⬇️ The severity of this incident has been downgraded to a SEV {new_severity}.",
 #         "resolved": "✅ This incident is resolved.",
@@ -106,7 +106,7 @@ DEFAULT_TEMPLATE = NotificationTemplate()
 #         "further_updates_initial": "⏳ Further updates will be provided as they become available.",
 #         "further_updates_followup": "⏰ Further updates will be provided within 2 hours."
 #     },
-#     footer_template="📊 Status Dashboard - {status_dashboard_url}\n\n@here PR",
+#     footer_template="📊 Status Dashboard - {status_dashboard_url}",
 #     status_prefixes={
 #         "resolved": "✅ Resolved",
 #         "downgraded": "⬇️ Downgraded"
@@ -115,7 +115,7 @@ DEFAULT_TEMPLATE = NotificationTemplate()
 
 # Active template (change this to use a different template)
 ACTIVE_TEMPLATE = DEFAULT_TEMPLATE
-
+# ACTIVE_TEMPLATE = CUSTOM_TEMPLATE
 
 def get_template() -> NotificationTemplate:
     """Get the active notification template"""
