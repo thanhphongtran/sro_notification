@@ -266,12 +266,55 @@ class PagerDutyClient:
             # Clean up escalation policy name
             trimmed_policy = escalation_policy.split(' - ')[0] if ' - ' in escalation_policy else escalation_policy
             
-            # Clean up title for the SRO message - use everything after the last pipe, or whole string if no pipe
+            # Clean up title for the SRO message
             alert_title = title
-            last_pipe = title.rfind('|')
-            if last_pipe != -1:
-                # Get everything after the last pipe and strip whitespace
-                alert_title = title[last_pipe + 1:].strip()
+            
+            # Check if title contains parentheses - if so, find the part with parentheses and keep it
+            if '(' in title:
+                # Find the part that contains parentheses (likely the actual alert)
+                parts = [part.strip() for part in title.split('|')]
+                
+                # Look for the part that contains parentheses
+                for part in parts:
+                    if '(' in part:
+                        alert_title = part
+                        break
+            else:
+                # No parentheses found - look for patterns like "Brand | Region |" or "Brand |" at the start
+                parts = [part.strip() for part in title.split('|')]
+                
+                if len(parts) >= 2:
+                    # Check if we have 2+ parts and the first two look like brand/region
+                    # (simple heuristic: short, no special chars, likely brand names)
+                    first_part = parts[0]
+                    second_part = parts[1]
+                    
+                    # If first two parts are short and don't contain parentheses or special chars,
+                    # they're likely brand/region prefixes to remove
+                    if (len(first_part) <= 20 and len(second_part) <= 20 and 
+                        not any(char in first_part + second_part for char in '()[]{}')):
+                        # Take everything from the third part onwards, or second part if only 2 parts
+                        if len(parts) >= 3:
+                            alert_title = ' | '.join(parts[2:])
+                        else:
+                            alert_title = parts[1]
+                    else:
+                        # Fall back to taking everything after the last pipe
+                        last_pipe = title.rfind('|')
+                        if last_pipe != -1:
+                            alert_title = title[last_pipe + 1:].strip()
+                elif len(parts) == 2:
+                    # Only 2 parts - check if first looks like a brand prefix
+                    first_part = parts[0]
+                    if (len(first_part) <= 20 and 
+                        not any(char in first_part for char in '()[]{}')):
+                        alert_title = parts[1]
+                    else:
+                        # Keep original if first part doesn't look like a prefix
+                        alert_title = title
+                else:
+                    # Only 1 part or no pipes - keep as is
+                    alert_title = title
             
             # Create notification message using template
             # Build bullet points based on update number and flags
