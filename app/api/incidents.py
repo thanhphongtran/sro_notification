@@ -172,40 +172,20 @@ async def get_incident_notes(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# Custom Fields API endpoints - DISABLED
-# These endpoints require manager-level PagerDuty access and custom fields to be enabled on the account.
-# Uncomment these endpoints if you have the required access level and custom fields configured.
+@router.get("/incident/{incident_id}/custom-fields")
+async def get_incident_custom_fields(
+    incident_id: str,
+    service: PagerDutyService = Depends(get_pagerduty_service)
+):
+    """Get custom field values for a PagerDuty incident
+    
+    Note: Custom fields may not be available for all incidents or account types.
+    Returns empty array if custom fields are not configured.
+    """
+    try:
+        custom_fields = service.get_custom_field_values(incident_id)
+        return custom_fields
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-# @router.get("/incident/{incident_id}/custom-fields")
-# async def get_incident_custom_fields(
-#     incident_id: str,
-#     service: PagerDutyService = Depends(get_pagerduty_service)
-# ):
-#     """Get custom field values for a PagerDuty incident
-#     
-#     Note: Custom fields may not be available for all incidents or account types.
-#     Returns empty array if custom fields are not configured.
-#     """
-#     try:
-#         custom_fields = service.get_custom_field_values(incident_id)
-#         return custom_fields
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
-# @router.get("/incident/{incident_id}/custom-fields/{custom_field_id}")
-# async def get_incident_custom_field(
-#     incident_id: str,
-#     custom_field_id: str,
-#     service: PagerDutyService = Depends(get_pagerduty_service)
-# ):
-#     """Get a specific custom field value for a PagerDuty incident
-#     
-#     Note: Custom fields may not be available for all incidents or account types.
-#     Returns null if custom field is not found or not configured.
-#     """
-#     try:
-#         custom_field = service.get_custom_field_value(incident_id, custom_field_id)
-#         return custom_field
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
 

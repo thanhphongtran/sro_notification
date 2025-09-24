@@ -88,9 +88,3 @@ class PagerDutyService:
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
     
-    def get_custom_field_value(self, incident_id: str, custom_field_id: str) -> Dict:
-        """Get a specific custom field value for a PagerDuty incident"""
-        try:
-            return self.core.get_custom_field_value(incident_id, custom_field_id)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))

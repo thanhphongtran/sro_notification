@@ -768,7 +768,7 @@ class PagerDutyClient:
             Returns empty dict if custom fields are not configured or available.
         """
         try:
-            url = f"https://api.pagerduty.com/incidents/{incident_id}/custom_field_values"
+            url = f"https://api.pagerduty.com/incidents/{incident_id}/custom_fields/values"
             response = requests.get(url, headers=self.headers, timeout=30)
             
             if response.status_code == 200:
@@ -788,41 +788,6 @@ class PagerDutyClient:
         except Exception as e:
             raise Exception(f"Error getting custom field values: {str(e)}")
     
-    def get_custom_field_value(self, incident_id: str, custom_field_id: str) -> Dict:
-        """
-        Get a specific custom field value for a PagerDuty incident.
-        
-        Args:
-            incident_id: The PagerDuty incident ID
-            custom_field_id: The custom field ID
-            
-        Returns:
-            Dict containing the specific custom field value, or empty dict if not available
-            
-        Note:
-            Custom fields may not be available for all incidents or account types.
-            Returns empty dict if custom fields are not configured or available.
-        """
-        try:
-            url = f"https://api.pagerduty.com/incidents/{incident_id}/custom_field_values/{custom_field_id}"
-            response = requests.get(url, headers=self.headers, timeout=30)
-            
-            if response.status_code == 200:
-                return response.json()
-            elif response.status_code == 404:
-                # Custom field not available for this incident
-                return {
-                    "custom_field_value": None,
-                    "message": f"Custom field {custom_field_id} not found for this incident",
-                    "available": False
-                }
-            else:
-                raise Exception(f"Failed to get custom field value: {response.status_code} - {response.text}")
-                
-        except requests.exceptions.RequestException as e:
-            raise Exception(f"Network error getting custom field value: {str(e)}")
-        except Exception as e:
-            raise Exception(f"Error getting custom field value: {str(e)}")
 
     def send_status_update(self, incident_id: str, status: str, message: str) -> Dict:
         """

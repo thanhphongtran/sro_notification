@@ -77,9 +77,8 @@ Open your browser and go to: http://127.0.0.1:8080
 - `GET /redoc` - Alternative API documentation (ReDoc)
 - `GET /health` - Health check endpoint
 
-### Custom Fields API (Disabled)
-- `GET /api/incident/{incident_id}/custom-fields` - Get custom field values (requires manager access)
-- `GET /api/incident/{incident_id}/custom-fields/{custom_field_id}` - Get specific custom field (requires manager access)
+### Custom Fields API
+- `GET /api/incident/{incident_id}/custom-fields` - Get all custom field values for a PagerDuty incident
 
 ## Configuration
 
@@ -137,7 +136,7 @@ pager_duty_notification/
 pip3 install -r requirements.txt
 
 # Run with auto-reload
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8080
 ```
 
 ## Usage Examples
@@ -158,7 +157,7 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
 ```bash
 # Generate a notification
-curl -X POST "http://127.0.0.1:8000/api/generate" \
+curl -X POST "http://127.0.0.1:8080/api/generate" \
   -H "Content-Type: application/json" \
   -d '{
     "ticket_number": "P123456",
@@ -201,7 +200,41 @@ curl -X POST "http://127.0.0.1:8080/api/slack/send" \
     "message": "Test notification",
     "channel": "#alerts"
   }'
+
+# Get all custom field values for an incident
+curl "http://127.0.0.1:8080/api/incident/Q0JLPBVWNHTUDW/custom-fields"
 ```
+
+### Custom Fields Usage
+
+Custom fields allow you to store additional metadata with PagerDuty incidents. This endpoint helps you retrieve all custom field information for an incident:
+
+**Get All Custom Fields:**
+```bash
+curl "http://127.0.0.1:8080/api/incident/Q0JLPBVWNHTUDW/custom-fields"
+```
+
+**Response Example:**
+```json
+{
+  "custom_field_values": [
+    {
+      "id": "P123456",
+      "name": "Severity Level",
+      "value": "High",
+      "type": "single_value"
+    },
+    {
+      "id": "P789012",
+      "name": "Environment",
+      "value": "Production",
+      "type": "single_value"
+    }
+  ]
+}
+```
+
+**Note:** If custom fields are not available or accessible, the API will return appropriate error messages or empty data structures.
 
 ## Integration with CLI Script
 

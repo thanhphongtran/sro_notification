@@ -141,7 +141,7 @@ The system includes built-in validation:
 You can also retrieve the current template configuration via API:
 
 ```bash
-curl http://localhost:8000/api/template
+curl http://localhost:8080/api/template
 ```
 
 This returns the current template configuration in JSON format.
