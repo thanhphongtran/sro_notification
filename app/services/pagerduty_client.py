@@ -36,24 +36,157 @@ class PagerDutyClient:
     
     def get_incident_data(self, ticket_number: str) -> Dict:
         """
-        Get incident data from PagerDuty API.
+        Get incident data including conference bridge and Slack channel information.
         
         Args:
             ticket_number: PagerDuty incident/ticket number
             
         Returns:
-            Dict containing incident data from PagerDuty API
+            Dict containing incident data with communication channel information
             
         Raises:
             Exception: If API request fails
         """
-        url = f"https://api.pagerduty.com/incidents/{ticket_number}"
+        # Include conference bridge in the incident data
+        url = f"https://api.pagerduty.com/incidents/{ticket_number}?include[]=conference_bridge"
         response = requests.get(url, headers=self.headers)
         
         if response.status_code != 200:
             raise Exception(f"Failed to fetch incident {ticket_number}: {response.status_code} - {response.text}")
         
-        return response.json()
+        incident_data = response.json()
+        
+        # Get Slack channel information from log entries using incident ID
+        incident_id = incident_data['incident']['id']
+        slack_channel_info = self.get_slack_channel_from_log_entries(incident_id)
+        
+        # Add Slack channel info to incident data
+        if slack_channel_info:
+            incident_data['slack_channel'] = slack_channel_info
+        
+        return incident_data
+    
+    def get_slack_channel_from_log_entries(self, incident_id: str) -> Optional[Dict]:
+        """
+        Get Slack channel information from incident log entries.
+        
+        Args:
+            incident_id: PagerDuty incident ID (not ticket number)
+            
+        Returns:
+            Dict containing Slack channel information or None if not found
+        """
+        try:
+            more = True
+            offset = ""
+            
+            while more:
+                url = f"https://api.pagerduty.com/incidents/{incident_id}/log_entries?{offset}"
+                response = requests.get(url, headers=self.headers)
+                
+                if response.status_code != 200:
+                    return None
+                
+                data = response.json()
+                more = data.get('more', False)
+                if more:
+                    offset = f"offset={data['offset'] + data['limit']}"
+                
+                # Look for chat channel integration events
+                for entry in data.get('log_entries', []):
+                    if entry.get('type') == 'integration_chat_channel_event_log_entry':
+                        return {
+                            "chat_channel_name": entry.get('chat_channel_name'),
+                            "chat_channel_web_link": entry.get('chat_channel_web_link')
+                        }
+            
+            return None
+            
+        except Exception as e:
+            print(f"Error fetching Slack channel info: {e}")
+            return None
+    
+    def get_status_updates(self, incident_id: str) -> List[Dict]:
+        """
+        Get status updates for a PagerDuty incident.
+        
+        Args:
+            incident_id: PagerDuty incident ID (not ticket number)
+            
+        Returns:
+            List of status update log entries, ordered by creation time (oldest first)
+        """
+        try:
+            more = True
+            offset = ""
+            status_updates = []
+            
+            while more:
+                url = f"https://api.pagerduty.com/incidents/{incident_id}/log_entries?{offset}"
+                response = requests.get(url, headers=self.headers)
+                
+                if response.status_code != 200:
+                    break
+                
+                data = response.json()
+                more = data.get('more', False)
+                if more:
+                    offset = f"offset={data['offset'] + data['limit']}"
+                
+                # Look for status update entries
+                for entry in data.get('log_entries', []):
+                    if entry.get('type') in ['status_update_log_entry', 'incident_status_update_log_entry']:
+                        status_updates.append(entry)
+            
+            # Sort by creation time (oldest first)
+            status_updates.sort(key=lambda x: x.get('created_at', ''))
+            
+            return status_updates
+            
+        except Exception as e:
+            print(f"Error fetching status updates: {e}")
+            return []
+    
+    def get_incident_notes(self, incident_id: str) -> List[Dict]:
+        """
+        Get notes for a PagerDuty incident.
+        
+        Args:
+            incident_id: PagerDuty incident ID (not ticket number)
+            
+        Returns:
+            List of note log entries, ordered by creation time (oldest first)
+        """
+        try:
+            more = True
+            offset = ""
+            notes = []
+            
+            while more:
+                url = f"https://api.pagerduty.com/incidents/{incident_id}/log_entries?{offset}"
+                response = requests.get(url, headers=self.headers)
+                
+                if response.status_code != 200:
+                    break
+                
+                data = response.json()
+                more = data.get('more', False)
+                if more:
+                    offset = f"offset={data['offset'] + data['limit']}"
+                
+                # Look for note entries
+                for entry in data.get('log_entries', []):
+                    if entry.get('type') == 'note_log_entry':
+                        notes.append(entry)
+            
+            # Sort by creation time (oldest first)
+            notes.sort(key=lambda x: x.get('created_at', ''))
+            
+            return notes
+            
+        except Exception as e:
+            print(f"Error fetching incident notes: {e}")
+            return []
     
     def convert_utc_to_eastern(self, utc_date_string: str) -> str:
         """
@@ -620,6 +753,77 @@ class PagerDutyClient:
         except Exception:
             return "System"
     
+    def get_custom_field_values(self, incident_id: str) -> Dict:
+        """
+        Get custom field values for a PagerDuty incident.
+        
+        Args:
+            incident_id: The PagerDuty incident ID
+            
+        Returns:
+            Dict containing custom field values for the incident, or empty dict if not available
+            
+        Note:
+            Custom fields may not be available for all incidents or account types.
+            Returns empty dict if custom fields are not configured or available.
+        """
+        try:
+            url = f"https://api.pagerduty.com/incidents/{incident_id}/custom_field_values"
+            response = requests.get(url, headers=self.headers, timeout=30)
+            
+            if response.status_code == 200:
+                return response.json()
+            elif response.status_code == 404:
+                # Custom fields not available for this incident
+                return {
+                    "custom_field_values": [],
+                    "message": "No custom fields configured for this incident",
+                    "available": False
+                }
+            else:
+                raise Exception(f"Failed to get custom field values: {response.status_code} - {response.text}")
+                
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Network error getting custom field values: {str(e)}")
+        except Exception as e:
+            raise Exception(f"Error getting custom field values: {str(e)}")
+    
+    def get_custom_field_value(self, incident_id: str, custom_field_id: str) -> Dict:
+        """
+        Get a specific custom field value for a PagerDuty incident.
+        
+        Args:
+            incident_id: The PagerDuty incident ID
+            custom_field_id: The custom field ID
+            
+        Returns:
+            Dict containing the specific custom field value, or empty dict if not available
+            
+        Note:
+            Custom fields may not be available for all incidents or account types.
+            Returns empty dict if custom fields are not configured or available.
+        """
+        try:
+            url = f"https://api.pagerduty.com/incidents/{incident_id}/custom_field_values/{custom_field_id}"
+            response = requests.get(url, headers=self.headers, timeout=30)
+            
+            if response.status_code == 200:
+                return response.json()
+            elif response.status_code == 404:
+                # Custom field not available for this incident
+                return {
+                    "custom_field_value": None,
+                    "message": f"Custom field {custom_field_id} not found for this incident",
+                    "available": False
+                }
+            else:
+                raise Exception(f"Failed to get custom field value: {response.status_code} - {response.text}")
+                
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Network error getting custom field value: {str(e)}")
+        except Exception as e:
+            raise Exception(f"Error getting custom field value: {str(e)}")
+
     def send_status_update(self, incident_id: str, status: str, message: str) -> Dict:
         """
         Send a status update to a PagerDuty incident.

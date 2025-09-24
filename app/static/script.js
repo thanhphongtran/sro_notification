@@ -6,6 +6,77 @@ let cachedIncidentData = null;
 // Global variable to store notification template
 let notificationTemplate = null;
 
+// Function to update incident information section
+function updateIncidentInfo(incidentData) {
+    const incidentInfoSection = document.getElementById('incident-info-section');
+    const incidentLinkContainer = document.getElementById('incident-link-container');
+    const incidentLink = document.getElementById('incident-link');
+    const conferenceBridgeContainer = document.getElementById('conference-bridge-container');
+    const conferenceInfo = document.getElementById('conference-info');
+    const conferenceDialLink = document.getElementById('conference-dial-link');
+    const conferenceMeetingLink = document.getElementById('conference-meeting-link');
+    const noConferenceBridge = document.getElementById('no-conference-bridge');
+    const slackChannelContainer = document.getElementById('slack-channel-container');
+    const slackChannelInfo = document.getElementById('slack-channel-info');
+    const slackChannelName = document.getElementById('slack-channel-name');
+    const noSlackChannel = document.getElementById('no-slack-channel');
+
+    if (!incidentData || !incidentData.incident) {
+        incidentInfoSection.classList.add('hidden');
+        return;
+    }
+
+    // Show the incident info section
+    incidentInfoSection.classList.remove('hidden');
+
+    // Update incident link
+    const incidentNumber = incidentData.incident.incident_number;
+    const incidentUrl = `https://discoveryinc.pagerduty.com/incidents/${incidentNumber}`;
+    incidentLink.href = incidentUrl;
+    incidentLink.textContent = `PD#${incidentNumber}`;
+    incidentLinkContainer.classList.remove('hidden');
+
+    // Update conference bridge information
+    const conferenceBridge = incidentData.incident.conference_bridge;
+    if (conferenceBridge && (conferenceBridge.conference_number || conferenceBridge.conference_url)) {
+        conferenceBridgeContainer.classList.remove('hidden');
+        conferenceInfo.classList.remove('hidden');
+        noConferenceBridge.classList.add('hidden');
+        
+        if (conferenceBridge.conference_number) {
+            conferenceDialLink.href = `tel:${conferenceBridge.conference_number}`;
+            conferenceDialLink.textContent = "📞 Dial in";
+        } else {
+            conferenceDialLink.style.display = 'none';
+        }
+        
+        if (conferenceBridge.conference_url) {
+            conferenceMeetingLink.href = conferenceBridge.conference_url;
+            conferenceMeetingLink.textContent = "🖥️ Zoom";
+        } else {
+            conferenceMeetingLink.style.display = 'none';
+        }
+    } else {
+        conferenceBridgeContainer.classList.remove('hidden');
+        conferenceInfo.classList.add('hidden');
+        noConferenceBridge.classList.remove('hidden');
+    }
+
+    // Update Slack channel information
+    const slackChannel = incidentData.slack_channel;
+    if (slackChannel && slackChannel.chat_channel_name) {
+        slackChannelContainer.classList.remove('hidden');
+        slackChannelName.textContent = `#${slackChannel.chat_channel_name}`;
+        slackChannelName.href = slackChannel.chat_channel_web_link;
+        slackChannelInfo.classList.remove('hidden');
+        noSlackChannel.classList.add('hidden');
+    } else {
+        slackChannelContainer.classList.remove('hidden');
+        slackChannelInfo.classList.add('hidden');
+        noSlackChannel.classList.remove('hidden');
+    }
+}
+
 // Function to get formatted text content preserving line breaks
 function getFormattedTextContent(element) {
     if (!element) return '';
@@ -385,10 +456,27 @@ function displayResponders(responders) {
     const mobileRespondersContainer = document.getElementById('responders-container-mobile');
     let html = '';
     
-    // Extract escalation policy colors for matching
-    const escalationPolicyColors = extractEscalationPolicyColors(responders);
+    // Sort responders: Call Leader Escalation Policy first, GTOC Americas last, others in between
+    const sortedResponders = [...responders].sort((a, b) => {
+        const aTeamName = a.team_name || '';
+        const bTeamName = b.team_name || '';
+        
+        // Call Leader Escalation Policy goes to top
+        if (aTeamName.includes('Call Leader Escalation Policy')) return -1;
+        if (bTeamName.includes('Call Leader Escalation Policy')) return 1;
+        
+        // GTOC Americas goes to bottom
+        if (aTeamName.includes('GTOC Americas')) return 1;
+        if (bTeamName.includes('GTOC Americas')) return -1;
+        
+        // All others maintain original order
+        return 0;
+    });
     
-    responders.forEach(responder => {
+    // Extract escalation policy colors for matching
+    const escalationPolicyColors = extractEscalationPolicyColors(sortedResponders);
+    
+    sortedResponders.forEach(responder => {
         html += '<div class="responder-item">';
         
         // Handle escalation policy responders (has team_name and users)
@@ -397,11 +485,11 @@ function displayResponders(responders) {
             html += `<div class="responder-team escalation-policy" style="background-color: ${color}; border-left: 4px solid ${adjustColorBrightness(color, -20)};">${responder.team_name}</div>`;
             if (responder.users && responder.users.length > 0) {
                 html += '<div class="responder-users">';
-                html += '<ul>';
+                html += '<ul class="user-list">';
                 responder.users.forEach(user => {
                     // Handle both old format (string) and new format (object with name and requested_at)
                     if (typeof user === 'string') {
-                        html += `<li>${user}</li>`;
+                        html += `<li class="user-item">• ${user}</li>`;
                     } else {
                         const userName = user.name || user;
                         const requestedAt = user.requested_at;
@@ -422,20 +510,25 @@ function displayResponders(responders) {
                                     throw new Error('Invalid date');
                                 }
                                 
+                                const dateStr = requestDate.toLocaleDateString('en-US', {
+                                    month: 'numeric',
+                                    day: 'numeric',
+                                    timeZone: 'America/New_York'
+                                });
                                 const timeStr = requestDate.toLocaleTimeString('en-US', {
                                     hour: 'numeric',
                                     minute: '2-digit',
                                     hour12: true,
                                     timeZone: 'America/New_York'
                                 });
-                                timeDisplay = ` <span class="request-time">(${timeStr})</span>`;
+                                timeDisplay = ` <span class="request-time">(${dateStr} ${timeStr})</span>`;
                             } catch (e) {
                                 // If date parsing fails, just show the raw time
                                 timeDisplay = ` <span class="request-time">(${requestedAt})</span>`;
                             }
                         }
                         
-                        html += `<li>${userName}${timeDisplay}</li>`;
+                        html += `<li class="user-item">• ${userName}${timeDisplay}</li>`;
                     }
                 });
                 html += '</ul>';
@@ -463,13 +556,18 @@ function displayResponders(responders) {
                         throw new Error('Invalid date');
                     }
                     
+                    const dateStr = requestDate.toLocaleDateString('en-US', {
+                        month: 'numeric',
+                        day: 'numeric',
+                        timeZone: 'America/New_York'
+                    });
                     const timeStr = requestDate.toLocaleTimeString('en-US', {
                         hour: 'numeric',
                         minute: '2-digit',
                         hour12: true,
                         timeZone: 'America/New_York'
                     });
-                    timeDisplay = ` <span class="request-time">(${timeStr})</span>`;
+                    timeDisplay = ` <span class="request-time">(${dateStr} ${timeStr})</span>`;
                 } catch (e) {
                     // If date parsing fails, just show the raw time
                     timeDisplay = ` <span class="request-time">(${requestedAt})</span>`;
@@ -479,25 +577,25 @@ function displayResponders(responders) {
             html += `<div class="responder-team user-name">${userName}${timeDisplay}</div>`;
             if (responder.teams && responder.teams.length > 0) {
                 html += '<div class="responder-users">';
-                html += '<ul>';
+                html += '<ul class="team-list">';
                 responder.teams.forEach(teamData => {
                     // Handle both old format (string) and new format (object with team and color)
                     if (typeof teamData === 'string') {
                         // Check if this team matches any escalation policy color
                         const matchingColor = findMatchingEscalationPolicyColor(teamData, escalationPolicyColors);
                         if (matchingColor) {
-                            html += `<li class="team-item" style="background-color: ${matchingColor}; border-left: 3px solid ${adjustColorBrightness(matchingColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">${teamData}</li>`;
+                            html += `<li class="team-item" style="background-color: ${matchingColor}; border-left: 3px solid ${adjustColorBrightness(matchingColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">• ${teamData}</li>`;
                         } else {
-                            html += `<li class="team-item no-color">${teamData}</li>`;
+                            html += `<li class="team-item no-color">• ${teamData}</li>`;
                         }
                     } else {
                         // Check if this team matches any escalation policy color (override existing color if match found)
                         const matchingColor = findMatchingEscalationPolicyColor(teamData.team, escalationPolicyColors);
                         const finalColor = matchingColor || teamData.color;
                         if (finalColor) {
-                            html += `<li class="team-item" style="background-color: ${finalColor}; border-left: 3px solid ${adjustColorBrightness(finalColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">${teamData.team}</li>`;
+                            html += `<li class="team-item" style="background-color: ${finalColor}; border-left: 3px solid ${adjustColorBrightness(finalColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">• ${teamData.team}</li>`;
                         } else {
-                            html += `<li class="team-item no-color">${teamData.team}</li>`;
+                            html += `<li class="team-item no-color">• ${teamData.team}</li>`;
                         }
                     }
                 });
@@ -548,77 +646,40 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add data attribute for our custom tooltip
         element.setAttribute('data-tooltip', tooltipText);
         
-        // Add smart positioning logic
+        // Add positioning logic for tooltips near top of viewport
         element.addEventListener('mouseenter', function() {
-            positionTooltip(this);
+            positionTooltipForViewport(this);
         });
     });
 });
 
-// Function to position tooltips to prevent overflow
-function positionTooltip(element) {
+// Function to position tooltips based on viewport position
+function positionTooltipForViewport(element) {
     // Remove any existing positioning classes
-    element.classList.remove('tooltip-left', 'tooltip-right', 'tooltip-top');
+    element.classList.remove('tooltip-below', 'tooltip-right');
     
-    // Create a temporary tooltip element to measure its dimensions
-    const tempTooltip = document.createElement('div');
-    tempTooltip.style.cssText = `
-        position: absolute;
-        visibility: hidden;
-        white-space: nowrap;
-        background: #1f2937;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 0.875rem;
-        z-index: 1000;
-        max-width: 300px;
-        word-wrap: break-word;
-        white-space: normal;
-    `;
-    tempTooltip.textContent = element.getAttribute('data-tooltip');
-    document.body.appendChild(tempTooltip);
-    
-    // Get dimensions
-    const tooltipRect = tempTooltip.getBoundingClientRect();
+    // Get element position relative to viewport
     const elementRect = element.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
     
-    // Clean up temporary element
-    document.body.removeChild(tempTooltip);
-    
-    // Calculate available space
-    const spaceLeft = elementRect.left;
-    const spaceRight = viewportWidth - elementRect.right;
-    const spaceTop = elementRect.top;
-    const spaceBottom = viewportHeight - elementRect.bottom;
-    
-    const tooltipWidth = tooltipRect.width;
-    const tooltipHeight = tooltipRect.height;
-    
-    // Determine best position
-    if (spaceBottom < tooltipHeight + 20 && spaceTop > tooltipHeight + 20) {
-        // Position above if there's more space above
-        element.classList.add('tooltip-top');
-    } else if (spaceLeft < tooltipWidth / 2 && spaceRight > tooltipWidth / 2) {
-        // Position to the right if there's more space on the right
+    // If element is a label for ticket number or update number, position to the right (priority)
+    if (element.getAttribute('for') === 'ticket_number' || element.getAttribute('for') === 'update_number') {
         element.classList.add('tooltip-right');
-    } else if (spaceRight < tooltipWidth / 2 && spaceLeft > tooltipWidth / 2) {
-        // Position to the left if there's more space on the left
-        element.classList.add('tooltip-left');
     }
-    // If there's enough space in all directions, use default centered positioning
+    // If element is in the top 200px of viewport, position tooltip below
+    else if (elementRect.top < 200) {
+        element.classList.add('tooltip-below');
+    }
+    // If element is the ticket number or update number field, position below to avoid covering the input
+    else if (element.id === 'ticket_number' || element.id === 'update_number') {
+        element.classList.add('tooltip-below');
+    }
+    // If element is in the left sidebar (form area) and has room to the right, position tooltip to the right
+    else if (elementRect.left < 400 && elementRect.right < viewportWidth - 300) {
+        element.classList.add('tooltip-right');
+    }
 }
-
-// Recalculate tooltip positions on window resize
-window.addEventListener('resize', function() {
-    const elementsWithTooltips = document.querySelectorAll('[data-tooltip]');
-    elementsWithTooltips.forEach(element => {
-        // Remove positioning classes on resize
-        element.classList.remove('tooltip-left', 'tooltip-right', 'tooltip-top');
-    });
-});
 
 // Add event listener for ticket number input
 document.getElementById('ticket_number').addEventListener('input', function(e) {
@@ -632,6 +693,29 @@ document.getElementById('ticket_number').addEventListener('input', function(e) {
     
     if (ticketNumber.length > 0) {
         fetchAndDisplayResponders(ticketNumber);
+        
+        // Hide status updates trail and show generating message when new ticket is entered
+        const statusUpdatesTrail = document.getElementById('status-updates-trail');
+        const statusUpdatesDivider = document.getElementById('status-updates-divider');
+        const statusUpdatesList = document.getElementById('status-updates-list');
+        const noStatusUpdates = document.getElementById('no-status-updates');
+        const timeSinceElement = document.getElementById('time-since-last-update');
+        
+        if (statusUpdatesTrail) {
+            statusUpdatesTrail.classList.remove('hidden');
+            if (statusUpdatesDivider) {
+                statusUpdatesDivider.classList.remove('hidden');
+            }
+            noStatusUpdates.classList.add('hidden');
+            timeSinceElement.classList.add('hidden');
+            statusUpdatesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><p>Loading status updates...</p></div>';
+        }
+        
+        // Clear any existing timer
+        if (statusUpdateTimer) {
+            clearInterval(statusUpdateTimer);
+            statusUpdateTimer = null;
+        }
         
         // Auto-submit if ticket number has at least 6 characters
         if (ticketNumber.length >= 6) {
@@ -648,6 +732,22 @@ document.getElementById('ticket_number').addEventListener('input', function(e) {
         const mobileRespondersContainer = document.getElementById('responders-container-mobile');
         if (respondersContainer) respondersContainer.innerHTML = placeholder;
         if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = placeholder;
+        
+        // Hide status updates trail when ticket number is cleared
+        const statusUpdatesTrail = document.getElementById('status-updates-trail');
+        const statusUpdatesDivider = document.getElementById('status-updates-divider');
+        if (statusUpdatesTrail) {
+            statusUpdatesTrail.classList.add('hidden');
+        }
+        if (statusUpdatesDivider) {
+            statusUpdatesDivider.classList.add('hidden');
+        }
+        
+        // Clear any existing timer
+        if (statusUpdateTimer) {
+            clearInterval(statusUpdateTimer);
+            statusUpdateTimer = null;
+        }
     }
 });
 
@@ -700,6 +800,12 @@ document.getElementById('incidentForm').addEventListener('submit', async functio
                 // Cache the incident data for instant updates
                 cachedIncidentData = result.incident_data;
                 lastTicketNumber = data.ticket_number;
+                
+                // Update incident information section
+                updateIncidentInfo(result.incident_data);
+                
+                // Load status updates trail
+                loadStatusUpdatesTrail(result.incident_data.incident.id);
                 
                 resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 success editable';
                 resultDiv.innerHTML = result.notification_message.replace(/\n/g, '<br>');
@@ -759,7 +865,7 @@ document.getElementById('incidentForm').addEventListener('submit', async functio
 // Add copy, Slack, and PagerDuty status update buttons function
 function addCopyButton(resultDiv, text) {
     // Remove existing buttons if any
-    const existingButtons = document.querySelectorAll('.copy-button, .slack-button, .add-note-button, .status-update-button');
+    const existingButtons = document.querySelectorAll('.copy-button, .slack-button, .add-note-button, .status-update-button, .ack-button');
     existingButtons.forEach(button => button.remove());
     
     // Get the button containers
@@ -769,7 +875,7 @@ function addCopyButton(resultDiv, text) {
     // Create copy button
     const copyButton = document.createElement('button');
     copyButton.className = 'copy-button';
-    copyButton.textContent = '📋 Copy to Clipboard';
+    copyButton.textContent = '📋 Copy PR to Clipboard';
     copyButton.style.cssText = `
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -807,7 +913,7 @@ function addCopyButton(resultDiv, text) {
             copyButton.textContent = '✅ Copied!';
             copyButton.style.background = '#28a745';
             setTimeout(() => {
-                copyButton.textContent = '📋 Copy to Clipboard';
+                copyButton.textContent = '📋 Copy PR to Clipboard';
                 copyButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
             }, 2000);
         } catch (err) {
@@ -822,7 +928,7 @@ function addCopyButton(resultDiv, text) {
             copyButton.textContent = '✅ Copied!';
             copyButton.style.background = '#28a745';
             setTimeout(() => {
-                copyButton.textContent = '📋 Copy to Clipboard';
+                copyButton.textContent = '📋 Copy PR to Clipboard';
                 copyButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
             }, 2000);
         }
@@ -902,10 +1008,102 @@ function addCopyButton(resultDiv, text) {
         }
     });
     
+    // Create PagerDuty ack button
+    const pagerdutyAckButton = document.createElement('button');
+    pagerdutyAckButton.className = 'ack-button';
+    pagerdutyAckButton.textContent = '✔️ Ack';
+    pagerdutyAckButton.setAttribute('data-tooltip', "Add a note to the incident saying 'SRO US acknowledged'");
+    pagerdutyAckButton.style.cssText = `
+        background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        min-width: 140px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+    
+    // Add hover effect for ack button
+    pagerdutyAckButton.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)';
+    });
+    
+    pagerdutyAckButton.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)';
+    });
+    
+    pagerdutyAckButton.addEventListener('click', async function() {
+        try {
+            pagerdutyAckButton.textContent = '⏳ Sending...';
+            pagerdutyAckButton.disabled = true;
+            
+            // Get the current incident ID from the form
+            const ticketNumber = document.getElementById('ticket_number').value;
+            if (!ticketNumber) {
+                throw new Error('Please enter a ticket number first');
+            }
+            
+            // Get the incident ID from cached incident data
+            if (!cachedIncidentData || !cachedIncidentData.incident || !cachedIncidentData.incident.id) {
+                throw new Error('Incident data not available. Please refresh the data first.');
+            }
+            const incidentId = cachedIncidentData.incident.id;
+            
+            const response = await fetch('/api/add-note', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    incident_id: incidentId,
+                    message: 'SRO US acknowledged'
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
+                // Refresh the status updates trail
+                loadStatusUpdatesTrail(incidentId);
+                
+                pagerdutyAckButton.textContent = '✔️ Ack Sent!';
+                pagerdutyAckButton.style.background = '#28a745';
+                setTimeout(() => {
+                    pagerdutyAckButton.textContent = '✔️ Ack';
+                    pagerdutyAckButton.style.background = 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)';
+                    pagerdutyAckButton.disabled = false;
+                }, 3000);
+            } else {
+                throw new Error(result.message || result.error || 'Failed to send ack');
+            }
+        } catch (err) {
+            pagerdutyAckButton.textContent = '❌ Failed to Send';
+            pagerdutyAckButton.style.background = '#dc3545';
+            setTimeout(() => {
+                pagerdutyAckButton.textContent = '✔️ Ack';
+                pagerdutyAckButton.style.background = 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)';
+                pagerdutyAckButton.disabled = false;
+            }, 3000);
+            console.error('PagerDuty ack error:', err);
+            alert('Failed to send ack: ' + err.message);
+        }
+    });
+    
     // Create PagerDuty add note button
     const pagerdutyAddNoteButton = document.createElement('button');
     pagerdutyAddNoteButton.className = 'add-note-button';
     pagerdutyAddNoteButton.textContent = '📝 Add Note';
+    pagerdutyAddNoteButton.setAttribute('data-tooltip', "Adds the notification message above as a note to the incident");
     pagerdutyAddNoteButton.style.cssText = `
         background: linear-gradient(135deg, #06A77D 0%, #048A6F 100%);
         color: white;
@@ -980,6 +1178,9 @@ function addCopyButton(resultDiv, text) {
             const result = await response.json();
             
             if (response.ok && result.success) {
+                // Refresh the status updates trail
+                loadStatusUpdatesTrail(incidentId);
+                
                 pagerdutyAddNoteButton.textContent = '✅ Note Added!';
                 pagerdutyAddNoteButton.style.background = '#28a745';
                 setTimeout(() => {
@@ -1007,6 +1208,7 @@ function addCopyButton(resultDiv, text) {
     const statusUpdateButton = document.createElement('button');
     statusUpdateButton.className = 'status-update-button';
     statusUpdateButton.textContent = '📢 Send Status Update';
+    statusUpdateButton.setAttribute('data-tooltip', "Send a status update of the message above, and also add it as a note in the incident");
     statusUpdateButton.style.cssText = `
         background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
         color: white;
@@ -1082,6 +1284,17 @@ function addCopyButton(resultDiv, text) {
             const result = await response.json();
             
             if (response.ok && result.success) {
+                // Increment the update number by 1
+                const updateNumberInput = document.getElementById('update_number');
+                const currentUpdateNumber = parseInt(updateNumberInput.value) || 1;
+                updateNumberInput.value = currentUpdateNumber + 1;
+                
+                // Trigger the update notification function to refresh the result div
+                updateNotificationIfLoaded();
+                
+                // Refresh the status updates trail
+                loadStatusUpdatesTrail(incidentId);
+                
                 statusUpdateButton.textContent = '✅ Status Update Sent!';
                 statusUpdateButton.style.background = '#28a745';
                 setTimeout(() => {
@@ -1107,9 +1320,144 @@ function addCopyButton(resultDiv, text) {
     
     // Add buttons to containers
     primaryButtonContainer.appendChild(copyButton);
+    secondaryButtonContainer.appendChild(pagerdutyAckButton);
     secondaryButtonContainer.appendChild(pagerdutyAddNoteButton);
     secondaryButtonContainer.appendChild(slackButton);
     secondaryButtonContainer.appendChild(statusUpdateButton);
+}
+
+// Global variable to store the timer interval
+let statusUpdateTimer = null;
+
+// Function to load and display status updates trail
+async function loadStatusUpdatesTrail(incidentId) {
+    const statusUpdatesTrail = document.getElementById('status-updates-trail');
+    const statusUpdatesDivider = document.getElementById('status-updates-divider');
+    const statusUpdatesList = document.getElementById('status-updates-list');
+    const noStatusUpdates = document.getElementById('no-status-updates');
+    
+    if (!incidentId) {
+        statusUpdatesTrail.classList.add('hidden');
+        if (statusUpdatesDivider) {
+            statusUpdatesDivider.classList.add('hidden');
+        }
+        // Clear any existing timer
+        if (statusUpdateTimer) {
+            clearInterval(statusUpdateTimer);
+            statusUpdateTimer = null;
+        }
+        return;
+    }
+    
+    // Show the trail and divider
+    statusUpdatesTrail.classList.remove('hidden');
+    if (statusUpdatesDivider) {
+        statusUpdatesDivider.classList.remove('hidden');
+    }
+    noStatusUpdates.classList.add('hidden');
+    
+    try {
+        const response = await fetch(`/api/incident/${incidentId}/status-updates`);
+        if (response.ok) {
+            const data = await response.json();
+            const statusUpdates = data.status_updates || [];
+            
+            if (statusUpdates.length === 0) {
+                noStatusUpdates.classList.remove('hidden');
+                statusUpdatesList.innerHTML = '';
+                // Hide timer when no updates
+                const timeSinceElement = document.getElementById('time-since-last-update');
+                if (timeSinceElement) {
+                    timeSinceElement.classList.add('hidden');
+                }
+            } else {
+                noStatusUpdates.classList.add('hidden');
+                
+                // Sort by creation time (most recent first)
+                statusUpdates.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                // Display status updates
+                statusUpdatesList.innerHTML = statusUpdates.map(update => {
+                    const createdAt = convertUtcToEastern(update.created_at);
+                    const userName = update.agent ? update.agent.summary : 'Unknown User';
+                    const message = update.message || 'No message';
+                    
+                    return `
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        Status Update
+                                    </span>
+                                    <span class="text-sm text-gray-500">by ${userName}</span>
+                                </div>
+                                <span class="text-sm text-gray-500">${createdAt}</span>
+                            </div>
+                            <div class="text-sm text-gray-700 whitespace-pre-wrap">${message}</div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Start the timer for the most recent update
+                if (statusUpdates.length > 0) {
+                    startStatusUpdateTimer(statusUpdates[0].created_at);
+                }
+            }
+        } else {
+            throw new Error(`Failed to fetch status updates: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error loading status updates:', error);
+        noStatusUpdates.classList.remove('hidden');
+        noStatusUpdates.innerHTML = '<p>Error loading status updates</p>';
+    }
+}
+
+// Function to start the status update timer
+function startStatusUpdateTimer(lastUpdateTime) {
+    // Clear any existing timer
+    if (statusUpdateTimer) {
+        clearInterval(statusUpdateTimer);
+    }
+    
+    const timeSinceElement = document.getElementById('time-since-last-update');
+    const timeSinceText = document.getElementById('time-since-text');
+    
+    if (!timeSinceElement || !timeSinceText) {
+        return;
+    }
+    
+    // Show the timer element
+    timeSinceElement.classList.remove('hidden');
+    
+    // Function to update the timer display
+    function updateTimer() {
+        const now = new Date();
+        const lastUpdate = new Date(lastUpdateTime);
+        const diffMs = now - lastUpdate;
+        
+        const diffSeconds = Math.floor(diffMs / 1000);
+        const diffMinutes = Math.floor(diffSeconds / 60);
+        const diffHours = Math.floor(diffMinutes / 60);
+        const diffDays = Math.floor(diffHours / 24);
+        
+        let timeString;
+        if (diffDays > 0) {
+            timeString = `Time since last update: ${diffDays}d ${diffHours % 24}h`;
+        } else if (diffHours > 0) {
+            timeString = `Time since last update: ${diffHours}h ${diffMinutes % 60}m`;
+        } else if (diffMinutes > 0) {
+            timeString = `Time since last update: ${diffMinutes}m ${diffSeconds % 60}s`;
+        } else {
+            timeString = `Time since last update: ${diffSeconds}s`;
+        }
+        
+        timeSinceText.textContent = timeString;
+    }
+    
+    // Update immediately and then every second
+    updateTimer();
+    statusUpdateTimer = setInterval(updateTimer, 1000);
 }
 
 // Function to reset all fields and return to original state
@@ -1123,6 +1471,28 @@ function resetToOriginalState() {
     // Clear cached data
     cachedIncidentData = null;
     lastTicketNumber = null;
+    
+    // Hide incident info section
+    const incidentInfoSection = document.getElementById('incident-info-section');
+    if (incidentInfoSection) {
+        incidentInfoSection.classList.add('hidden');
+    }
+    
+    // Hide status updates trail
+    const statusUpdatesTrail = document.getElementById('status-updates-trail');
+    const statusUpdatesDivider = document.getElementById('status-updates-divider');
+    if (statusUpdatesTrail) {
+        statusUpdatesTrail.classList.add('hidden');
+    }
+    if (statusUpdatesDivider) {
+        statusUpdatesDivider.classList.add('hidden');
+    }
+    
+    // Clear status update timer
+    if (statusUpdateTimer) {
+        clearInterval(statusUpdateTimer);
+        statusUpdateTimer = null;
+    }
     
         // Hide result container and show welcome message
         const resultContainer = document.getElementById('result-container');
@@ -1142,7 +1512,7 @@ function resetToOriginalState() {
     if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = placeholder;
     
     // Remove buttons if they exist
-    const existingButtons = document.querySelectorAll('.copy-button, .slack-button, .add-note-button, .status-update-button');
+    const existingButtons = document.querySelectorAll('.copy-button, .slack-button, .add-note-button, .status-update-button, .ack-button');
     existingButtons.forEach(button => button.remove());
     
 }

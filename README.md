@@ -4,24 +4,22 @@ A modern web interface for generating PagerDuty incident notifications, managing
 
 ## Features
 
-- 🚀 **Modern Web Interface** - Clean, responsive design with real-time updates
 - ⚡ **Fast API** - Built with FastAPI for high performance
-- 🔧 **Easy Configuration** - Simple environment-based setup
-- 📱 **Mobile Friendly** - Responsive design works on all devices
 - 🔍 **API Documentation** - Automatic OpenAPI/Swagger docs
-- 🛡️ **Type Safety** - Full Pydantic validation
 - 📝 **Status Updates** - Send formatted status updates with PagerDuty communication templates
 - 📌 **Add Notes** - Add notes to incidents directly from the web interface
 - 🔗 **Slack Integration** - Send notifications to Slack channels
-- 👥 **Responder Management** - View and manage incident responders
+- 👥 **Responder Information** - View incident responders
+- 📋 **Status Updates Trail** - View chronological history of all status updates
+- ⏱️ **Real-time Timer** - Live timer showing time since last status update
 
 ## Quick Start
 
 ### 1. Install Dependencies
 
 ```bash
-cd sro_notification
-pip install -r requirements.txt
+cd pager_duty_notification
+pip3 install -r requirements.txt
 ```
 
 ### 2. Configure Environment
@@ -36,7 +34,7 @@ cp env.example .env
 ### 3. Run the Application
 
 ```bash
-python run.py
+python3 run.py
 ```
 
 
@@ -54,9 +52,15 @@ Open your browser and go to: http://127.0.0.1:8080
 - `GET /api/template` - Get notification template configuration
 - `POST /api/status-update` - Send status update to PagerDuty incident
 - `POST /api/add-note` - Add note to PagerDuty incident
+- `GET /api/incident/{incident_id}/status-updates` - Get status updates trail
+- `GET /api/incident/{incident_id}/notes` - Get incident notes
 - `GET /docs` - Interactive API documentation (Swagger UI)
 - `GET /redoc` - Alternative API documentation (ReDoc)
 - `GET /health` - Health check endpoint
+
+### Custom Fields API (Disabled)
+- `GET /api/incident/{incident_id}/custom-fields` - Get custom field values (requires manager access)
+- `GET /api/incident/{incident_id}/custom-fields/{custom_field_id}` - Get specific custom field (requires manager access)
 
 ## Configuration
 
@@ -75,7 +79,7 @@ The application can be configured using environment variables:
 ### Project Structure
 
 ```
-sro_notification/
+pager_duty_notification/
 ├── app/
 │   ├── main.py                    # FastAPI application entry point
 │   ├── api/
@@ -111,7 +115,7 @@ sro_notification/
 
 ```bash
 # Install development dependencies
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # Run with auto-reload
 uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
@@ -121,13 +125,15 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
 ### Web Interface
 
-1. Open http://127.0.0.1:8000 in your browser
-2. Enter a PagerDuty ticket number (e.g., P123456)
+1. Open http://127.0.0.1:8080 in your browser
+2. Enter a PagerDuty ticket number (e.g., 2668960)
 3. Configure options (update number, resolve, downgrade, show users)
 4. Click "Generate Notification" to create a notification message
 5. Click "Send Status Update" to send a formatted status update to PagerDuty
 6. Click "Add Note" to add a note to the incident
 7. Use "Send to Slack" to send notifications to Slack channels
+8. View the **Status Updates Trail** to see chronological history of all updates
+9. Monitor the **real-time timer** showing time since last status update
 
 ### API Usage
 
@@ -144,27 +150,33 @@ curl -X POST "http://127.0.0.1:8000/api/generate" \
   }'
 
 # Get incident data
-curl "http://127.0.0.1:8000/api/incident/P123456"
+curl "http://127.0.0.1:8080/api/incident/2668960"
+
+# Get status updates trail
+curl "http://127.0.0.1:8080/api/incident/Q0JLPBVWNHTUDW/status-updates"
+
+# Get incident notes
+curl "http://127.0.0.1:8080/api/incident/Q0JLPBVWNHTUDW/notes"
 
 # Send status update
-curl -X POST "http://127.0.0.1:8000/api/status-update" \
+curl -X POST "http://127.0.0.1:8080/api/status-update" \
   -H "Content-Type: application/json" \
   -d '{
-    "incident_id": "P123456",
+    "incident_id": "Q0JLPBVWNHTUDW",
     "status": "investigating",
     "message": "Investigating the issue"
   }'
 
 # Add note to incident
-curl -X POST "http://127.0.0.1:8000/api/add-note" \
+curl -X POST "http://127.0.0.1:8080/api/add-note" \
   -H "Content-Type: application/json" \
   -d '{
-    "incident_id": "P123456",
+    "incident_id": "Q0JLPBVWNHTUDW",
     "message": "Added a note to the incident"
   }'
 
 # Send to Slack
-curl -X POST "http://127.0.0.1:8000/api/slack/send" \
+curl -X POST "http://127.0.0.1:8080/api/slack/send" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Test notification",

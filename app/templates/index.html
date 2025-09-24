@@ -44,11 +44,11 @@
             <!-- Left Sidebar -->
             <div class="flex flex-col gap-0 bg-gray-50 border-r border-gray-200 p-8">
                 <!-- Form Section -->
-                <div class="bg-white p-0 rounded-lg border border-gray-200 h-fit mt-5 mb-6">
+                <div class="bg-white p-0 rounded-lg border border-gray-200 h-fit mb-6">
                     <form id="incidentForm" class="p-6">
                         <div class="mb-4">
                             <label for="ticket_number" class="block text-sm font-medium text-gray-700 mb-2" title="Accepts either an incident number (2660140) or incident ID (Q1PICVSHFQMEJW). Data will auto-load after 6 characters.">
-                                Ticket Number *
+                                Ticket Number
                             </label>
                             <input 
                                 type="text" 
@@ -87,7 +87,7 @@
                             </div>
                             <div class="flex items-center">
                                 <input type="checkbox" id="downgrade" name="downgrade" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                                <label for="downgrade" class="ml-2 text-sm text-gray-700 cursor-pointer" title="Appends 'Downgraded' to the status. Add a bullet that says the severity of this incident has been downgraded to a SEV {severity + 1}.">
+                                <label for="downgrade" class="ml-2 text-sm text-gray-700 cursor-pointer" title="Appends 'Downgraded' to the status. Add a bullet that says the severity of this incident has been downgraded.">
                                     Downgraded
                                 </label>
                             </div>
@@ -102,6 +102,7 @@
                             </button>
                         </div>
                     </form>
+                    
                 </div>
                 
                 <!-- Mobile Responders Section -->
@@ -119,13 +120,80 @@
             
             <!-- Main Content -->
             <div class="p-8 bg-white">
+                <!-- Single Line Incident Details -->
+                <div id="incident-info-section" class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200 hidden">
+                    <div class="flex flex-wrap items-center gap-6 text-sm">
+                        <!-- Incident Link -->
+                        <div id="incident-link-container" class="hidden">
+                            <span class="text-gray-600 text-sm">Incident:</span>
+                            <a id="incident-link" href="#" target="_blank" class="text-blue-600 hover:text-blue-800 underline text-sm ml-1">
+                                Loading...
+                            </a>
+                        </div>
+                        
+                        <!-- Slack Channel -->
+                        <div id="slack-channel-container" class="hidden">
+                            <div id="slack-channel-info" class="hidden">
+                                <span class="text-gray-600 text-sm">Slack:</span>
+                                <a id="slack-channel-name" href="#" target="_blank" class="text-blue-600 hover:text-blue-800 underline text-sm ml-1">
+                                    Loading...
+                                </a>
+                            </div>
+                            <div id="no-slack-channel" class="text-gray-500 italic text-sm hidden">
+                                No Slack channel
+                            </div>
+                        </div>
+                        
+                        <!-- Conference Bridge -->
+                        <div id="conference-bridge-container" class="hidden">
+                            <div id="conference-info" class="hidden">
+                                <span class="text-gray-600 text-sm">Conference:</span>
+                                <a id="conference-dial-link" href="#" class="text-blue-600 hover:text-blue-800 underline text-sm ml-1">
+                                    📞 Dial in
+                                </a>
+                                <a id="conference-meeting-link" href="#" target="_blank" class="text-blue-600 hover:text-blue-800 underline text-sm ml-2">
+                                    🖥️ Zoom
+                                </a>
+                            </div>
+                            <div id="no-conference-bridge" class="text-gray-500 italic text-sm hidden">
+                                No conference bridge
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="result-container" class="hidden">
-                    <div class="mb-4 text-gray-600 text-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                        <span class="flex-1">💡 <strong>Tip:</strong> The result box is editable! You can modify the text and use the copy button to copy to clipboard.</span>
-                        <div id="primary-button-container" class="flex gap-2 justify-center sm:justify-end"></div>
+                    <div class="mb-4 text-gray-600 text-sm flex justify-end">
+                        <div id="primary-button-container" class="flex gap-2"></div>
                     </div>
                     <div id="result" class="min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
                     <div id="secondary-button-container" class="mt-4 flex gap-2 justify-center flex-wrap sm:justify-start"></div>
+                    
+                    <!-- Divider -->
+                    <div id="status-updates-divider" class="mt-12 mb-8 hidden">
+                        <hr class="border-gray-300">
+                    </div>
+                    
+                    <!-- Status Updates Trail -->
+                    <div id="status-updates-trail" class="mt-4 hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                                📋 Status Updates Trail
+                            </h3>
+                            <div id="time-since-last-update" class="text-sm text-gray-600 hidden">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                                    <span id="time-since-text">Loading...</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div id="status-updates-list" class="space-y-3">
+                            <!-- Status updates will be populated here -->
+                        </div>
+                        <div id="no-status-updates" class="text-center text-gray-500 italic py-8 hidden">
+                            <p>No status updates found for this incident</p>
+                        </div>
+                    </div>
                 </div>
                 
                 <div id="welcome-message" class="text-center py-20 px-5 text-gray-500">
@@ -140,10 +208,10 @@
             <!-- Right Sidebar -->
             <div class="hidden lg:flex flex-col gap-0 bg-gray-50 border-l border-gray-200 p-8">
                 <div class="bg-white p-0 rounded-lg border border-gray-200 h-fit">
-                    <h3 class="text-base font-semibold text-gray-900 px-4 py-3 border-b border-gray-200" title="Shows the users (and requested time) that were requested to respond to this incident.">
+                    <h3 class="text-base font-semibold text-gray-900 px-4 py-3 border-b border-gray-200" title="Responder and requested time">
                         👥 Incident Responders
                     </h3>
-                    <div id="responders-container" class="px-4 py-4">
+                    <div id="responders-container" class="px-1 py-1">
                         <div class="text-center text-gray-500 italic py-8">
                             <p>Enter a ticket number to see responders</p>
                         </div>

@@ -24,7 +24,7 @@ class PagerDutyService:
         self.core = PagerDutyClient(token=self.token)
     
     def get_incident_data(self, ticket_number: str) -> Dict:
-        """Get incident data from PagerDuty API"""
+        """Get incident data including conference bridge and Slack channel information"""
         try:
             return self.core.get_incident_data(ticket_number)
         except Exception as e:
@@ -64,5 +64,33 @@ class PagerDutyService:
         """Send a status update to a PagerDuty incident"""
         try:
             return self.core.send_status_update(incident_id, status, message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+    
+    def get_status_updates(self, incident_id: str) -> List[Dict]:
+        """Get status updates for a PagerDuty incident"""
+        try:
+            return self.core.get_status_updates(incident_id)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+    
+    def get_incident_notes(self, incident_id: str) -> List[Dict]:
+        """Get notes for a PagerDuty incident"""
+        try:
+            return self.core.get_incident_notes(incident_id)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+    
+    def get_custom_field_values(self, incident_id: str) -> Dict:
+        """Get custom field values for a PagerDuty incident"""
+        try:
+            return self.core.get_custom_field_values(incident_id)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+    
+    def get_custom_field_value(self, incident_id: str, custom_field_id: str) -> Dict:
+        """Get a specific custom field value for a PagerDuty incident"""
+        try:
+            return self.core.get_custom_field_value(incident_id, custom_field_id)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

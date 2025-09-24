@@ -16,7 +16,16 @@ from app.config.config import settings
 # Create FastAPI app
 app = FastAPI(
     title="PagerDuty Notification Generator",
-    description="Web interface for generating PagerDuty incident notifications",
+    description="""
+    Web interface for generating PagerDuty incident notifications
+    
+    ## ⚠️ Important: Incident ID vs Incident Number
+    
+    **incident_id**: Long alphanumeric string (e.g., `P1234567890ABCDEF`) - Use this for most API endpoints
+    **incident_number**: Short 7-digit number (e.g., `2668960`) - Use this for the main notification generation
+    
+    Most endpoints use `incident_id`, but the main notification generation uses `incident_number` (ticket_number).
+    """,
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
