@@ -1,0 +1,2355 @@
+{
+    "incident": {
+        "incident_number": 2685686,
+        "title": "HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+        "description": "HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+        "created_at": "2025-09-24T15:59:47Z",
+        "updated_at": "2025-09-24T23:25:48Z",
+        "status": "acknowledged",
+        "incident_key": "c38e19f92c534aab877937f4a7dc7e79",
+        "service": {
+            "id": "PB79BBE",
+            "type": "service_reference",
+            "summary": "Global Partner Integrations - P1_P2",
+            "self": "https://api.pagerduty.com/services/PB79BBE",
+            "html_url": "https://discoveryinc.pagerduty.com/service-directory/PB79BBE"
+        },
+        "assignments": [
+            {
+                "at": "2025-09-24T17:45:45Z",
+                "assignee": {
+                    "id": "P726SQG",
+                    "type": "user_reference",
+                    "summary": "Marcus Aakerberg",
+                    "self": "https://api.pagerduty.com/users/P726SQG",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG"
+                }
+            },
+            {
+                "at": "2025-09-24T15:59:47Z",
+                "assignee": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55"
+                }
+            },
+            {
+                "at": "2025-09-24T20:08:55Z",
+                "assignee": {
+                    "id": "POWZAS1",
+                    "type": "user_reference",
+                    "summary": "Hugo Gonzalez",
+                    "self": "https://api.pagerduty.com/users/POWZAS1",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/POWZAS1"
+                }
+            },
+            {
+                "at": "2025-09-24T19:56:22Z",
+                "assignee": {
+                    "id": "PWHRUGL",
+                    "type": "user_reference",
+                    "summary": "Mario Martinez",
+                    "self": "https://api.pagerduty.com/users/PWHRUGL",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PWHRUGL"
+                }
+            }
+        ],
+        "assigned_via": "escalation_policy",
+        "last_status_change_at": "2025-09-24T15:59:59Z",
+        "resolved_at": null,
+        "first_trigger_log_entry": {
+            "id": "R2FIBUILRLLOU2O3AZI5B36MIJ",
+            "type": "trigger_log_entry_reference",
+            "summary": "Triggered through the website.",
+            "self": "https://api.pagerduty.com/log_entries/R2FIBUILRLLOU2O3AZI5B36MIJ",
+            "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG/log_entries/R2FIBUILRLLOU2O3AZI5B36MIJ"
+        },
+        "alert_counts": {
+            "all": 0,
+            "triggered": 0,
+            "resolved": 0
+        },
+        "is_mergeable": true,
+        "incident_type": {
+            "name": "incident_default"
+        },
+        "escalation_policy": {
+            "id": "P4CR5WG",
+            "type": "escalation_policy_reference",
+            "summary": "Global Partner Integrations - P1_P2",
+            "self": "https://api.pagerduty.com/escalation_policies/P4CR5WG",
+            "html_url": "https://discoveryinc.pagerduty.com/escalation_policies/P4CR5WG"
+        },
+        "teams": [
+            {
+                "id": "PERR9IH",
+                "type": "team_reference",
+                "summary": "Global Partner Integrations - TAM Ops ",
+                "self": "https://api.pagerduty.com/teams/PERR9IH",
+                "html_url": "https://discoveryinc.pagerduty.com/teams/PERR9IH"
+            }
+        ],
+        "impacted_services": [
+            {
+                "id": "PB79BBE",
+                "type": "service_reference",
+                "summary": "Global Partner Integrations - P1_P2",
+                "self": "https://api.pagerduty.com/services/PB79BBE",
+                "html_url": "https://discoveryinc.pagerduty.com/service-directory/PB79BBE"
+            }
+        ],
+        "pending_actions": [],
+        "acknowledgements": [
+            {
+                "at": "2025-09-24T15:59:59Z",
+                "acknowledger": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55"
+                }
+            },
+            {
+                "at": "2025-09-24T17:45:45Z",
+                "acknowledger": {
+                    "id": "P726SQG",
+                    "type": "user_reference",
+                    "summary": "Marcus Aakerberg",
+                    "self": "https://api.pagerduty.com/users/P726SQG",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG"
+                }
+            },
+            {
+                "at": "2025-09-24T19:56:22Z",
+                "acknowledger": {
+                    "id": "PWHRUGL",
+                    "type": "user_reference",
+                    "summary": "Mario Martinez",
+                    "self": "https://api.pagerduty.com/users/PWHRUGL",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PWHRUGL"
+                }
+            },
+            {
+                "at": "2025-09-24T20:08:55Z",
+                "acknowledger": {
+                    "id": "POWZAS1",
+                    "type": "user_reference",
+                    "summary": "Hugo Gonzalez",
+                    "self": "https://api.pagerduty.com/users/POWZAS1",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/POWZAS1"
+                }
+            },
+            {
+                "at": "2025-09-24T20:09:03Z",
+                "acknowledger": {
+                    "id": "POWZAS1",
+                    "type": "user_reference",
+                    "summary": "Hugo Gonzalez",
+                    "self": "https://api.pagerduty.com/users/POWZAS1",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/POWZAS1"
+                }
+            }
+        ],
+        "basic_alert_grouping": null,
+        "alert_grouping": null,
+        "last_status_change_by": {
+            "id": "PA7MK55",
+            "type": "user_reference",
+            "summary": "Venkatachalam Subramanian",
+            "self": "https://api.pagerduty.com/users/PA7MK55",
+            "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55"
+        },
+        "priority": {
+            "id": "PGL1ZOS",
+            "type": "priority",
+            "summary": "P2",
+            "self": "https://api.pagerduty.com/priorities/PGL1ZOS",
+            "html_url": null,
+            "account_id": "PHL0414",
+            "color": "ffdc00",
+            "created_at": "2019-09-17T19:31:13Z",
+            "description": "Urgent",
+            "name": "P2",
+            "order": 2097152,
+            "schema_version": 0,
+            "updated_at": "2023-01-07T01:29:07Z"
+        },
+        "conference_bridge": {
+            "conference_number": "+12532050468,,95186318874#,,,,*614937#",
+            "conference_url": "https://wbd.zoom.us/j/95186318874?pwd=eOKj6bvGm7F3GpL7222UDbvu1a1qEl.1"
+        },
+        "incidents_responders": [
+            {
+                "state": "joined",
+                "user": {
+                    "id": "P726SQG",
+                    "type": "user_reference",
+                    "summary": "Marcus Aakerberg",
+                    "self": "https://api.pagerduty.com/users/P726SQG",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG",
+                    "avatar_url": "https://secure.gravatar.com/avatar/c04ceabfa4781440f40f08d2e046511c.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T17:45:45Z",
+                "requester": {
+                    "id": "P4VFFSR",
+                    "type": "user_reference",
+                    "summary": "Zimife Obhafuoso",
+                    "self": "https://api.pagerduty.com/users/P4VFFSR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                    "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T17:45:16Z",
+                "escalation_policy_requests": [
+                    "Sustaining Engineering - High",
+                    "Sustaining Engineering - High"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "PENQXJ9",
+                    "type": "user_reference",
+                    "summary": "Ryan Cerankowski",
+                    "self": "https://api.pagerduty.com/users/PENQXJ9",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PENQXJ9",
+                    "avatar_url": "https://secure.gravatar.com/avatar/0b7084c883f1c0223df8b1a61b5c62f7.png?d=mm&r=PG",
+                    "job_title": "Software Development Engineer"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T22:32:09Z",
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T22:30:23Z",
+                "escalation_policy_requests": [
+                    "Partner Integrations - High"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PWHD7OY",
+                    "type": "user_reference",
+                    "summary": "Jay Bouck",
+                    "self": "https://api.pagerduty.com/users/PWHD7OY",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PWHD7OY",
+                    "avatar_url": "https://secure.gravatar.com/avatar/f7fee9033b37ae556a8f780be79edd27.png?d=mm&r=PG",
+                    "job_title": "Software Development Engineer III"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T20:11:35Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T20:11:35Z",
+                "escalation_policy_requests": [
+                    "Gauth - P1_P2"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "PFW381Z",
+                    "type": "user_reference",
+                    "summary": "Osley Bretau",
+                    "self": "https://api.pagerduty.com/users/PFW381Z",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PFW381Z",
+                    "avatar_url": "https://secure.gravatar.com/avatar/c36102f656af8dd9eefbae5abdcd5f97.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T23:26:31Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "requester": {
+                    "id": "PZRWCW4",
+                    "type": "user_reference",
+                    "summary": "Etienne Ndindjock",
+                    "self": "https://api.pagerduty.com/users/PZRWCW4",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PZRWCW4",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9308eba7384391c1dfb04cc184640eab.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T23:25:48Z"
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PZRWCW4",
+                    "type": "user_reference",
+                    "summary": "Etienne Ndindjock",
+                    "self": "https://api.pagerduty.com/users/PZRWCW4",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PZRWCW4",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9308eba7384391c1dfb04cc184640eab.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PVF8BGE",
+                    "type": "user_reference",
+                    "summary": "Reginald Myers",
+                    "self": "https://api.pagerduty.com/users/PVF8BGE",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PVF8BGE",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9f548081d769fc6d86c46cb759ec1118.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "POWZAS1",
+                    "type": "user_reference",
+                    "summary": "Hugo Gonzalez",
+                    "self": "https://api.pagerduty.com/users/POWZAS1",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/POWZAS1",
+                    "avatar_url": "https://secure.gravatar.com/avatar/cd5ba07d72d4cb535f160b6bd7aaab7e.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T20:08:55Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T20:08:19Z",
+                "escalation_policy_requests": [
+                    "InfoSec Product Security"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "P7KOZCB",
+                    "type": "user_reference",
+                    "summary": "Mac Welch",
+                    "self": "https://api.pagerduty.com/users/P7KOZCB",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P7KOZCB",
+                    "avatar_url": "https://secure.gravatar.com/avatar/0778a7020ae1339cd96d8bc3d6e3949c.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "P0BCYNL",
+                    "type": "user_reference",
+                    "summary": "Alex Zaballa",
+                    "self": "https://api.pagerduty.com/users/P0BCYNL",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P0BCYNL",
+                    "avatar_url": "https://secure.gravatar.com/avatar/2bb820be7c67126275b0963d2ae79bbe.png?d=mm&r=PG",
+                    "job_title": "SRO Incident Management"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PQFKP0N",
+                    "type": "user_reference",
+                    "summary": "Nick Pruett",
+                    "self": "https://api.pagerduty.com/users/PQFKP0N",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PQFKP0N",
+                    "avatar_url": "https://secure.gravatar.com/avatar/19115f5d00ba2f6e047471c025965e52.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PEYA8EB",
+                    "type": "user_reference",
+                    "summary": "Donna Jackson",
+                    "self": "https://api.pagerduty.com/users/PEYA8EB",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PEYA8EB",
+                    "avatar_url": "https://secure.gravatar.com/avatar/69f1b53603a14df9d015bc5105e31a86.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "P8GYM6G",
+                    "type": "user_reference",
+                    "summary": "Thanh-Phong Tran",
+                    "self": "https://api.pagerduty.com/users/P8GYM6G",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P8GYM6G",
+                    "avatar_url": "https://secure.gravatar.com/avatar/6676082b985362ff2e77194ca8b372a8.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "POERGH4",
+                    "type": "user_reference",
+                    "summary": "Steven Lewis",
+                    "self": "https://api.pagerduty.com/users/POERGH4",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/POERGH4",
+                    "avatar_url": "https://secure.gravatar.com/avatar/4c627e38668b938be108b7cf4799b223.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "P4VFFSR",
+                    "type": "user_reference",
+                    "summary": "Zimife Obhafuoso",
+                    "self": "https://api.pagerduty.com/users/P4VFFSR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                    "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PJFDF08",
+                    "type": "user_reference",
+                    "summary": "Trenton Warren",
+                    "self": "https://api.pagerduty.com/users/PJFDF08",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PJFDF08",
+                    "avatar_url": "https://secure.gravatar.com/avatar/3d4453206127f5a8c6268ed46aa4611f.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "P63YNLY",
+                    "type": "user_reference",
+                    "summary": "Yiqi Peng",
+                    "self": "https://api.pagerduty.com/users/P63YNLY",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P63YNLY",
+                    "avatar_url": "https://secure.gravatar.com/avatar/700c94110279dfde6c8b7bd4ff37a183.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T16:09:09Z",
+                "message": "Please help me with LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue - https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T16:07:29Z",
+                "escalation_policy_requests": [
+                    "Partner Integrations - High",
+                    "Partner Integrations - High"
+                ]
+            },
+            {
+                "state": "pending",
+                "user": {
+                    "id": "PG1Y940",
+                    "type": "user_reference",
+                    "summary": "Paul Moore",
+                    "self": "https://api.pagerduty.com/users/PG1Y940",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PG1Y940",
+                    "avatar_url": "https://secure.gravatar.com/avatar/5f29c6ed6dd7ddd600382456e171efc3.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T15:59:49Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "PTFY3OK",
+                    "type": "user_reference",
+                    "summary": "Bilal Mirza",
+                    "self": "https://api.pagerduty.com/users/PTFY3OK",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PTFY3OK",
+                    "avatar_url": "https://secure.gravatar.com/avatar/19e46b5a734cfca2821e6c6281e05ba9.png?d=mm&r=PG",
+                    "job_title": "Manager"
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T20:17:50Z",
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T20:16:36Z",
+                "escalation_policy_requests": [
+                    "Gauth - P1_P2"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "PB4F3VF",
+                    "type": "user_reference",
+                    "summary": "GTOC User",
+                    "self": "https://api.pagerduty.com/users/PB4F3VF",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PB4F3VF",
+                    "avatar_url": "https://secure.gravatar.com/avatar/de3f41838a7555c7e4afe372fd171ed3.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T16:00:23Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                    "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                    "job_title": "Ops Support Engineer"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "escalation_policy_requests": [
+                    "SRO US - Max | P1-P2 Notify"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "PHDVSXH",
+                    "type": "user_reference",
+                    "summary": "Hogan Orikasa",
+                    "self": "https://api.pagerduty.com/users/PHDVSXH",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PHDVSXH",
+                    "avatar_url": "https://secure.gravatar.com/avatar/a0926c0c216f7a0255bace3a40b607ec.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T17:33:19Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "requester": {
+                    "id": "P4VFFSR",
+                    "type": "user_reference",
+                    "summary": "Zimife Obhafuoso",
+                    "self": "https://api.pagerduty.com/users/P4VFFSR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                    "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T17:32:15Z",
+                "escalation_policy_requests": [
+                    "Platform Infrastructure Engineering - High"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "PK7X1E6",
+                    "type": "user_reference",
+                    "summary": "Michael Nolan",
+                    "self": "https://api.pagerduty.com/users/PK7X1E6",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PK7X1E6",
+                    "avatar_url": "https://secure.gravatar.com/avatar/3e1dce957c6b3f7b4b22bb5fc19327fa.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T17:33:59Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "requester": {
+                    "id": "P4VFFSR",
+                    "type": "user_reference",
+                    "summary": "Zimife Obhafuoso",
+                    "self": "https://api.pagerduty.com/users/P4VFFSR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                    "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T17:29:00Z"
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "PWHRUGL",
+                    "type": "user_reference",
+                    "summary": "Mario Martinez",
+                    "self": "https://api.pagerduty.com/users/PWHRUGL",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PWHRUGL",
+                    "avatar_url": "https://secure.gravatar.com/avatar/7df306c996c091df39f852be85002f1d.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T19:54:21Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T19:53:49Z",
+                "escalation_policy_requests": [
+                    "Infosec Perimeter Security - High",
+                    "Infosec Perimeter Security - High"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "P89Q9KD",
+                    "type": "user_reference",
+                    "summary": "Osa Odigie",
+                    "self": "https://api.pagerduty.com/users/P89Q9KD",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P89Q9KD",
+                    "avatar_url": "https://secure.gravatar.com/avatar/7a481f23c5411f42708b2477e7f4122b.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T22:16:42Z",
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                    "job_title": "Warner Media Blend"
+                },
+                "requested_at": "2025-09-24T22:16:06Z",
+                "escalation_policy_requests": [
+                    "Infosec Perimeter Security - High"
+                ]
+            },
+            {
+                "state": "joined",
+                "user": {
+                    "id": "P1CR7TR",
+                    "type": "user_reference",
+                    "summary": "Hubert Ostrowski",
+                    "self": "https://api.pagerduty.com/users/P1CR7TR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P1CR7TR",
+                    "avatar_url": "https://secure.gravatar.com/avatar/9943ca10b18cb99cc43666b4819cf9d1.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "updated_at": "2025-09-24T18:04:27Z",
+                "message": "Please help me with incident \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "requester": {
+                    "id": "P726SQG",
+                    "type": "user_reference",
+                    "summary": "Marcus Aakerberg",
+                    "self": "https://api.pagerduty.com/users/P726SQG",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG",
+                    "avatar_url": "https://secure.gravatar.com/avatar/c04ceabfa4781440f40f08d2e046511c.png?d=mm&r=PG",
+                    "job_title": null
+                },
+                "requested_at": "2025-09-24T17:40:16Z",
+                "escalation_policy_requests": [
+                    "Sustaining Engineering - High",
+                    "Sustaining Engineering - High"
+                ]
+            }
+        ],
+        "responder_requests": [
+            {
+                "id": "PQ90OWM",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55"
+                },
+                "requested_at": "2025-09-24T15:59:50Z",
+                "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "P3DKMRM",
+                            "summary": "SRO US - Max | P1-P2 Notify",
+                            "incidents_responders": [
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PZRWCW4",
+                                        "type": "user_reference",
+                                        "summary": "Etienne Ndindjock",
+                                        "self": "https://api.pagerduty.com/users/PZRWCW4",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PZRWCW4",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9308eba7384391c1dfb04cc184640eab.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PVF8BGE",
+                                        "type": "user_reference",
+                                        "summary": "Reginald Myers",
+                                        "self": "https://api.pagerduty.com/users/PVF8BGE",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PVF8BGE",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9f548081d769fc6d86c46cb759ec1118.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "P7KOZCB",
+                                        "type": "user_reference",
+                                        "summary": "Mac Welch",
+                                        "self": "https://api.pagerduty.com/users/P7KOZCB",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P7KOZCB",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/0778a7020ae1339cd96d8bc3d6e3949c.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "P0BCYNL",
+                                        "type": "user_reference",
+                                        "summary": "Alex Zaballa",
+                                        "self": "https://api.pagerduty.com/users/P0BCYNL",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P0BCYNL",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/2bb820be7c67126275b0963d2ae79bbe.png?d=mm&r=PG",
+                                        "job_title": "SRO Incident Management"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PQFKP0N",
+                                        "type": "user_reference",
+                                        "summary": "Nick Pruett",
+                                        "self": "https://api.pagerduty.com/users/PQFKP0N",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PQFKP0N",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/19115f5d00ba2f6e047471c025965e52.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PEYA8EB",
+                                        "type": "user_reference",
+                                        "summary": "Donna Jackson",
+                                        "self": "https://api.pagerduty.com/users/PEYA8EB",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PEYA8EB",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/69f1b53603a14df9d015bc5105e31a86.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "P8GYM6G",
+                                        "type": "user_reference",
+                                        "summary": "Thanh-Phong Tran",
+                                        "self": "https://api.pagerduty.com/users/P8GYM6G",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P8GYM6G",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/6676082b985362ff2e77194ca8b372a8.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "POERGH4",
+                                        "type": "user_reference",
+                                        "summary": "Steven Lewis",
+                                        "self": "https://api.pagerduty.com/users/POERGH4",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/POERGH4",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/4c627e38668b938be108b7cf4799b223.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "P4VFFSR",
+                                        "type": "user_reference",
+                                        "summary": "Zimife Obhafuoso",
+                                        "self": "https://api.pagerduty.com/users/P4VFFSR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PJFDF08",
+                                        "type": "user_reference",
+                                        "summary": "Trenton Warren",
+                                        "self": "https://api.pagerduty.com/users/PJFDF08",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PJFDF08",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/3d4453206127f5a8c6268ed46aa4611f.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PG1Y940",
+                                        "type": "user_reference",
+                                        "summary": "Paul Moore",
+                                        "self": "https://api.pagerduty.com/users/PG1Y940",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PG1Y940",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/5f29c6ed6dd7ddd600382456e171efc3.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T15:59:49Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                },
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PB4F3VF",
+                                        "type": "user_reference",
+                                        "summary": "GTOC User",
+                                        "self": "https://api.pagerduty.com/users/PB4F3VF",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PB4F3VF",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/de3f41838a7555c7e4afe372fd171ed3.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T16:00:23Z",
+                                    "message": "SRO requested for P2 incident for Global Partner Integrations - P1_P2 service created 2025-09-24T15:59:47Z with description: LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue URL: https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T15:59:50Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "PXCRWQF",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PA7MK55",
+                    "type": "user_reference",
+                    "summary": "Venkatachalam Subramanian",
+                    "self": "https://api.pagerduty.com/users/PA7MK55",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55"
+                },
+                "requested_at": "2025-09-24T16:07:29Z",
+                "message": "Please help me with LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue - https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PP3FBGA",
+                            "summary": "Partner Integrations - High",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P63YNLY",
+                                        "type": "user_reference",
+                                        "summary": "Yiqi Peng",
+                                        "self": "https://api.pagerduty.com/users/P63YNLY",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P63YNLY",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/700c94110279dfde6c8b7bd4ff37a183.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T16:09:09Z",
+                                    "message": "Please help me with LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue - https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T16:07:29Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "PE61VP1",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "P4VFFSR",
+                    "type": "user_reference",
+                    "summary": "Zimife Obhafuoso",
+                    "self": "https://api.pagerduty.com/users/P4VFFSR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR"
+                },
+                "requested_at": "2025-09-24T17:29:00Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "user",
+                            "id": "PK7X1E6",
+                            "summary": null,
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PK7X1E6",
+                                        "type": "user_reference",
+                                        "summary": "Michael Nolan",
+                                        "self": "https://api.pagerduty.com/users/PK7X1E6",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PK7X1E6",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/3e1dce957c6b3f7b4b22bb5fc19327fa.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T17:33:59Z",
+                                    "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "P4VFFSR",
+                                        "type": "user_reference",
+                                        "summary": "Zimife Obhafuoso",
+                                        "self": "https://api.pagerduty.com/users/P4VFFSR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T17:29:00Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "PC4W05I",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "P4VFFSR",
+                    "type": "user_reference",
+                    "summary": "Zimife Obhafuoso",
+                    "self": "https://api.pagerduty.com/users/P4VFFSR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR"
+                },
+                "requested_at": "2025-09-24T17:32:15Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PU1SCN2",
+                            "summary": "Platform Infrastructure Engineering - High",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PHDVSXH",
+                                        "type": "user_reference",
+                                        "summary": "Hogan Orikasa",
+                                        "self": "https://api.pagerduty.com/users/PHDVSXH",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PHDVSXH",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/a0926c0c216f7a0255bace3a40b607ec.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T17:33:19Z",
+                                    "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "P4VFFSR",
+                                        "type": "user_reference",
+                                        "summary": "Zimife Obhafuoso",
+                                        "self": "https://api.pagerduty.com/users/P4VFFSR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T17:32:15Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "PWTCUNP",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "P4VFFSR",
+                    "type": "user_reference",
+                    "summary": "Zimife Obhafuoso",
+                    "self": "https://api.pagerduty.com/users/P4VFFSR",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR"
+                },
+                "requested_at": "2025-09-24T17:40:16Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PJRP4Y7",
+                            "summary": "Sustaining Engineering - High",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P1CR7TR",
+                                        "type": "user_reference",
+                                        "summary": "Hubert Ostrowski",
+                                        "self": "https://api.pagerduty.com/users/P1CR7TR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P1CR7TR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9943ca10b18cb99cc43666b4819cf9d1.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T18:04:27Z",
+                                    "message": "Please help me with incident \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "P726SQG",
+                                        "type": "user_reference",
+                                        "summary": "Marcus Aakerberg",
+                                        "self": "https://api.pagerduty.com/users/P726SQG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/c04ceabfa4781440f40f08d2e046511c.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "requested_at": "2025-09-24T17:40:16Z"
+                                },
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P726SQG",
+                                        "type": "user_reference",
+                                        "summary": "Marcus Aakerberg",
+                                        "self": "https://api.pagerduty.com/users/P726SQG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/c04ceabfa4781440f40f08d2e046511c.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T17:45:45Z",
+                                    "requester": {
+                                        "id": "P4VFFSR",
+                                        "type": "user_reference",
+                                        "summary": "Zimife Obhafuoso",
+                                        "self": "https://api.pagerduty.com/users/P4VFFSR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T17:45:16Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "PZ5XVCE",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "P726SQG",
+                    "type": "user_reference",
+                    "summary": "Marcus Aakerberg",
+                    "self": "https://api.pagerduty.com/users/P726SQG",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG"
+                },
+                "requested_at": "2025-09-24T18:02:26Z",
+                "message": "Please help me with incident \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "user",
+                            "id": "P1CR7TR",
+                            "summary": null,
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P1CR7TR",
+                                        "type": "user_reference",
+                                        "summary": "Hubert Ostrowski",
+                                        "self": "https://api.pagerduty.com/users/P1CR7TR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P1CR7TR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9943ca10b18cb99cc43666b4819cf9d1.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T18:04:27Z",
+                                    "message": "Please help me with incident \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "P726SQG",
+                                        "type": "user_reference",
+                                        "summary": "Marcus Aakerberg",
+                                        "self": "https://api.pagerduty.com/users/P726SQG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/c04ceabfa4781440f40f08d2e046511c.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "requested_at": "2025-09-24T17:40:16Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "P4GC8TI",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU"
+                },
+                "requested_at": "2025-09-24T19:53:49Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PC3W6VV",
+                            "summary": "Infosec Perimeter Security - High",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PWHRUGL",
+                                        "type": "user_reference",
+                                        "summary": "Mario Martinez",
+                                        "self": "https://api.pagerduty.com/users/PWHRUGL",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PWHRUGL",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/7df306c996c091df39f852be85002f1d.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T19:54:21Z",
+                                    "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T19:53:49Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "P0LTRWZ",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU"
+                },
+                "requested_at": "2025-09-24T20:08:19Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PXDKXSK",
+                            "summary": "InfoSec Product Security",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "POWZAS1",
+                                        "type": "user_reference",
+                                        "summary": "Hugo Gonzalez",
+                                        "self": "https://api.pagerduty.com/users/POWZAS1",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/POWZAS1",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/cd5ba07d72d4cb535f160b6bd7aaab7e.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T20:08:55Z",
+                                    "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T20:08:19Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "P09L8UX",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU"
+                },
+                "requested_at": "2025-09-24T20:11:35Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PFE9WWE",
+                            "summary": "Gauth - P1_P2",
+                            "incidents_responders": [
+                                {
+                                    "state": "pending",
+                                    "user": {
+                                        "id": "PWHD7OY",
+                                        "type": "user_reference",
+                                        "summary": "Jay Bouck",
+                                        "self": "https://api.pagerduty.com/users/PWHD7OY",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PWHD7OY",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/f7fee9033b37ae556a8f780be79edd27.png?d=mm&r=PG",
+                                        "job_title": "Software Development Engineer III"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T20:11:35Z",
+                                    "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T20:11:35Z"
+                                },
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PTFY3OK",
+                                        "type": "user_reference",
+                                        "summary": "Bilal Mirza",
+                                        "self": "https://api.pagerduty.com/users/PTFY3OK",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PTFY3OK",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/19e46b5a734cfca2821e6c6281e05ba9.png?d=mm&r=PG",
+                                        "job_title": "Manager"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T20:17:50Z",
+                                    "requester": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T20:16:36Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "PH17H76",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU"
+                },
+                "requested_at": "2025-09-24T22:01:05Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PC3W6VV",
+                            "summary": "Infosec Perimeter Security - High",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PWHRUGL",
+                                        "type": "user_reference",
+                                        "summary": "Mario Martinez",
+                                        "self": "https://api.pagerduty.com/users/PWHRUGL",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PWHRUGL",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/7df306c996c091df39f852be85002f1d.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T19:54:21Z",
+                                    "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T19:53:49Z"
+                                },
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P89Q9KD",
+                                        "type": "user_reference",
+                                        "summary": "Osa Odigie",
+                                        "self": "https://api.pagerduty.com/users/P89Q9KD",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P89Q9KD",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/7a481f23c5411f42708b2477e7f4122b.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T22:16:42Z",
+                                    "requester": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T22:16:06Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "P4T4J1E",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU"
+                },
+                "requested_at": "2025-09-24T22:25:20Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PP3FBGA",
+                            "summary": "Partner Integrations - High",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P63YNLY",
+                                        "type": "user_reference",
+                                        "summary": "Yiqi Peng",
+                                        "self": "https://api.pagerduty.com/users/P63YNLY",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P63YNLY",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/700c94110279dfde6c8b7bd4ff37a183.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T16:09:09Z",
+                                    "message": "Please help me with LATAM - Cabletica (Liberty CR) Costa Rica - Bad actor issue - https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                    "requester": {
+                                        "id": "PA7MK55",
+                                        "type": "user_reference",
+                                        "summary": "Venkatachalam Subramanian",
+                                        "self": "https://api.pagerduty.com/users/PA7MK55",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PA7MK55",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/8c756b9b431e065dee8c34bcb607c09b.png?d=mm&r=PG",
+                                        "job_title": "Ops Support Engineer"
+                                    },
+                                    "requested_at": "2025-09-24T16:07:29Z"
+                                },
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PENQXJ9",
+                                        "type": "user_reference",
+                                        "summary": "Ryan Cerankowski",
+                                        "self": "https://api.pagerduty.com/users/PENQXJ9",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PENQXJ9",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/0b7084c883f1c0223df8b1a61b5c62f7.png?d=mm&r=PG",
+                                        "job_title": "Software Development Engineer"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T22:32:09Z",
+                                    "requester": {
+                                        "id": "PSQCHWU",
+                                        "type": "user_reference",
+                                        "summary": "Tracy Johnson",
+                                        "self": "https://api.pagerduty.com/users/PSQCHWU",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9b90728c4863253cbdf48dcfd1d99c72.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T22:30:23Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "P6CSXA0",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PSQCHWU",
+                    "type": "user_reference",
+                    "summary": "Tracy Johnson",
+                    "self": "https://api.pagerduty.com/users/PSQCHWU",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PSQCHWU"
+                },
+                "requested_at": "2025-09-24T22:28:02Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "escalation_policy",
+                            "id": "PJRP4Y7",
+                            "summary": "Sustaining Engineering - High",
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P1CR7TR",
+                                        "type": "user_reference",
+                                        "summary": "Hubert Ostrowski",
+                                        "self": "https://api.pagerduty.com/users/P1CR7TR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P1CR7TR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9943ca10b18cb99cc43666b4819cf9d1.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T18:04:27Z",
+                                    "message": "Please help me with incident \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "P726SQG",
+                                        "type": "user_reference",
+                                        "summary": "Marcus Aakerberg",
+                                        "self": "https://api.pagerduty.com/users/P726SQG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/c04ceabfa4781440f40f08d2e046511c.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "requested_at": "2025-09-24T17:40:16Z"
+                                },
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "P726SQG",
+                                        "type": "user_reference",
+                                        "summary": "Marcus Aakerberg",
+                                        "self": "https://api.pagerduty.com/users/P726SQG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P726SQG",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/c04ceabfa4781440f40f08d2e046511c.png?d=mm&r=PG",
+                                        "job_title": null
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T17:45:45Z",
+                                    "requester": {
+                                        "id": "P4VFFSR",
+                                        "type": "user_reference",
+                                        "summary": "Zimife Obhafuoso",
+                                        "self": "https://api.pagerduty.com/users/P4VFFSR",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/P4VFFSR",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/06d3434abd7965e4a5be9aee2b2f95a2.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T17:45:16Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "P461T12",
+                "incident": {
+                    "id": "Q1CDMTGXP5QKOG",
+                    "type": "incident_reference",
+                    "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                    "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                    "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                },
+                "requester": {
+                    "id": "PZRWCW4",
+                    "type": "user_reference",
+                    "summary": "Etienne Ndindjock",
+                    "self": "https://api.pagerduty.com/users/PZRWCW4",
+                    "html_url": "https://discoveryinc.pagerduty.com/users/PZRWCW4"
+                },
+                "requested_at": "2025-09-24T23:25:48Z",
+                "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                "responder_request_targets": [
+                    {
+                        "responder_request_target": {
+                            "type": "user",
+                            "id": "PFW381Z",
+                            "summary": null,
+                            "incidents_responders": [
+                                {
+                                    "state": "joined",
+                                    "user": {
+                                        "id": "PFW381Z",
+                                        "type": "user_reference",
+                                        "summary": "Osley Bretau",
+                                        "self": "https://api.pagerduty.com/users/PFW381Z",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PFW381Z",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/c36102f656af8dd9eefbae5abdcd5f97.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "incident": {
+                                        "id": "Q1CDMTGXP5QKOG",
+                                        "type": "incident_reference",
+                                        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+                                        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+                                        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+                                    },
+                                    "updated_at": "2025-09-24T23:26:31Z",
+                                    "message": "Please help with \"HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue\"",
+                                    "requester": {
+                                        "id": "PZRWCW4",
+                                        "type": "user_reference",
+                                        "summary": "Etienne Ndindjock",
+                                        "self": "https://api.pagerduty.com/users/PZRWCW4",
+                                        "html_url": "https://discoveryinc.pagerduty.com/users/PZRWCW4",
+                                        "avatar_url": "https://secure.gravatar.com/avatar/9308eba7384391c1dfb04cc184640eab.png?d=mm&r=PG",
+                                        "job_title": "Warner Media Blend"
+                                    },
+                                    "requested_at": "2025-09-24T23:25:48Z"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "subscriber_requests": [],
+        "urgency": "high",
+        "id": "Q1CDMTGXP5QKOG",
+        "type": "incident",
+        "summary": "[#2685686] HBO Max | LATAM | Cabletica (Liberty CR) Costa Rica - Bad actor issue",
+        "self": "https://api.pagerduty.com/incidents/Q1CDMTGXP5QKOG",
+        "html_url": "https://discoveryinc.pagerduty.com/incidents/Q1CDMTGXP5QKOG"
+    }
+}

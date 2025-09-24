@@ -433,6 +433,11 @@ class PagerDutyClient:
             
             # Process responder requests in chronological order (they're already sorted by request time)
             if responder_requests:
+                # First, collect all users to avoid duplicates across escalation policies and individual users
+                escalation_policy_users = {}  # team_name -> {user_id -> user_data}
+                individual_users = {}  # user_id -> user_data
+                all_seen_users = set()  # Track all users we've seen to avoid duplicates
+                
                 for responder_request in responder_requests:
                     requested_at = responder_request.get('requested_at', '')
                     
@@ -447,10 +452,14 @@ class PagerDutyClient:
                         
                         # Handle escalation policy targets (only when we have a valid team name)
                         if target_type == 'escalation_policy' and team_name is not None and team_name != 'Unknown Team':
+                            # Initialize team if not exists
+                            if team_name not in escalation_policy_users:
+                                escalation_policy_users[team_name] = {}
+                            
                             # Collect users for this team with their request times
-                            team_users = []
                             for incident_responder in responder_request_target.get('incidents_responders', []):
                                 user_name = incident_responder.get('user', {}).get('summary', 'Unknown')
+                                user_id = incident_responder.get('user', {}).get('id', '')
                                 
                                 # Skip "Always On Call Service Account" user
                                 if user_name == "Always On Call Service Account":
@@ -458,29 +467,22 @@ class PagerDutyClient:
                                 
                                 # Get the user's individual request time
                                 user_requested_at = incident_responder.get('requested_at') or requested_at
-                                team_users.append({
-                                    "name": user_name,
-                                    "requested_at": user_requested_at
-                                })
-                            
-                            # Add team to ordered responders if it has users
-                            if team_users:
-                                # Sort users by their individual request time
-                                team_users.sort(key=lambda x: x.get('requested_at', '9999-12-31T23:59:59Z'))
-                                ordered_responders.append({
-                                    "team_name": team_name,
-                                    "users": team_users,
-                                    "color": self._get_color_for_group(team_name, group_colors),
-                                    "type": "escalation_policy",
-                                    "requested_at": requested_at
-                                })
-                        
+                                
+                                # Use user_id as key to avoid duplicates, or user_name if no ID
+                                user_key = user_id or user_name
+                                
+                                # Only add if we haven't seen this user for this team, or if this request is earlier
+                                if user_key not in escalation_policy_users[team_name] or user_requested_at < escalation_policy_users[team_name][user_key].get('requested_at', '9999-12-31T23:59:59Z'):
+                                    escalation_policy_users[team_name][user_key] = {
+                                        "name": user_name,
+                                        "requested_at": user_requested_at
+                                    }
                         
                         # Handle individual user targets (manually requested users)
-                        if target_type == 'user':
+                        elif target_type == 'user':
                             for incident_responder in responder_request_target.get('incidents_responders', []):
                                 user_name = incident_responder.get('user', {}).get('summary', 'Unknown')
-                                user_id = incident_responder.get('user', {}).get('id')
+                                user_id = incident_responder.get('user', {}).get('id', '')
                                 
                                 # Skip "Always On Call Service Account" user
                                 if user_name == "Always On Call Service Account":
@@ -489,41 +491,82 @@ class PagerDutyClient:
                                 # Get the user's individual request time
                                 user_requested_at = incident_responder.get('requested_at') or requested_at
                                 
-                                # Look up teams for this user
-                                if user_id:
-                                    user_teams = self.get_user_teams(user_id)
-                                    if user_teams:
-                                        # For each user team, check if it matches any escalation policy color
-                                        team_colors = []
-                                        for team in user_teams:
-                                            # Check if this team matches any escalation policy
-                                            matching_color = self._find_matching_escalation_policy_color(team, group_colors)
-                                            team_colors.append({
-                                                "team": team,
-                                                "color": matching_color  # Only assign color if it matches an escalation policy
-                                            })
-                                        
-                                        ordered_responders.append({
-                                            "user_name": user_name,
-                                            "teams": team_colors,
-                                            "type": "user_teams",
-                                            "requested_at": user_requested_at
-                                        })
-                                    else:
-                                        ordered_responders.append({
-                                            "user_name": user_name,
-                                            "teams": [{"team": "No teams found", "color": None}],
-                                            "type": "user_teams",
-                                            "requested_at": user_requested_at
-                                        })
-                                else:
-                                    # Add user even without ID for debugging
-                                    ordered_responders.append({
-                                        "user_name": user_name,
-                                        "teams": [{"team": "No user ID found", "color": None}],
-                                        "type": "user_teams",
+                                # Use user_id as key to avoid duplicates, or user_name if no ID
+                                user_key = user_id or user_name
+                                
+                                # Only add if we haven't seen this user as an individual user, or if this request is earlier
+                                if user_key not in individual_users or user_requested_at < individual_users[user_key].get('requested_at', '9999-12-31T23:59:59Z'):
+                                    individual_users[user_key] = {
+                                        "name": user_name,
                                         "requested_at": user_requested_at
+                                    }
+                
+                # Now create responder entries for escalation policies
+                for team_name, users_dict in escalation_policy_users.items():
+                    team_users = list(users_dict.values())
+                    if team_users:
+                        # Sort users by their individual request time
+                        team_users.sort(key=lambda x: x.get('requested_at', '9999-12-31T23:59:59Z'))
+                        # Use the earliest request time for the team
+                        team_requested_at = min(user.get('requested_at', '9999-12-31T23:59:59Z') for user in team_users)
+                        ordered_responders.append({
+                            "team_name": team_name,
+                            "users": team_users,
+                            "color": self._get_color_for_group(team_name, group_colors),
+                            "type": "escalation_policy",
+                            "requested_at": team_requested_at
+                        })
+                
+                # Now create responder entries for individual users (only if they weren't already included in escalation policies)
+                for user_key, user_data in individual_users.items():
+                    user_name = user_data["name"]
+                    user_id = user_key if user_key != user_name else None
+                    user_requested_at = user_data["requested_at"]
+                    
+                    # Check if this user was already included in any escalation policy
+                    user_already_included = False
+                    for team_users_dict in escalation_policy_users.values():
+                        if user_key in team_users_dict:
+                            user_already_included = True
+                            break
+                    
+                    # Only add individual user if they weren't already included in an escalation policy
+                    if not user_already_included:
+                        # Look up teams for this user
+                        if user_id:
+                            user_teams = self.get_user_teams(user_id)
+                            if user_teams:
+                                # For each user team, check if it matches any escalation policy color
+                                team_colors = []
+                                for team in user_teams:
+                                    # Check if this team matches any escalation policy
+                                    matching_color = self._find_matching_escalation_policy_color(team, group_colors)
+                                    team_colors.append({
+                                        "team": team,
+                                        "color": matching_color  # Only assign color if it matches an escalation policy
                                     })
+                                
+                                ordered_responders.append({
+                                    "user_name": user_name,
+                                    "teams": team_colors,
+                                    "type": "user_teams",
+                                    "requested_at": user_requested_at
+                                })
+                            else:
+                                ordered_responders.append({
+                                    "user_name": user_name,
+                                    "teams": [{"team": "No teams found", "color": None}],
+                                    "type": "user_teams",
+                                    "requested_at": user_requested_at
+                                })
+                        else:
+                            # Add user even without ID for debugging
+                            ordered_responders.append({
+                                "user_name": user_name,
+                                "teams": [{"team": "No user ID found", "color": None}],
+                                "type": "user_teams",
+                                "requested_at": user_requested_at
+                            })
             
             # If no escalation policy found, check incident.assignments
             if not responder_requests or not any(responder.get('users') or responder.get('user_name') for responder in ordered_responders):
