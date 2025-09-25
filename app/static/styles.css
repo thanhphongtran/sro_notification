@@ -253,6 +253,32 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+/* Strip all formatting from contentEditable notification message area */
+#notification-message[contenteditable="true"] {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    color: inherit !important;
+    background-color: inherit !important;
+    text-decoration: none !important;
+    font-style: normal !important;
+}
+
+/* Strip formatting from any child elements */
+#notification-message[contenteditable="true"] * {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    color: inherit !important;
+    background-color: transparent !important;
+    text-decoration: none !important;
+    font-style: normal !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 /* Loading state */
 .result.loading {
     display: flex;

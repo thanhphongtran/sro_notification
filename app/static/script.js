@@ -133,12 +133,16 @@ function addContentEditableListeners(element) {
     // Remove existing listeners to avoid duplicates
     element.removeEventListener('input', handleContentEditableInput);
     element.removeEventListener('keydown', handleContentEditableKeydown);
+    element.removeEventListener('paste', handleContentEditablePaste);
     
     // Add input event listener to handle text changes
     element.addEventListener('input', handleContentEditableInput);
     
     // Add keydown event listener to handle Enter key
     element.addEventListener('keydown', handleContentEditableKeydown);
+    
+    // Add paste event listener to strip HTML formatting
+    element.addEventListener('paste', handleContentEditablePaste);
 }
 
 // Handle input events in contentEditable div
@@ -185,6 +189,40 @@ function handleContentEditableKeydown(event) {
             // Move cursor after the <br>
             range.setStartAfter(br);
             range.setEndAfter(br);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    }
+}
+
+// Handle paste events in contentEditable div to strip HTML formatting
+function handleContentEditablePaste(event) {
+    const element = event.target;
+    if (!element || element.contentEditable !== 'true') return;
+    
+    // Prevent the default paste behavior
+    event.preventDefault();
+    
+    // Get the plain text from the clipboard
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedText = clipboardData.getData('text/plain');
+    
+    if (pastedText) {
+        // Get the current selection
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            
+            // Delete the selected content
+            range.deleteContents();
+            
+            // Insert the plain text
+            const textNode = document.createTextNode(pastedText);
+            range.insertNode(textNode);
+            
+            // Move cursor to the end of the inserted text
+            range.setStartAfter(textNode);
+            range.setEndAfter(textNode);
             selection.removeAllRanges();
             selection.addRange(range);
         }
