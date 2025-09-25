@@ -1494,10 +1494,16 @@ async function loadStatusUpdatesTrail(incidentId) {
             if (statusUpdates.length === 0) {
                 noStatusUpdates.classList.remove('hidden');
                 statusUpdatesList.innerHTML = '';
-                // Hide timer when no updates
-                const timeSinceElement = document.getElementById('time-since-last-update');
-                if (timeSinceElement) {
-                    timeSinceElement.classList.add('hidden');
+                
+                // Start timer from incident creation time when no status updates
+                if (cachedIncidentData && cachedIncidentData.incident && cachedIncidentData.incident.created_at) {
+                    startStatusUpdateTimer(cachedIncidentData.incident.created_at);
+                } else {
+                    // Hide timer if no incident data available
+                    const timeSinceElement = document.getElementById('time-since-last-update');
+                    if (timeSinceElement) {
+                        timeSinceElement.classList.add('hidden');
+                    }
                 }
             } else {
                 noStatusUpdates.classList.add('hidden');
