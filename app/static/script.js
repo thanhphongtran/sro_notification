@@ -1482,6 +1482,78 @@ function addCopyButton(resultDiv, text) {
 // Global variable to store the timer interval
 let statusUpdateTimer = null;
 
+// Function to load and display incident notes
+async function loadIncidentNotes(incidentId) {
+    console.log('loadIncidentNotes called with incidentId:', incidentId);
+    const incidentNotesList = document.getElementById('incident-notes-list');
+    const noIncidentNotes = document.getElementById('no-incident-notes');
+    
+    if (!incidentId) {
+        return;
+    }
+    
+    // Show loading indicator for incident notes
+    incidentNotesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div>Loading incident notes...</div>';
+    
+    try {
+        console.log('Fetching incident notes from API for incident:', incidentId);
+        // Add cache-busting parameter to prevent browser caching
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`/api/incident/${incidentId}/notes?t=${cacheBuster}`, {
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        });
+        console.log('Incident notes API response status:', response.status);
+        if (response.ok) {
+            const data = await response.json();
+            const notes = data.notes || [];
+            console.log('Received incident notes:', notes.length, 'notes');
+            
+            if (notes.length === 0) {
+                noIncidentNotes.classList.remove('hidden');
+                incidentNotesList.innerHTML = '';
+            } else {
+                noIncidentNotes.classList.add('hidden');
+                
+                // Sort by creation time (most recent first)
+                notes.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                // Display incident notes
+                incidentNotesList.innerHTML = notes.map(note => {
+                    const createdAt = convertUtcToEastern(note.created_at);
+                    const userName = note.user ? note.user.summary : 'Unknown User';
+                    const content = note.content || 'No content';
+                    
+                    return `
+                        <div class="incident-note-container bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Note
+                                    </span>
+                                    <span class="text-sm text-gray-500">by ${userName}</span>
+                                </div>
+                                <span class="text-sm text-gray-500">${createdAt}</span>
+                            </div>
+                            <div class="incident-note-content text-sm text-gray-700">${content}</div>
+                        </div>
+                    `;
+                }).join('');
+                
+                console.log('Incident notes refreshed successfully');
+            }
+        } else {
+            throw new Error(`Failed to fetch incident notes: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error loading incident notes:', error);
+        noIncidentNotes.classList.remove('hidden');
+        noIncidentNotes.innerHTML = '<p>Error loading incident notes</p>';
+    }
+}
+
 // Function to load and display status updates trail
 async function loadStatusUpdatesTrail(incidentId) {
     console.log('loadStatusUpdatesTrail called with incidentId:', incidentId);
@@ -1513,98 +1585,110 @@ async function loadStatusUpdatesTrail(incidentId) {
     // Show loading indicator for status updates
     statusUpdatesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div>Loading status updates...</div>';
     
-    try {
-        console.log('Fetching status updates from API for incident:', incidentId);
-        // Add cache-busting parameter to prevent browser caching
-        const cacheBuster = new Date().getTime();
-        const response = await fetch(`/api/incident/${incidentId}/status-updates?t=${cacheBuster}`, {
-            cache: 'no-cache',
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
-        });
-        console.log('Status updates API response status:', response.status);
-        if (response.ok) {
-            const data = await response.json();
-            const statusUpdates = data.status_updates || [];
-            console.log('Received status updates:', statusUpdates.length, 'updates');
+    // Load both status updates and incident notes in parallel
+    const [statusUpdatesPromise, incidentNotesPromise] = await Promise.allSettled([
+        loadStatusUpdates(incidentId),
+        loadIncidentNotes(incidentId)
+    ]);
+    
+    // Handle status updates result
+    if (statusUpdatesPromise.status === 'fulfilled') {
+        const statusUpdates = statusUpdatesPromise.value;
+        if (statusUpdates.length === 0) {
+            noStatusUpdates.classList.remove('hidden');
+            statusUpdatesList.innerHTML = '';
             
-            if (statusUpdates.length === 0) {
-                noStatusUpdates.classList.remove('hidden');
-                statusUpdatesList.innerHTML = '';
-                
-                // Start timer from incident creation time when no status updates
-                if (cachedIncidentData && cachedIncidentData.incident && cachedIncidentData.incident.created_at) {
-                    startStatusUpdateTimer(cachedIncidentData.incident.created_at);
-                } else {
-                    // Hide timer if no incident data available
-                    const timeSinceElement = document.getElementById('time-since-last-update');
-                    if (timeSinceElement) {
-                        timeSinceElement.classList.add('hidden');
-                    }
-                }
+            // Start timer from incident creation time when no status updates
+            if (cachedIncidentData && cachedIncidentData.incident && cachedIncidentData.incident.created_at) {
+                startStatusUpdateTimer(cachedIncidentData.incident.created_at);
             } else {
-                noStatusUpdates.classList.add('hidden');
-                
-                // Sort by creation time (most recent first)
-                statusUpdates.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                
-                // Display status updates
-                statusUpdatesList.innerHTML = statusUpdates.map(update => {
-                    const createdAt = convertUtcToEastern(update.created_at);
-                    const userName = update.agent ? update.agent.summary : 'Unknown User';
-                    const message = update.message || 'No message';
-                    
-                    return `
-                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                            <div class="flex items-start justify-between mb-2">
-                                <div class="flex items-center space-x-2">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        Status Update
-                                    </span>
-                                    <span class="text-sm text-gray-500">by ${userName}</span>
-                                </div>
-                                <span class="text-sm text-gray-500">${createdAt}</span>
-                            </div>
-                            <div class="text-sm text-gray-700 whitespace-pre-wrap">${message}</div>
-                        </div>
-                    `;
-                }).join('');
-                
-                // Check the latest status update message for "update {number}" pattern
-                if (statusUpdates.length > 0) {
-                    const latestUpdate = statusUpdates[0];
-                    const message = latestUpdate.message || '';
-                    
-                    // Look for pattern "update {number}" (case insensitive)
-                    const updatePattern = /update\s+(\d+)/i;
-                    const match = message.match(updatePattern);
-                    
-                    if (match) {
-                        const foundUpdateNumber = parseInt(match[1]);
-                        const updateNumberInput = document.getElementById('update_number');
-                        if (updateNumberInput) {
-                            // Set the update number to found number + 1
-                            updateNumberInput.value = foundUpdateNumber + 1;
-                            
-                            // Trigger the template update logic to refresh the result div
-                            updateNotificationIfLoaded();
-                        }
-                    }
-                    
-                    startStatusUpdateTimer(statusUpdates[0].created_at);
+                // Hide timer if no incident data available
+                const timeSinceElement = document.getElementById('time-since-last-update');
+                if (timeSinceElement) {
+                    timeSinceElement.classList.add('hidden');
                 }
-                
-                // Show a brief success message when status updates are refreshed
-                console.log('Status updates refreshed successfully');
             }
         } else {
-            throw new Error(`Failed to fetch status updates: ${response.status}`);
+            noStatusUpdates.classList.add('hidden');
+            
+            // Sort by creation time (most recent first)
+            statusUpdates.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            
+            // Display status updates
+            statusUpdatesList.innerHTML = statusUpdates.map(update => {
+                const createdAt = convertUtcToEastern(update.created_at);
+                const userName = update.agent ? update.agent.summary : 'Unknown User';
+                const message = update.message || 'No message';
+                
+                return `
+                    <div class="status-update-container bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex items-start justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    Status Update
+                                </span>
+                                <span class="text-sm text-gray-500">by ${userName}</span>
+                            </div>
+                            <span class="text-sm text-gray-500">${createdAt}</span>
+                        </div>
+                        <div class="status-update-content text-sm text-gray-700">${message}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Check the latest status update message for "update {number}" pattern
+            if (statusUpdates.length > 0) {
+                const latestUpdate = statusUpdates[0];
+                const message = latestUpdate.message || '';
+                
+                // Look for pattern "update {number}" (case insensitive)
+                const updatePattern = /update\s+(\d+)/i;
+                const match = message.match(updatePattern);
+                
+                if (match) {
+                    const foundUpdateNumber = parseInt(match[1]);
+                    const updateNumberInput = document.getElementById('update_number');
+                    if (updateNumberInput) {
+                        // Set the update number to found number + 1
+                        updateNumberInput.value = foundUpdateNumber + 1;
+                        
+                        // Trigger the template update logic to refresh the result div
+                        updateNotificationIfLoaded();
+                    }
+                }
+                
+                startStatusUpdateTimer(statusUpdates[0].created_at);
+            }
+            
+            // Show a brief success message when status updates are refreshed
+            console.log('Status updates refreshed successfully');
         }
-    } catch (error) {
-        console.error('Error loading status updates:', error);
+    } else {
+        console.error('Error loading status updates:', statusUpdatesPromise.reason);
         noStatusUpdates.classList.remove('hidden');
         noStatusUpdates.innerHTML = '<p>Error loading status updates</p>';
+    }
+}
+
+// Helper function to load status updates
+async function loadStatusUpdates(incidentId) {
+    console.log('Fetching status updates from API for incident:', incidentId);
+    // Add cache-busting parameter to prevent browser caching
+    const cacheBuster = new Date().getTime();
+    const response = await fetch(`/api/incident/${incidentId}/status-updates?t=${cacheBuster}`, {
+        cache: 'no-cache',
+        headers: {
+            'Cache-Control': 'no-cache'
+        }
+    });
+    console.log('Status updates API response status:', response.status);
+    if (response.ok) {
+        const data = await response.json();
+        const statusUpdates = data.status_updates || [];
+        console.log('Received status updates:', statusUpdates.length, 'updates');
+        return statusUpdates;
+    } else {
+        throw new Error(`Failed to fetch status updates: ${response.status}`);
     }
 }
 
@@ -1705,6 +1789,12 @@ function resetToOriginalState() {
     const mobileRespondersContainer = document.getElementById('responders-container-mobile');
     if (respondersContainer) respondersContainer.innerHTML = placeholder;
     if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = placeholder;
+    
+    // Clear incident notes
+    const incidentNotesList = document.getElementById('incident-notes-list');
+    const noIncidentNotes = document.getElementById('no-incident-notes');
+    if (incidentNotesList) incidentNotesList.innerHTML = '';
+    if (noIncidentNotes) noIncidentNotes.classList.add('hidden');
     
     // Remove buttons if they exist
     const existingButtons = document.querySelectorAll('.copy-button, .slack-button, .add-note-button, .status-update-button, .ack-button');

@@ -263,8 +263,12 @@ class PagerDutyClient:
                 current_utc = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
                 created_at = self.convert_utc_to_eastern(current_utc)
             
-            # Clean up escalation policy name
-            trimmed_policy = escalation_policy.split(' - ')[0] if ' - ' in escalation_policy else escalation_policy
+            # Get the latest engaged team from responders data
+            latest_team_name = self._get_latest_engaged_team(incident_data)
+            
+            # Fallback to escalation policy if no responders found
+            if not latest_team_name:
+                latest_team_name = escalation_policy.split(' - ')[0] if ' - ' in escalation_policy else escalation_policy
             
             # Clean up title for the SRO message
             alert_title = title
@@ -338,9 +342,9 @@ class PagerDutyClient:
             
             if update_number == 1:
                 bullets.append(get_bullet_template("initial_sro_report").format(alert_title=alert_title))
-                bullets.append(get_bullet_template("team_engaged").format(team_name=trimmed_policy))
+                bullets.append(get_bullet_template("team_engaged").format(team_name=latest_team_name))
             else:
-                bullets.append(get_bullet_template("team_has").format(team_name=trimmed_policy))
+                bullets.append(get_bullet_template("team_has").format(team_name=latest_team_name))
             
             # Add downgrade bullet if downgrade flag is provided
             if downgrade:
@@ -645,6 +649,61 @@ class PagerDutyClient:
             color_map[trimmed_name] = colors[color_index]
         
         return color_map[trimmed_name]
+    
+    def _get_latest_engaged_team(self, incident_data: Dict) -> Optional[str]:
+        """
+        Get the latest team that was engaged as a responder.
+        
+        Args:
+            incident_data: Incident data from PagerDuty API
+            
+        Returns:
+            The name of the latest engaged team, or None if no responders found
+        """
+        try:
+            responders_data = self.get_responders_data(incident_data)
+            
+            if not responders_data:
+                return None
+            
+            # Find the latest team-based responder (escalation policy)
+            latest_team_responder = None
+            latest_time = None
+            
+            for responder in responders_data:
+                if responder.get('type') == 'escalation_policy' and responder.get('team_name'):
+                    requested_at = responder.get('requested_at', '9999-12-31T23:59:59Z')
+                    if latest_time is None or requested_at > latest_time:
+                        latest_time = requested_at
+                        latest_team_responder = responder
+            
+            if latest_team_responder:
+                return latest_team_responder['team_name']
+            
+            # If no escalation policy responders, look for the latest individual user with teams
+            latest_user_responder = None
+            latest_time = None
+            
+            for responder in responders_data:
+                if responder.get('type') == 'user_teams' and responder.get('teams'):
+                    requested_at = responder.get('requested_at', '9999-12-31T23:59:59Z')
+                    if latest_time is None or requested_at > latest_time:
+                        latest_time = requested_at
+                        latest_user_responder = responder
+            
+            if latest_user_responder and latest_user_responder.get('teams'):
+                # Return the first team from the latest user's teams
+                first_team = latest_user_responder['teams'][0]
+                if isinstance(first_team, dict):
+                    return first_team.get('team')
+                else:
+                    return first_team
+            
+            return None
+            
+        except Exception as e:
+            # If there's any error, return None to fall back to escalation policy
+            return None
     
     def _find_matching_escalation_policy_color(self, team_name: str, color_map: Dict) -> Optional[str]:
         """

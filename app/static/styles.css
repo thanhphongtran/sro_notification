@@ -24,6 +24,24 @@
     100% { transform: rotate(360deg); }
 }
 
+/* Text wrapping for incident notes and status updates */
+.incident-note-content,
+.status-update-content {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: pre-wrap;
+    max-width: 100%;
+}
+
+/* Ensure note containers don't overflow */
+.incident-note-container,
+.status-update-container {
+    max-width: 100%;
+    overflow: hidden;
+}
+
 /* Custom tooltip styles */
 [data-tooltip] {
     position: relative;

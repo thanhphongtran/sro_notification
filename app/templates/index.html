@@ -213,12 +213,10 @@
                         <hr class="border-gray-300">
                     </div>
                     
-                    <!-- Status Updates Trail -->
+                    <!-- Status Updates and Notes Trail -->
                     <div id="status-updates-trail" class="mt-4 hidden">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                                📋 Status Updates Trail
-                            </h3>
+                        <!-- Timer row -->
+                        <div class="flex justify-start mb-8">
                             <div id="time-since-last-update" class="text-lg text-gray-600 hidden">
                                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-base font-medium bg-gray-100 text-gray-800">
                                     <span class="w-2.5 h-2.5 bg-green-400 rounded-full mr-2.5 animate-pulse"></span>
@@ -226,11 +224,38 @@
                                 </span>
                             </div>
                         </div>
-                        <div id="status-updates-list" class="space-y-3">
-                            <!-- Status updates will be populated here -->
-                        </div>
-                        <div id="no-status-updates" class="text-center text-gray-500 italic py-8 hidden">
-                            <p>No status updates found for this incident</p>
+                        
+                        <!-- Two Column Layout -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Status Updates Column -->
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-md font-semibold text-gray-800 flex items-center">
+                                        📢 Status Updates
+                                    </h4>
+                                </div>
+                                <div id="status-updates-list" class="space-y-3">
+                                    <!-- Status updates will be populated here -->
+                                </div>
+                                <div id="no-status-updates" class="text-center text-gray-500 italic py-8 hidden">
+                                    <p>No status updates found for this incident</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Incident Notes Column -->
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-md font-semibold text-gray-800 flex items-center">
+                                        📝 Incident Notes
+                                    </h4>
+                                </div>
+                                <div id="incident-notes-list" class="space-y-3">
+                                    <!-- Incident notes will be populated here -->
+                                </div>
+                                <div id="no-incident-notes" class="text-center text-gray-500 italic py-8 hidden">
+                                    <p>No notes found for this incident</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
