@@ -6,74 +6,154 @@ let cachedIncidentData = null;
 // Global variable to store notification template
 let notificationTemplate = null;
 
+// DOM Cache for frequently accessed elements
+const DOMCache = {
+    // Incident info elements
+    incidentInfoSection: null,
+    incidentLinkContainer: null,
+    incidentLink: null,
+    conferenceBridgeContainer: null,
+    conferenceInfo: null,
+    conferenceDialLink: null,
+    conferenceMeetingLink: null,
+    noConferenceBridge: null,
+    slackChannelContainer: null,
+    slackChannelInfo: null,
+    slackChannelName: null,
+    noSlackChannel: null,
+    
+    // Notification message elements
+    notificationMessage: null,
+    resultContainer: null,
+    welcomeMessage: null,
+    
+    // Responder elements
+    respondersContainer: null,
+    mobileRespondersContainer: null,
+    
+    // Form elements
+    ticketNumberInput: null,
+    updateNumberInput: null,
+    resolveCheckbox: null,
+    downgradeCheckbox: null,
+    resetButton: null,
+    searchButton: null,
+    
+    // Status update elements
+    statusUpdatesTrail: null,
+    statusUpdatesDivider: null,
+    statusUpdatesList: null,
+    noStatusUpdates: null,
+    timeSinceElement: null,
+    timeSinceText: null,
+    
+    // Incident notes elements
+    incidentNotesList: null,
+    noIncidentNotes: null,
+    
+    // Button containers
+    primaryButtonContainer: null,
+    secondaryButtonContainer: null,
+    
+    // Initialize cache
+    init() {
+        this.incidentInfoSection = document.getElementById('incident-info-section');
+        this.incidentLinkContainer = document.getElementById('incident-link-container');
+        this.incidentLink = document.getElementById('incident-link');
+        this.conferenceBridgeContainer = document.getElementById('conference-bridge-container');
+        this.conferenceInfo = document.getElementById('conference-info');
+        this.conferenceDialLink = document.getElementById('conference-dial-link');
+        this.conferenceMeetingLink = document.getElementById('conference-meeting-link');
+        this.noConferenceBridge = document.getElementById('no-conference-bridge');
+        this.slackChannelContainer = document.getElementById('slack-channel-container');
+        this.slackChannelInfo = document.getElementById('slack-channel-info');
+        this.slackChannelName = document.getElementById('slack-channel-name');
+        this.noSlackChannel = document.getElementById('no-slack-channel');
+        
+        this.notificationMessage = document.getElementById('notification-message');
+        this.resultContainer = document.getElementById('result-container');
+        this.welcomeMessage = document.getElementById('welcome-message');
+        
+        this.respondersContainer = document.getElementById('responders-container');
+        this.mobileRespondersContainer = document.getElementById('responders-container-mobile');
+        
+        this.ticketNumberInput = document.getElementById('ticket_number');
+        this.updateNumberInput = document.getElementById('update_number');
+        this.resolveCheckbox = document.getElementById('resolve');
+        this.downgradeCheckbox = document.getElementById('downgrade');
+        this.resetButton = document.getElementById('resetBtn');
+        this.searchButton = document.getElementById('searchBtn');
+        
+        this.statusUpdatesTrail = document.getElementById('status-updates-trail');
+        this.statusUpdatesDivider = document.getElementById('status-updates-divider');
+        this.statusUpdatesList = document.getElementById('status-updates-list');
+        this.noStatusUpdates = document.getElementById('no-status-updates');
+        this.timeSinceElement = document.getElementById('time-since-last-update');
+        this.timeSinceText = document.getElementById('time-since-text');
+        
+        this.incidentNotesList = document.getElementById('incident-notes-list');
+        this.noIncidentNotes = document.getElementById('no-incident-notes');
+        
+        this.primaryButtonContainer = document.getElementById('primary-button-container');
+        this.secondaryButtonContainer = document.getElementById('secondary-button-container');
+    }
+};
+
 // Function to update incident information section
 function updateIncidentInfo(incidentData) {
-    const incidentInfoSection = document.getElementById('incident-info-section');
-    const incidentLinkContainer = document.getElementById('incident-link-container');
-    const incidentLink = document.getElementById('incident-link');
-    const conferenceBridgeContainer = document.getElementById('conference-bridge-container');
-    const conferenceInfo = document.getElementById('conference-info');
-    const conferenceDialLink = document.getElementById('conference-dial-link');
-    const conferenceMeetingLink = document.getElementById('conference-meeting-link');
-    const noConferenceBridge = document.getElementById('no-conference-bridge');
-    const slackChannelContainer = document.getElementById('slack-channel-container');
-    const slackChannelInfo = document.getElementById('slack-channel-info');
-    const slackChannelName = document.getElementById('slack-channel-name');
-    const noSlackChannel = document.getElementById('no-slack-channel');
-
     if (!incidentData || !incidentData.incident) {
-        incidentInfoSection.classList.add('hidden');
+        DOMCache.incidentInfoSection.classList.add('hidden');
         return;
     }
 
     // Show the incident info section
-    incidentInfoSection.classList.remove('hidden');
+    DOMCache.incidentInfoSection.classList.remove('hidden');
 
     // Update incident link
     const incidentNumber = incidentData.incident.incident_number;
     const incidentUrl = `https://discoveryinc.pagerduty.com/incidents/${incidentNumber}`;
-    incidentLink.href = incidentUrl;
-    incidentLink.textContent = `PD#${incidentNumber}`;
-    incidentLinkContainer.classList.remove('hidden');
+    DOMCache.incidentLink.href = incidentUrl;
+    DOMCache.incidentLink.textContent = `PD#${incidentNumber}`;
+    DOMCache.incidentLinkContainer.classList.remove('hidden');
 
     // Update conference bridge information
     const conferenceBridge = incidentData.incident.conference_bridge;
     if (conferenceBridge && (conferenceBridge.conference_number || conferenceBridge.conference_url)) {
-        conferenceBridgeContainer.classList.remove('hidden');
-        conferenceInfo.classList.remove('hidden');
-        noConferenceBridge.classList.add('hidden');
+        DOMCache.conferenceBridgeContainer.classList.remove('hidden');
+        DOMCache.conferenceInfo.classList.remove('hidden');
+        DOMCache.noConferenceBridge.classList.add('hidden');
         
         if (conferenceBridge.conference_number) {
-            conferenceDialLink.href = `tel:${conferenceBridge.conference_number}`;
-            conferenceDialLink.textContent = "📞 Dial in";
+            DOMCache.conferenceDialLink.href = `tel:${conferenceBridge.conference_number}`;
+            DOMCache.conferenceDialLink.textContent = "📞 Dial in";
         } else {
-            conferenceDialLink.style.display = 'none';
+            DOMCache.conferenceDialLink.style.display = 'none';
         }
         
         if (conferenceBridge.conference_url) {
-            conferenceMeetingLink.href = conferenceBridge.conference_url;
-            conferenceMeetingLink.textContent = "🖥️ Zoom";
+            DOMCache.conferenceMeetingLink.href = conferenceBridge.conference_url;
+            DOMCache.conferenceMeetingLink.textContent = "🖥️ Zoom";
         } else {
-            conferenceMeetingLink.style.display = 'none';
+            DOMCache.conferenceMeetingLink.style.display = 'none';
         }
     } else {
-        conferenceBridgeContainer.classList.remove('hidden');
-        conferenceInfo.classList.add('hidden');
-        noConferenceBridge.classList.remove('hidden');
+        DOMCache.conferenceBridgeContainer.classList.remove('hidden');
+        DOMCache.conferenceInfo.classList.add('hidden');
+        DOMCache.noConferenceBridge.classList.remove('hidden');
     }
 
     // Update Slack channel information
     const slackChannel = incidentData.slack_channel;
     if (slackChannel && slackChannel.chat_channel_name) {
-        slackChannelContainer.classList.remove('hidden');
-        slackChannelName.textContent = `#${slackChannel.chat_channel_name}`;
-        slackChannelName.href = slackChannel.chat_channel_web_link;
-        slackChannelInfo.classList.remove('hidden');
-        noSlackChannel.classList.add('hidden');
+        DOMCache.slackChannelContainer.classList.remove('hidden');
+        DOMCache.slackChannelName.textContent = `#${slackChannel.chat_channel_name}`;
+        DOMCache.slackChannelName.href = slackChannel.chat_channel_web_link;
+        DOMCache.slackChannelInfo.classList.remove('hidden');
+        DOMCache.noSlackChannel.classList.add('hidden');
     } else {
-        slackChannelContainer.classList.remove('hidden');
-        slackChannelInfo.classList.add('hidden');
-        noSlackChannel.classList.remove('hidden');
+        DOMCache.slackChannelContainer.classList.remove('hidden');
+        DOMCache.slackChannelInfo.classList.add('hidden');
+        DOMCache.noSlackChannel.classList.remove('hidden');
     }
 }
 
@@ -125,6 +205,25 @@ function getFormattedTextContent(element) {
     
     return content;
 }
+
+// Function to enable notification message editing
+function enableNotificationMessageEditing() {
+    if (!DOMCache.notificationMessage) return;
+    
+    DOMCache.notificationMessage.contentEditable = true;
+    DOMCache.notificationMessage.spellcheck = false;
+    DOMCache.notificationMessage.classList.add('focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500');
+    // Add event listeners for proper line breaks
+    addContentEditableListeners(DOMCache.notificationMessage);
+}
+
+// Helper function to update both responder containers
+function updateResponderContainers(html) {
+    if (DOMCache.respondersContainer) DOMCache.respondersContainer.innerHTML = html;
+    if (DOMCache.mobileRespondersContainer) DOMCache.mobileRespondersContainer.innerHTML = html;
+}
+
+// Note: Overlay functions removed - notification message is now generated after status updates are loaded
 
 // Function to add event listeners to contentEditable div to ensure proper line breaks
 function addContentEditableListeners(element) {
@@ -389,27 +488,61 @@ function convertUtcToEastern(utcDateString) {
     }
 }
 
+// Function to convert UTC to Eastern time with shorter month/year for UI display
+function convertUtcToEasternShort(utcDateString) {
+    try {
+        const utcDate = new Date(utcDateString);
+        const easternDate = new Date(utcDate.toLocaleString("en-US", {timeZone: "America/New_York"}));
+        
+        const day = easternDate.getDate();
+        const month = easternDate.toLocaleString('en-US', { month: 'short' });
+        const year = easternDate.getFullYear().toString().slice(-2); // Get last 2 digits of year
+        
+        let hour = easternDate.getHours();
+        const minute = easternDate.getMinutes();
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12;
+        hour = hour ? hour : 12;
+        const timeStr = `${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
+        
+        const tzAbbr = easternDate.toLocaleString('en-US', { timeZoneName: 'short' }).split(' ').pop();
+        
+        return `${day}-${month}-${year} | ${timeStr} ${tzAbbr}`;
+    } catch (error) {
+        return `Error converting date: ${error}`;
+    }
+}
+
 // Function to fetch and display responders
 async function fetchAndDisplayResponders(ticketNumber) {
-    const respondersContainer = document.getElementById('responders-container');
-    const mobileRespondersContainer = document.getElementById('responders-container-mobile');
-    
     if (!ticketNumber) {
         const placeholder = '<div class="text-center text-gray-500 italic py-8"><p>Enter a ticket number to see responders</p></div>';
-        if (respondersContainer) respondersContainer.innerHTML = placeholder;
-        if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = placeholder;
+        updateResponderContainers(placeholder);
         return;
     }
+    
+    // Show loading spinner immediately
+    const loadingMsg = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div><p class="mt-2">Loading responders...</p></div>';
+    updateResponderContainers(loadingMsg);
     
     try {
         // Add cache-busting parameter to prevent browser caching
         const cacheBuster = new Date().getTime();
-        const response = await fetch(`/api/incident/${ticketNumber}?t=${cacheBuster}`, {
+        
+        // Add timeout to prevent infinite loading
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+        );
+        
+        const fetchPromise = fetch(`/api/incident/${ticketNumber}?t=${cacheBuster}`, {
             cache: 'no-cache',
             headers: {
                 'Cache-Control': 'no-cache'
             }
         });
+        
+        const response = await Promise.race([fetchPromise, timeoutPromise]);
+        
         if (response.ok) {
             const incidentData = await response.json();
             const respondersResponse = await fetch('/api/generate', {
@@ -434,23 +567,20 @@ async function fetchAndDisplayResponders(ticketNumber) {
                     displayResponders(result.responders);
                 } else {
                     const noRespondersMsg = '<div class="text-center text-gray-500 italic py-8"><p>No responders found for this incident</p></div>';
-                    if (respondersContainer) respondersContainer.innerHTML = noRespondersMsg;
-                    if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = noRespondersMsg;
+                    updateResponderContainers(noRespondersMsg);
                 }
             } else {
                 const errorMsg = '<div class="text-center text-gray-500 italic py-8"><p>Error loading responders</p></div>';
-                if (respondersContainer) respondersContainer.innerHTML = errorMsg;
-                if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = errorMsg;
+                updateResponderContainers(errorMsg);
             }
         } else {
             const notFoundMsg = '<div class="text-center text-gray-500 italic py-8"><p>Incident not found</p></div>';
-            if (respondersContainer) respondersContainer.innerHTML = notFoundMsg;
-            if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = notFoundMsg;
+            updateResponderContainers(notFoundMsg);
         }
     } catch (error) {
+        console.error('Error fetching responders:', error);
         const errorMsg = '<div class="text-center text-gray-500 italic py-8"><p>Error loading responders</p></div>';
-        if (respondersContainer) respondersContainer.innerHTML = errorMsg;
-        if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = errorMsg;
+        updateResponderContainers(errorMsg);
     }
 }
 
@@ -495,23 +625,12 @@ function extractEscalationPolicyColors(responders) {
 
 // Function to clear responders section
 function clearResponders() {
-    const respondersContainer = document.getElementById('responders-container');
-    const mobileRespondersContainer = document.getElementById('responders-container-mobile');
-    
-    const loadingMsg = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div>Loading responders...</div>';
-    
-    if (respondersContainer) {
-        respondersContainer.innerHTML = loadingMsg;
-    }
-    if (mobileRespondersContainer) {
-        mobileRespondersContainer.innerHTML = loadingMsg;
-    }
+    const loadingMsg = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div><p class="mt-2">Loading responders...</p></div>';
+    updateResponderContainers(loadingMsg);
 }
 
 // Function to display responders
 function displayResponders(responders) {
-    const respondersContainer = document.getElementById('responders-container');
-    const mobileRespondersContainer = document.getElementById('responders-container-mobile');
     let html = '';
     
     // Sort responders: Call Leader Escalation Policy first, GTOC Americas last, others in between
@@ -535,19 +654,19 @@ function displayResponders(responders) {
     const escalationPolicyColors = extractEscalationPolicyColors(sortedResponders);
     
     sortedResponders.forEach(responder => {
-        html += '<div class="responder-item">';
+        html += '<div class="mb-6">';
         
         // Handle escalation policy responders (has team_name and users)
         if (responder.team_name) {
             const color = responder.color || '#f5f5f5';
-            html += `<div class="responder-team escalation-policy" style="background-color: ${color}; border-left: 4px solid ${adjustColorBrightness(color, -20)};">${responder.team_name}</div>`;
+            html += `<div class="font-semibold text-sm rounded-lg shadow-sm p-2 mb-2" style="background-color: ${color}; border-left: 4px solid ${adjustColorBrightness(color, -20)};">${responder.team_name}</div>`;
             if (responder.users && responder.users.length > 0) {
-                html += '<div class="responder-users">';
+                html += '<div class="mt-2 ml-4">';
                 html += '<ul class="user-list">';
                 responder.users.forEach(user => {
                     // Handle both old format (string) and new format (object with name and requested_at)
                     if (typeof user === 'string') {
-                        html += `<li class="user-item">• ${user}</li>`;
+                        html += `<li class="font-medium rounded transition-all duration-200 list-none my-1.5 pl-2 hover:translate-x-0.5 hover:shadow-sm text-gray-700 text-sm py-0.5">• ${user}</li>`;
                     } else {
                         const userName = user.name || user;
                         const requestedAt = user.requested_at;
@@ -579,14 +698,14 @@ function displayResponders(responders) {
                                     hour12: true,
                                     timeZone: 'America/New_York'
                                 });
-                                timeDisplay = ` <span class="request-time">(${dateStr} ${timeStr})</span>`;
+                                timeDisplay = ` <span class="text-xs text-gray-600">(${dateStr} ${timeStr})</span>`;
                             } catch (e) {
                                 // If date parsing fails, just show the raw time
-                                timeDisplay = ` <span class="request-time">(${requestedAt})</span>`;
+                                timeDisplay = ` <span class="text-xs text-gray-600">(${requestedAt})</span>`;
                             }
                         }
                         
-                        html += `<li class="user-item">• ${userName}${timeDisplay}</li>`;
+                        html += `<li class="font-medium rounded transition-all duration-200 list-none my-1.5 pl-2 hover:translate-x-0.5 hover:shadow-sm text-gray-700 text-sm py-0.5">• ${userName}${timeDisplay}</li>`;
                     }
                 });
                 html += '</ul>';
@@ -625,16 +744,16 @@ function displayResponders(responders) {
                         hour12: true,
                         timeZone: 'America/New_York'
                     });
-                    timeDisplay = ` <span class="request-time">(${dateStr} ${timeStr})</span>`;
+                    timeDisplay = ` <span class="text-xs text-gray-600">(${dateStr} ${timeStr})</span>`;
                 } catch (e) {
                     // If date parsing fails, just show the raw time
-                    timeDisplay = ` <span class="request-time">(${requestedAt})</span>`;
+                    timeDisplay = ` <span class="text-xs text-gray-600">(${requestedAt})</span>`;
                 }
             }
             
-            html += `<div class="responder-team user-name">${userName}${timeDisplay}</div>`;
+            html += `<div class="bg-gray-50 border-l-4 border-gray-600 font-semibold text-sm p-2 mb-2">${userName}${timeDisplay}</div>`;
             if (responder.teams && responder.teams.length > 0) {
-                html += '<div class="responder-users">';
+                html += '<div class="mt-2 ml-4">';
                 html += '<ul class="team-list">';
                 responder.teams.forEach(teamData => {
                     // Handle both old format (string) and new format (object with team and color)
@@ -642,18 +761,18 @@ function displayResponders(responders) {
                         // Check if this team matches any escalation policy color
                         const matchingColor = findMatchingEscalationPolicyColor(teamData, escalationPolicyColors);
                         if (matchingColor) {
-                            html += `<li class="team-item" style="background-color: ${matchingColor}; border-left: 3px solid ${adjustColorBrightness(matchingColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">• ${teamData}</li>`;
+                            html += `<li class="font-medium rounded transition-all duration-200 list-none my-1.5 pl-2 hover:translate-x-0.5 hover:shadow-sm text-gray-700 text-sm py-0.5" style="background-color: ${matchingColor}; border-left: 3px solid ${adjustColorBrightness(matchingColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">• ${teamData}</li>`;
                         } else {
-                            html += `<li class="team-item no-color">• ${teamData}</li>`;
+                            html += `<li class="bg-gray-50 border-l-3 border-gray-300 px-2 py-1 my-0.5 rounded text-gray-600 font-medium rounded transition-all duration-200 list-none hover:translate-x-0.5 hover:shadow-sm text-sm">• ${teamData}</li>`;
                         }
                     } else {
                         // Check if this team matches any escalation policy color (override existing color if match found)
                         const matchingColor = findMatchingEscalationPolicyColor(teamData.team, escalationPolicyColors);
                         const finalColor = matchingColor || teamData.color;
                         if (finalColor) {
-                            html += `<li class="team-item" style="background-color: ${finalColor}; border-left: 3px solid ${adjustColorBrightness(finalColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">• ${teamData.team}</li>`;
+                            html += `<li class="font-medium rounded transition-all duration-200 list-none my-1.5 pl-2 hover:translate-x-0.5 hover:shadow-sm text-gray-700 text-sm py-0.5" style="background-color: ${finalColor}; border-left: 3px solid ${adjustColorBrightness(finalColor, -20)}; padding: 4px 8px; margin: 2px 0; border-radius: 4px;">• ${teamData.team}</li>`;
                         } else {
-                            html += `<li class="team-item no-color">• ${teamData.team}</li>`;
+                            html += `<li class="bg-gray-50 border-l-3 border-gray-300 px-2 py-1 my-0.5 rounded text-gray-600 font-medium rounded transition-all duration-200 list-none hover:translate-x-0.5 hover:shadow-sm text-sm">• ${teamData.team}</li>`;
                         }
                     }
                 });
@@ -665,8 +784,7 @@ function displayResponders(responders) {
         html += '</div>';
     });
     
-    if (respondersContainer) respondersContainer.innerHTML = html;
-    if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = html;
+    updateResponderContainers(html);
 }
 
 // Helper function to adjust color brightness
@@ -739,216 +857,12 @@ function positionTooltipForViewport(element) {
     }
 }
 
-// Add event listener for ticket number input
-const ticketNumberInput = document.getElementById('ticket_number');
-ticketNumberInput.addEventListener('input', function(e) {
-    const ticketNumber = e.target.value.trim();
-    
-    // Clear cached data when ticket number changes
-    if (lastTicketNumber !== ticketNumber) {
-        cachedIncidentData = null;
-        lastTicketNumber = ticketNumber;
-    }
-    
-    if (ticketNumber.length > 0) {
-        fetchAndDisplayResponders(ticketNumber);
-        
-        // Hide status updates trail and show generating message when new ticket is entered
-        const statusUpdatesTrail = document.getElementById('status-updates-trail');
-        const statusUpdatesDivider = document.getElementById('status-updates-divider');
-        const statusUpdatesList = document.getElementById('status-updates-list');
-        const noStatusUpdates = document.getElementById('no-status-updates');
-        const timeSinceElement = document.getElementById('time-since-last-update');
-        
-        if (statusUpdatesTrail) {
-            statusUpdatesTrail.classList.remove('hidden');
-            if (statusUpdatesDivider) {
-                statusUpdatesDivider.classList.remove('hidden');
-            }
-            noStatusUpdates.classList.add('hidden');
-            timeSinceElement.classList.add('hidden');
-            statusUpdatesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><p>Loading status updates...</p></div>';
-        }
-        
-        // Clear any existing timer
-        if (statusUpdateTimer) {
-            clearInterval(statusUpdateTimer);
-            statusUpdateTimer = null;
-        }
-        
-        // Auto-submit if ticket number has at least 6 characters
-        if (ticketNumber.length >= 6) {
-            // Small delay to allow user to finish typing
-            setTimeout(() => {
-                if (e.target.value.trim().length >= 6) {
-                    document.getElementById('incidentForm').dispatchEvent(new Event('submit'));
-                }
-            }, 500);
-        }
-    } else {
-        const placeholder = '<div class="text-center text-gray-500 italic py-8"><p>Enter a ticket number to see responders</p></div>';
-        const respondersContainer = document.getElementById('responders-container');
-        const mobileRespondersContainer = document.getElementById('responders-container-mobile');
-        if (respondersContainer) respondersContainer.innerHTML = placeholder;
-        if (mobileRespondersContainer) mobileRespondersContainer.innerHTML = placeholder;
-        
-        // Hide status updates trail when ticket number is cleared
-        const statusUpdatesTrail = document.getElementById('status-updates-trail');
-        const statusUpdatesDivider = document.getElementById('status-updates-divider');
-        if (statusUpdatesTrail) {
-            statusUpdatesTrail.classList.add('hidden');
-        }
-        if (statusUpdatesDivider) {
-            statusUpdatesDivider.classList.add('hidden');
-        }
-        
-        // Clear any existing timer
-        if (statusUpdateTimer) {
-            clearInterval(statusUpdateTimer);
-            statusUpdateTimer = null;
-        }
-    }
-});
-
-// Add Enter key support for ticket number input
-ticketNumberInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        const ticketNumber = e.target.value.trim();
-        if (ticketNumber.length > 0) {
-            // Clear cached data to force fresh API call
-            cachedIncidentData = null;
-            lastTicketNumber = null;
-            if (statusUpdateTimer) {
-                clearInterval(statusUpdateTimer);
-                statusUpdateTimer = null;
-            }
-            
-            // Trigger the same functionality as auto-submit
-            document.getElementById('incidentForm').dispatchEvent(new Event('submit'));
-        }
-    }
-});
+// Event listeners will be attached in DOMContentLoaded
 
 // Track the last ticket number to detect changes
 let lastTicketNumber = null;
 
-document.getElementById('incidentForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(e.target);
-    const data = {
-        ticket_number: formData.get('ticket_number'),
-        update_number: parseInt(formData.get('update_number')),
-        resolve: document.getElementById('resolve').checked,
-        downgrade: document.getElementById('downgrade').checked,
-        show_users: true  // Always show users now
-    };
-    
-    const resultDiv = document.getElementById('notification-message');
-    const resultContainer = document.getElementById('result-container');
-    const welcomeMessage = document.getElementById('welcome-message');
-    
-    // Determine if API call is needed
-    const ticketNumberChanged = lastTicketNumber !== data.ticket_number;
-    const needsApiCall = ticketNumberChanged || !cachedIncidentData;
-    
-    // Debug logging
-    console.log('Form submission debug:', {
-        ticketNumberChanged,
-        needsApiCall,
-        submitterText: e.submitter ? e.submitter.textContent : 'No submitter'
-    });
-    
-    if (needsApiCall) {
-        // Make API call for new ticket or when no cached data
-        resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 loading';
-        resultDiv.innerHTML = '<div class="spinner"></div>Gathering incident information...';
-        resultContainer.classList.remove('hidden');
-        welcomeMessage.classList.add('hidden');
-        
-        // Clear responders section while loading
-        clearResponders();
-        
-        
-        try {
-            const response = await fetch('/api/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache'
-                },
-                body: JSON.stringify(data),
-                cache: 'no-cache'
-            });
-            
-            const result = await response.json();
-            
-            if (response.ok) {
-                // Cache the incident data for instant updates
-                cachedIncidentData = result.incident_data;
-                lastTicketNumber = data.ticket_number;
-                
-                // Update incident information section
-                updateIncidentInfo(result.incident_data);
-                
-                // Load status updates trail
-                loadStatusUpdatesTrail(result.incident_data.incident.id);
-                
-                resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 success editable';
-                resultDiv.innerHTML = result.notification_message.replace(/\n/g, '<br>');
-                resultDiv.contentEditable = true;
-                resultDiv.spellcheck = false;
-                
-                // Add event listener to ensure proper line breaks
-                addContentEditableListeners(resultDiv);
-                
-                // Add copy button
-                addCopyButton(resultDiv, result.notification_message);
-                
-                
-                // Display responders if available
-                if (result.responders && result.responders.length > 0) {
-                    displayResponders(result.responders);
-                }
-            } else {
-                resultDiv.className = 'min-h-[200px] p-4 border border-red-300 rounded-md bg-red-50 text-red-700 error';
-                resultDiv.textContent = 'Error: ' + result.detail;
-                resultDiv.contentEditable = false;
-            }
-        } catch (error) {
-            resultDiv.className = 'min-h-[200px] p-4 border border-red-300 rounded-md bg-red-50 text-red-700 error';
-            resultDiv.textContent = 'Error: ' + error.message;
-        }
-    } else {
-        // Use cached data for instant update
-        resultContainer.classList.remove('hidden');
-        welcomeMessage.classList.add('hidden');
-        
-        
-        const newNotificationMessage = generateNotificationMessageLocally(
-            cachedIncidentData, 
-            data.ticket_number, 
-            data.update_number, 
-            data.resolve, 
-            data.downgrade
-        );
-        
-        if (newNotificationMessage) {
-            resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 success editable';
-            resultDiv.innerHTML = newNotificationMessage.replace(/\n/g, '<br>');
-            resultDiv.contentEditable = true;
-            resultDiv.spellcheck = false;
-            
-            // Add event listener to ensure proper line breaks
-            addContentEditableListeners(resultDiv);
-            
-            // Add copy button
-            addCopyButton(resultDiv, newNotificationMessage);
-            
-        }
-    }
-});
+// Form submission event listener will be attached in DOMContentLoaded
 
 // Add copy, Slack, and PagerDuty status update buttons function
 function addCopyButton(resultDiv, text) {
@@ -962,7 +876,7 @@ function addCopyButton(resultDiv, text) {
     
     // Create copy button
     const copyButton = document.createElement('button');
-    copyButton.className = 'copy-button tooltip-below';
+    copyButton.className = 'copy-button tooltip-below hover:-translate-y-0.5 transition-all duration-200';
     copyButton.setAttribute('data-tooltip', 'Copy notification message to clipboard');
     copyButton.innerHTML = `
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1058,7 +972,7 @@ function addCopyButton(resultDiv, text) {
     
     // Create Slack button
     const slackButton = document.createElement('button');
-    slackButton.className = 'slack-button tooltip-below';
+    slackButton.className = 'slack-button tooltip-below hover:-translate-y-0.5 transition-all duration-200';
     slackButton.setAttribute('data-tooltip', 'Sends the message above to configured Slack channel');
     slackButton.innerHTML = '<img src="/static/images/Slack_Symbol_0.svg" width="45" height="45" style="margin-right: 4px; object-fit: contain; display: block;">Peer Review';
     slackButton.style.cssText = `
@@ -1098,13 +1012,20 @@ function addCopyButton(resultDiv, text) {
             // Get the current content from the editable result div, preserving line breaks
             const currentContent = getFormattedTextContent(resultDiv);
             
-            const response = await fetch('/api/slack/send', {
+            // Add timeout to prevent infinite loading
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+            );
+            
+            const fetchPromise = fetch('/api/slack/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ message: currentContent })
             });
+            
+            const response = await Promise.race([fetchPromise, timeoutPromise]);
             
             const result = await response.json();
             
@@ -1187,7 +1108,12 @@ function addCopyButton(resultDiv, text) {
             }
             const incidentId = cachedIncidentData.incident.id;
             
-            const response = await fetch('/api/add-note', {
+            // Add timeout to prevent infinite loading
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+            );
+            
+            const fetchPromise = fetch('/api/add-note', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1198,6 +1124,7 @@ function addCopyButton(resultDiv, text) {
                 })
             });
             
+            const response = await Promise.race([fetchPromise, timeoutPromise]);
             const result = await response.json();
             
             if (response.ok && result.success) {
@@ -1239,7 +1166,7 @@ function addCopyButton(resultDiv, text) {
     
     // Create PagerDuty add note button
     const pagerdutyAddNoteButton = document.createElement('button');
-    pagerdutyAddNoteButton.className = 'add-note-button tooltip-below';
+    pagerdutyAddNoteButton.className = 'add-note-button tooltip-below hover:-translate-y-0.5 transition-all duration-200';
     pagerdutyAddNoteButton.innerHTML = `
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -1307,7 +1234,12 @@ function addCopyButton(resultDiv, text) {
              // Get the current content from the editable result div, preserving line breaks
              const currentContent = getFormattedTextContent(resultDiv);
              
-             const response = await fetch('/api/add-note', {
+             // Add timeout to prevent infinite loading
+             const timeoutPromise = new Promise((_, reject) => 
+                 setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+             );
+             
+             const fetchPromise = fetch('/api/add-note', {
                  method: 'POST',
                  headers: {
                      'Content-Type': 'application/json',
@@ -1318,6 +1250,7 @@ function addCopyButton(resultDiv, text) {
                  })
              });
             
+            const response = await Promise.race([fetchPromise, timeoutPromise]);
             const result = await response.json();
             
             if (response.ok && result.success) {
@@ -1359,7 +1292,7 @@ function addCopyButton(resultDiv, text) {
     
     // Create PagerDuty send status update button
     const statusUpdateButton = document.createElement('button');
-    statusUpdateButton.className = 'status-update-button tooltip-below';
+    statusUpdateButton.className = 'status-update-button tooltip-below hover:-translate-y-0.5 transition-all duration-200';
     statusUpdateButton.textContent = '📢 Send Status Update';
     statusUpdateButton.setAttribute('data-tooltip', "Sends a status update of the message above, and also adds it as a note in the incident");
     statusUpdateButton.style.cssText = `
@@ -1422,7 +1355,12 @@ function addCopyButton(resultDiv, text) {
             // Get the current content from the editable result div, preserving line breaks
             const currentContent = getFormattedTextContent(resultDiv);
             
-            const response = await fetch('/api/status-update', {
+            // Add timeout to prevent infinite loading
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+            );
+            
+            const fetchPromise = fetch('/api/status-update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1434,6 +1372,7 @@ function addCopyButton(resultDiv, text) {
                 })
             });
             
+            const response = await Promise.race([fetchPromise, timeoutPromise]);
             const result = await response.json();
             
             if (response.ok && result.success) {
@@ -1445,9 +1384,6 @@ function addCopyButton(resultDiv, text) {
                 // Trigger the update notification function to refresh the result div
                 updateNotificationIfLoaded();
                 
-                // Refresh the status updates trail
-                loadStatusUpdatesTrail(incidentId);
-                
                 statusUpdateButton.textContent = '✅ Status Update Sent!';
                 statusUpdateButton.style.background = '#28a745';
                 setTimeout(() => {
@@ -1455,6 +1391,11 @@ function addCopyButton(resultDiv, text) {
                     statusUpdateButton.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)';
                     statusUpdateButton.disabled = false;
                 }, 3000);
+                
+                // Refresh the status updates trail after a short delay to allow success state to be visible
+                setTimeout(() => {
+                    loadStatusUpdatesTrail(incidentId);
+                }, 1000);
             } else {
                 throw new Error(result.message || result.error || 'Failed to send status update');
             }
@@ -1499,12 +1440,20 @@ async function loadIncidentNotes(incidentId) {
         console.log('Fetching incident notes from API for incident:', incidentId);
         // Add cache-busting parameter to prevent browser caching
         const cacheBuster = new Date().getTime();
-        const response = await fetch(`/api/incident/${incidentId}/notes?t=${cacheBuster}`, {
+        
+        // Add timeout to prevent infinite loading
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+        );
+        
+        const fetchPromise = fetch(`/api/incident/${incidentId}/notes?t=${cacheBuster}`, {
             cache: 'no-cache',
             headers: {
                 'Cache-Control': 'no-cache'
             }
         });
+        
+        const response = await Promise.race([fetchPromise, timeoutPromise]);
         console.log('Incident notes API response status:', response.status);
         if (response.ok) {
             const data = await response.json();
@@ -1522,7 +1471,7 @@ async function loadIncidentNotes(incidentId) {
                 
                 // Display incident notes
                 incidentNotesList.innerHTML = notes.map(note => {
-                    const createdAt = convertUtcToEastern(note.created_at);
+                    const createdAt = convertUtcToEasternShort(note.created_at);
                     const userName = note.user ? note.user.summary : 'Unknown User';
                     const content = note.content || 'No content';
                     
@@ -1554,6 +1503,41 @@ async function loadIncidentNotes(incidentId) {
     }
 }
 
+// Function to generate and show notification message after status updates are loaded
+function generateAndShowNotificationMessage() {
+    if (!DOMCache.notificationMessage || !cachedIncidentData) return;
+    
+    // Get current form values
+    const ticketNumber = DOMCache.ticketNumberInput.value.trim();
+    const updateNumber = parseInt(DOMCache.updateNumberInput.value) || 1;
+    const resolve = DOMCache.resolveCheckbox.checked;
+    const downgrade = DOMCache.downgradeCheckbox.checked;
+    
+    // Generate notification message locally with the correct update number
+    const notificationMessage = generateNotificationMessageLocally(
+        cachedIncidentData, 
+        ticketNumber, 
+        updateNumber, 
+        resolve, 
+        downgrade
+    );
+    
+    if (notificationMessage) {
+        // Show the notification message
+        DOMCache.notificationMessage.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 success editable';
+        DOMCache.notificationMessage.innerHTML = notificationMessage.replace(/\n/g, '<br>');
+        enableNotificationMessageEditing();
+        
+        // Add copy button
+        addCopyButton(DOMCache.notificationMessage, notificationMessage);
+    } else {
+        // Show error if generation failed
+        DOMCache.notificationMessage.className = 'min-h-[200px] p-4 border border-red-300 rounded-md bg-red-50 text-red-700 error';
+        DOMCache.notificationMessage.textContent = 'Error generating notification message';
+        DOMCache.notificationMessage.contentEditable = false;
+    }
+}
+
 // Function to load and display status updates trail
 async function loadStatusUpdatesTrail(incidentId) {
     console.log('loadStatusUpdatesTrail called with incidentId:', incidentId);
@@ -1575,6 +1559,8 @@ async function loadStatusUpdatesTrail(incidentId) {
         return;
     }
     
+    // Note: Notification message will be generated after status updates are loaded
+    
     // Show the trail and divider
     statusUpdatesTrail.classList.remove('hidden');
     if (statusUpdatesDivider) {
@@ -1583,7 +1569,7 @@ async function loadStatusUpdatesTrail(incidentId) {
     noStatusUpdates.classList.add('hidden');
     
     // Show loading indicator for status updates
-    statusUpdatesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div>Loading status updates...</div>';
+    statusUpdatesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div><p class="mt-2">Loading status updates...</p></div>';
     
     // Load both status updates and incident notes in parallel
     const [statusUpdatesPromise, incidentNotesPromise] = await Promise.allSettled([
@@ -1616,7 +1602,7 @@ async function loadStatusUpdatesTrail(incidentId) {
             
             // Display status updates
             statusUpdatesList.innerHTML = statusUpdates.map(update => {
-                const createdAt = convertUtcToEastern(update.created_at);
+                const createdAt = convertUtcToEasternShort(update.created_at);
                 const userName = update.agent ? update.agent.summary : 'Unknown User';
                 const message = update.message || 'No message';
                 
@@ -1645,28 +1631,45 @@ async function loadStatusUpdatesTrail(incidentId) {
                 const updatePattern = /update\s+(\d+)/i;
                 const match = message.match(updatePattern);
                 
-                if (match) {
-                    const foundUpdateNumber = parseInt(match[1]);
-                    const updateNumberInput = document.getElementById('update_number');
-                    if (updateNumberInput) {
+                const updateNumberInput = document.getElementById('update_number');
+                if (updateNumberInput) {
+                    if (match) {
+                        const foundUpdateNumber = parseInt(match[1]);
                         // Set the update number to found number + 1
                         updateNumberInput.value = foundUpdateNumber + 1;
-                        
-                        // Trigger the template update logic to refresh the result div
-                        updateNotificationIfLoaded();
+                    } else {
+                        // No "update {number}" pattern found, reset to 1
+                        updateNumberInput.value = 1;
                     }
+                    
+                    // Trigger the template update logic to refresh the result div
+                    updateNotificationIfLoaded();
                 }
                 
                 startStatusUpdateTimer(statusUpdates[0].created_at);
+            } else {
+                // No status updates found, reset update number to 1
+                const updateNumberInput = document.getElementById('update_number');
+                if (updateNumberInput) {
+                    updateNumberInput.value = 1;
+                    // Trigger the template update logic to refresh the result div
+                    updateNotificationIfLoaded();
+                }
             }
             
             // Show a brief success message when status updates are refreshed
             console.log('Status updates refreshed successfully');
         }
+        
+        // Generate and show notification message after status updates finish loading
+        generateAndShowNotificationMessage();
     } else {
         console.error('Error loading status updates:', statusUpdatesPromise.reason);
         noStatusUpdates.classList.remove('hidden');
         noStatusUpdates.innerHTML = '<p>Error loading status updates</p>';
+        
+        // Generate and show notification message even if there was an error
+        generateAndShowNotificationMessage();
     }
 }
 
@@ -1675,12 +1678,20 @@ async function loadStatusUpdates(incidentId) {
     console.log('Fetching status updates from API for incident:', incidentId);
     // Add cache-busting parameter to prevent browser caching
     const cacheBuster = new Date().getTime();
-    const response = await fetch(`/api/incident/${incidentId}/status-updates?t=${cacheBuster}`, {
+    
+    // Add timeout to prevent infinite loading
+    const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+    );
+    
+    const fetchPromise = fetch(`/api/incident/${incidentId}/status-updates?t=${cacheBuster}`, {
         cache: 'no-cache',
         headers: {
             'Cache-Control': 'no-cache'
         }
     });
+    
+    const response = await Promise.race([fetchPromise, timeoutPromise]);
     console.log('Status updates API response status:', response.status);
     if (response.ok) {
         const data = await response.json();
@@ -1746,6 +1757,11 @@ function resetToOriginalState() {
     document.getElementById('update_number').value = '1';
     document.getElementById('resolve').checked = false;
     document.getElementById('downgrade').checked = false;
+    
+    // Disable update number input since no ticket is loaded
+    if (DOMCache.updateNumberInput) {
+        DOMCache.updateNumberInput.disabled = true;
+    }
     
     // Clear cached data
     cachedIncidentData = null;
@@ -1836,8 +1852,247 @@ function updateNotificationIfLoaded() {
 
 // Add some nice animations and auto-focus
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize DOM cache
+    DOMCache.init();
+    
+    // Initially disable update number input since no ticket is loaded
+    if (DOMCache.updateNumberInput) {
+        DOMCache.updateNumberInput.disabled = true;
+    }
+    
     // Load notification template first
     loadNotificationTemplate();
+    
+    // Add event listener for ticket number input
+    DOMCache.ticketNumberInput.addEventListener('input', function(e) {
+        const ticketNumber = e.target.value.trim();
+        
+        // Clear cached data when ticket number changes
+        if (lastTicketNumber !== ticketNumber) {
+            cachedIncidentData = null;
+            lastTicketNumber = ticketNumber;
+        }
+        
+        if (ticketNumber.length > 0) {
+            fetchAndDisplayResponders(ticketNumber);
+            
+            // Hide status updates trail and show generating message when new ticket is entered
+            if (DOMCache.statusUpdatesTrail) {
+                DOMCache.statusUpdatesTrail.classList.remove('hidden');
+                if (DOMCache.statusUpdatesDivider) {
+                    DOMCache.statusUpdatesDivider.classList.remove('hidden');
+                }
+                DOMCache.noStatusUpdates.classList.add('hidden');
+                DOMCache.timeSinceElement.classList.add('hidden');
+                DOMCache.statusUpdatesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div><p class="mt-2">Loading status updates...</p></div>';
+            }
+            
+            // Clear incident notes when new ticket is entered
+            if (DOMCache.incidentNotesList) {
+                DOMCache.incidentNotesList.innerHTML = '<div class="text-center text-gray-500 italic py-8"><div class="spinner"></div><p class="mt-2">Loading incident notes...</p></div>';
+            }
+            if (DOMCache.noIncidentNotes) {
+                DOMCache.noIncidentNotes.classList.add('hidden');
+            }
+            
+            // Clear any existing timer
+            if (statusUpdateTimer) {
+                clearInterval(statusUpdateTimer);
+                statusUpdateTimer = null;
+            }
+            
+            // Auto-submit if ticket number has at least 6 characters
+            if (ticketNumber.length >= 6) {
+                // Small delay to allow user to finish typing
+                setTimeout(() => {
+                    if (e.target.value.trim().length >= 6) {
+                        document.getElementById('incidentForm').dispatchEvent(new Event('submit'));
+                    }
+                }, 500);
+            }
+        } else {
+            const placeholder = '<div class="text-center text-gray-500 italic py-8"><p>Enter a ticket number to see responders</p></div>';
+            updateResponderContainers(placeholder);
+            
+            // Hide status updates trail when ticket number is cleared
+            if (DOMCache.statusUpdatesTrail) {
+                DOMCache.statusUpdatesTrail.classList.add('hidden');
+            }
+            if (DOMCache.statusUpdatesDivider) {
+                DOMCache.statusUpdatesDivider.classList.add('hidden');
+            }
+            
+            // Disable update number input since no ticket is loaded
+            if (DOMCache.updateNumberInput) {
+                DOMCache.updateNumberInput.disabled = true;
+            }
+            
+            // Clear any existing timer
+            if (statusUpdateTimer) {
+                clearInterval(statusUpdateTimer);
+                statusUpdateTimer = null;
+            }
+        }
+    });
+    
+    // Add Enter key support for ticket number input
+    DOMCache.ticketNumberInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const ticketNumber = e.target.value.trim();
+            if (ticketNumber.length > 0) {
+                // Clear cached data to force fresh API call
+                cachedIncidentData = null;
+                lastTicketNumber = null;
+                if (statusUpdateTimer) {
+                    clearInterval(statusUpdateTimer);
+                    statusUpdateTimer = null;
+                }
+                
+                // Trigger the same functionality as auto-submit
+                document.getElementById('incidentForm').dispatchEvent(new Event('submit'));
+            }
+        }
+    });
+    
+    // Add form submission event listener
+    document.getElementById('incidentForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Note: Notification message will be generated after status updates are loaded
+        
+        const formData = new FormData(e.target);
+        const updateNumberValue = formData.get('update_number');
+        const parsedUpdateNumber = updateNumberValue ? parseInt(updateNumberValue) : 1;
+        
+        const data = {
+            ticket_number: formData.get('ticket_number'),
+            update_number: isNaN(parsedUpdateNumber) ? 1 : parsedUpdateNumber,
+            resolve: DOMCache.resolveCheckbox.checked,
+            downgrade: DOMCache.downgradeCheckbox.checked,
+            show_users: true  // Always show users now
+        };
+        
+        const resultDiv = DOMCache.notificationMessage;
+        const resultContainer = DOMCache.resultContainer;
+        const welcomeMessage = DOMCache.welcomeMessage;
+        
+        // Determine if API call is needed
+        const ticketNumberChanged = lastTicketNumber !== data.ticket_number;
+        const needsApiCall = ticketNumberChanged || !cachedIncidentData;
+        
+        // Debug logging
+        console.log('Form submission debug:', {
+            ticketNumberChanged,
+            needsApiCall,
+            submitterText: e.submitter ? e.submitter.textContent : 'No submitter'
+        });
+        
+        if (needsApiCall) {
+            // Make API call for new ticket or when no cached data
+            resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 loading';
+            resultDiv.innerHTML = '<div class="spinner"></div>Gathering incident information...';
+            resultContainer.classList.remove('hidden');
+            welcomeMessage.classList.add('hidden');
+            
+            // Clear responders section while loading
+            clearResponders();
+            
+            try {
+                // Add timeout to prevent infinite loading
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+                );
+                
+                const fetchPromise = fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    body: JSON.stringify(data),
+                    cache: 'no-cache'
+                });
+                
+                const response = await Promise.race([fetchPromise, timeoutPromise]);
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Cache the incident data for instant updates
+                    cachedIncidentData = result.incident_data;
+                    lastTicketNumber = data.ticket_number;
+                    
+                    // Enable update number input since ticket is loaded
+                    if (DOMCache.updateNumberInput) {
+                        DOMCache.updateNumberInput.disabled = false;
+                    }
+                    
+                    // Update incident information section
+                    updateIncidentInfo(result.incident_data);
+                    
+                    // Show loading state for notification message
+                    resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 loading';
+                    resultDiv.innerHTML = '<div class="spinner"></div>Loading status updates to determine correct update number...';
+                    resultContainer.classList.remove('hidden');
+                    welcomeMessage.classList.add('hidden');
+                    
+                    // Load status updates trail first, then show notification message
+                    loadStatusUpdatesTrail(result.incident_data.incident.id);
+                    
+                    // Display responders if available
+                    if (result.responders && result.responders.length > 0) {
+                        displayResponders(result.responders);
+                    } else {
+                        // No responders found, show appropriate message
+                        const noRespondersMsg = '<div class="text-center text-gray-500 italic py-8"><p>No responders found for this incident</p></div>';
+                        updateResponderContainers(noRespondersMsg);
+                    }
+                } else {
+                    resultDiv.className = 'min-h-[200px] p-4 border border-red-300 rounded-md bg-red-50 text-red-700 error';
+                    resultDiv.textContent = 'Error: ' + result.detail;
+                    resultDiv.contentEditable = false;
+                    
+                    // Show error message for responders section too
+                    const errorMsg = '<div class="text-center text-gray-500 italic py-8"><p>Error loading responders</p></div>';
+                    updateResponderContainers(errorMsg);
+                }
+            } catch (error) {
+                resultDiv.className = 'min-h-[200px] p-4 border border-red-300 rounded-md bg-red-50 text-red-700 error';
+                resultDiv.textContent = 'Error: ' + error.message;
+                
+                // Show error message for responders section too
+                const errorMsg = '<div class="text-center text-gray-500 italic py-8"><p>Error loading responders</p></div>';
+                updateResponderContainers(errorMsg);
+            }
+        } else {
+            // Use cached data for instant update
+            resultContainer.classList.remove('hidden');
+            welcomeMessage.classList.add('hidden');
+            
+            const newNotificationMessage = generateNotificationMessageLocally(
+                cachedIncidentData, 
+                data.ticket_number, 
+                data.update_number, 
+                data.resolve, 
+                data.downgrade
+            );
+            
+            if (newNotificationMessage) {
+                resultDiv.className = 'min-h-[200px] p-4 border border-gray-300 rounded-md bg-gray-50 success editable';
+                resultDiv.innerHTML = newNotificationMessage.replace(/\n/g, '<br>');
+                enableNotificationMessageEditing();
+                
+                // Add copy button
+                addCopyButton(resultDiv, newNotificationMessage);
+            }
+            
+            // For cached data, we need to fetch responders separately since they're not cached
+            if (data.ticket_number) {
+                fetchAndDisplayResponders(data.ticket_number);
+            }
+        }
+    });
     
     
     const container = document.querySelector('body');
@@ -1875,32 +2130,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Add real-time update for checkboxes and update number
-        const resolveCheckbox = document.getElementById('resolve');
-        const downgradeCheckbox = document.getElementById('downgrade');
-        const updateNumberInput = document.getElementById('update_number');
-        const resetButton = document.getElementById('resetBtn');
-        const searchButton = document.getElementById('searchBtn');
-        
-        if (resolveCheckbox) {
-            resolveCheckbox.addEventListener('change', updateNotificationIfLoaded);
+        if (DOMCache.resolveCheckbox) {
+            DOMCache.resolveCheckbox.addEventListener('change', updateNotificationIfLoaded);
         }
-        if (downgradeCheckbox) {
-            downgradeCheckbox.addEventListener('change', updateNotificationIfLoaded);
+        if (DOMCache.downgradeCheckbox) {
+            DOMCache.downgradeCheckbox.addEventListener('change', updateNotificationIfLoaded);
         }
-        if (updateNumberInput) {
-            updateNumberInput.addEventListener('input', updateNotificationIfLoaded);
+        if (DOMCache.updateNumberInput) {
+            DOMCache.updateNumberInput.addEventListener('input', updateNotificationIfLoaded);
         }
-        if (resetButton) {
-            resetButton.addEventListener('click', resetToOriginalState);
+        if (DOMCache.resetButton) {
+            DOMCache.resetButton.addEventListener('click', resetToOriginalState);
         }
-        if (searchButton) {
-            searchButton.addEventListener('click', function() {
-                const ticketNumber = document.getElementById('ticket_number').value.trim();
+        if (DOMCache.searchButton) {
+            DOMCache.searchButton.addEventListener('click', function() {
+                const ticketNumber = DOMCache.ticketNumberInput.value.trim();
                 if (ticketNumber.length > 0) {
                     // Add loading state to search button
-                    const originalHTML = searchButton.innerHTML;
-                    searchButton.innerHTML = '⏳';
-                    searchButton.disabled = true;
+                    const originalHTML = DOMCache.searchButton.innerHTML;
+                    DOMCache.searchButton.innerHTML = '⏳';
+                    DOMCache.searchButton.disabled = true;
                     
                     // Clear cached data to force fresh API call
                     cachedIncidentData = null;
@@ -1915,8 +2164,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Restore button state after a short delay (the form submission will handle the actual loading)
                     setTimeout(() => {
-                        searchButton.innerHTML = originalHTML;
-                        searchButton.disabled = false;
+                        DOMCache.searchButton.innerHTML = originalHTML;
+                        DOMCache.searchButton.disabled = false;
                     }, 1000);
                 }
             });

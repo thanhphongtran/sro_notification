@@ -7,12 +7,12 @@
     box-sizing: border-box;
 }
 
-/* Loading spinner */
+/* Loading spinner - custom animation needed */
 .spinner {
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid #f3f3f3;
+    border: 3px solid #f3f4f6;
     border-top: 3px solid #3498db;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -24,7 +24,7 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Text wrapping for incident notes and status updates */
+/* Text wrapping for incident notes and status updates - custom styles needed for pre-wrap */
 .incident-note-content,
 .status-update-content {
     word-wrap: break-word;
@@ -35,7 +35,7 @@
     max-width: 100%;
 }
 
-/* Ensure note containers don't overflow */
+/* Ensure note containers don't overflow - can use max-w-full overflow-hidden */
 .incident-note-container,
 .status-update-container {
     max-width: 100%;
@@ -144,86 +144,11 @@
 
 /* Removed smart positioning - all tooltips use consistent positioning */
 
-/* Responder item styles that need custom colors */
-.responder-item {
-    margin-bottom: 1.5rem;
-}
+/* Responder item styles - now using Tailwind classes (mb-6) */
 
-.responder-item:last-child {
-    margin-bottom: 0;
-}
+/* List styles - now using Tailwind classes (list-none pl-0) */
 
-.responder-team.escalation-policy {
-    font-weight: 600;
-    font-size: 0.875rem;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.responder-team.user-name {
-    background: #f8f9fa;
-    border-left: 4px solid #6c757d;
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.responder-users {
-    margin-top: 0.5rem;
-    margin-left: 1rem;
-}
-
-.responder-users ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.responder-users li.team-item,
-.responder-users li.user-item {
-    font-weight: 500;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    list-style: none;
-    margin: 6px 0;
-    padding-left: 0.5rem;
-}
-
-.responder-users li.team-item:hover,
-.responder-users li.user-item:hover {
-    transform: translateX(2px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.responder-users li.team-item {
-    color: #4a5568;
-    font-size: 0.9rem;
-    padding: 2px 0;
-}
-
-.responder-users li.team-item.no-color {
-    background-color: #f8f9fa;
-    border-left: 3px solid #dee2e6;
-    padding: 4px 8px;
-    margin: 2px 0;
-    border-radius: 4px;
-    color: #6c757d;
-}
-
-.responder-users li.user-item {
-    color: #4a5568;
-    font-size: 0.9rem;
-    padding: 2px 0;
-}
-
-/* Request time styling */
-.request-time {
-    color: #6b7280;
-    font-size: 0.75rem;
-    font-weight: 400;
-}
+/* Request time styling - now using Tailwind classes (text-xs text-gray-600) */
 
 /* Status updates trail - past/historical styling */
 #status-updates-trail {
@@ -239,11 +164,12 @@
 }
 
 #status-updates-trail .bg-white {
-    background-color: #fafafa !important;
+    background-color: #f9fafb !important;
     border-color: #e5e7eb !important;
 }
 
-#status-updates-trail .text-gray-700 {
+#status-updates-trail .text-gray-700,
+#status-updates-trail .text-gray-900 {
     color: #6b7280 !important;
 }
 
@@ -251,18 +177,7 @@
     color: #9ca3af !important;
 }
 
-#status-updates-trail .text-gray-900 {
-    color: #6b7280 !important;
-}
-
-/* Button hover effects that need custom styling */
-.copy-button:hover,
-.slack-button:hover,
-.add-note-button:hover,
-.status-update-button:hover {
-    transform: translateY(-1px);
-    transition: all 0.2s ease;
-}
+/* Button hover effects - now using Tailwind classes (hover:-translate-y-0.5 transition-all duration-200) */
 
 /* Content editable focus styles */
 .result.editable:focus {
@@ -297,63 +212,15 @@
     box-shadow: none !important;
 }
 
-/* Loading state */
-.result.loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6b7280;
-}
+/* Result states - can use Tailwind classes if needed:
+   Loading: flex items-center justify-center text-gray-600
+   Success: bg-gray-50 border-gray-200
+   Error: bg-red-50 border-red-200 text-red-600
+*/
 
-/* Success state */
-.result.success {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
-}
+/* Mobile responsive adjustments - now handled by Tailwind responsive classes */
 
-/* Error state */
-.result.error {
-    background-color: #fef2f2;
-    border-color: #fca5a5;
-    color: #dc2626;
-}
-
-/* Mobile responsive adjustments */
-@media (max-width: 1024px) {
-    .mobile-only {
-        display: block;
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 0;
-    }
-    
-    .main-layout {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-    
-    .sidebar,
-    .responders-sidebar {
-        border: none;
-        padding: 1rem;
-    }
-    
-    .main-content {
-        padding: 1rem;
-    }
-}
-
-/* Reduce line spacing in incident-info-section for better text wrapping */
-#incident-info-section .flex {
-    line-height: 1.2;
-}
-
-#incident-info-section .flex > div {
-    line-height: 1.2;
-}
+/* Line spacing - can use Tailwind class leading-tight if needed */
 
 /* Maximize Slack logo size and remove white space */
 .slack-button img {
