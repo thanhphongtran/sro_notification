@@ -393,12 +393,35 @@ function generateNotificationMessageLocally(incidentData, ticketNumber, updateNu
         // Clean up escalation policy name
         const trimmedPolicy = escalationPolicy.split(' - ')[0];
         
-        // Clean up title for the SRO message - use everything after the last pipe, or whole string if no pipe
+        // Clean up title for the SRO message - logic: remove first two pipe-separated sections if each has 2 or fewer words
         let alertTitle = title;
-        const lastPipe = title.lastIndexOf('|');
-        if (lastPipe !== -1) {
-            alertTitle = title.substring(lastPipe + 1).trim();
+        const parts = title.split('|').map(part => part.trim());
+        
+        if (parts.length >= 3) {
+            // Check if first two parts each have 2 or fewer words
+            const firstPart = parts[0];
+            const secondPart = parts[1];
+            
+            const firstWordCount = firstPart.split(/\s+/).length;
+            const secondWordCount = secondPart.split(/\s+/).length;
+            
+            if (firstWordCount <= 2 && secondWordCount <= 2) {
+                // Remove the first two parts and join the rest
+                alertTitle = parts.slice(2).join(' | ');
+            }
+            // If not both first two parts have ≤2 words, keep the whole title
+        } else if (parts.length === 2) {
+            // Only 2 parts - check if first has 2 or fewer words
+            const firstPart = parts[0];
+            const firstWordCount = firstPart.split(/\s+/).length;
+            
+            if (firstWordCount <= 2) {
+                // Remove the first part
+                alertTitle = parts[1];
+            }
+            // If first part has more than 2 words, keep the whole title
         }
+        // If only 1 part or no pipes, keep as is
         
         // Create notification message using template
         const bullets = [];
@@ -1603,7 +1626,7 @@ async function loadStatusUpdatesTrail(incidentId) {
             // Display status updates
             statusUpdatesList.innerHTML = statusUpdates.map(update => {
                 const createdAt = convertUtcToEasternShort(update.created_at);
-                const userName = update.agent ? update.agent.summary : 'Unknown User';
+                const userName = update.sender ? update.sender.summary : 'Unknown User';
                 const message = update.message || 'No message';
                 
                 return `

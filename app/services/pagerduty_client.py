@@ -114,29 +114,19 @@ class PagerDutyClient:
             incident_id: PagerDuty incident ID (not ticket number)
             
         Returns:
-            List of status update log entries, ordered by creation time (oldest first)
+            List of status update entries, ordered by creation time (oldest first)
         """
         try:
-            more = True
-            offset = ""
-            status_updates = []
+            # Use the status_updates endpoint instead of log_entries to get full message content
+            url = f"https://api.pagerduty.com/incidents/{incident_id}/status_updates"
+            response = requests.get(url, headers=self.headers)
             
-            while more:
-                url = f"https://api.pagerduty.com/incidents/{incident_id}/log_entries?{offset}"
-                response = requests.get(url, headers=self.headers)
-                
-                if response.status_code != 200:
-                    break
-                
-                data = response.json()
-                more = data.get('more', False)
-                if more:
-                    offset = f"offset={data['offset'] + data['limit']}"
-                
-                # Look for status update entries
-                for entry in data.get('log_entries', []):
-                    if entry.get('type') in ['status_update_log_entry', 'incident_status_update_log_entry']:
-                        status_updates.append(entry)
+            if response.status_code != 200:
+                print(f"Error fetching status updates: {response.status_code} - {response.text}")
+                return []
+            
+            data = response.json()
+            status_updates = data.get('status_updates', [])
             
             # Sort by creation time (oldest first)
             status_updates.sort(key=lambda x: x.get('created_at', ''))
@@ -273,68 +263,37 @@ class PagerDutyClient:
             # Clean up title for the SRO message
             alert_title = title
             
-            # Check if title contains parentheses - if so, determine if it's part of the alert content
-            if '(' in title:
-                # Split on pipes to check if parentheses are in the actual alert or just prefixes
-                parts = [part.strip() for part in title.split('|')]
+            # Logic: remove first two pipe-separated sections if each has 2 or fewer words
+            parts = [part.strip() for part in title.split('|')]
+            
+            if len(parts) >= 3:
+                # Check if first two parts each have 2 or fewer words
+                first_part = parts[0]
+                second_part = parts[1]
                 
-                # If we have multiple parts, check if the first part(s) look like brand/region prefixes
-                if len(parts) >= 2:
-                    # Check if first part(s) are likely brand/region prefixes (short, no special chars)
-                    first_part = parts[0]
-                    second_part = parts[1] if len(parts) > 1 else ""
-                    
-                    # If first two parts are short and don't contain parentheses or special chars,
-                    # they're likely brand/region prefixes to remove
-                    if (len(first_part) <= 20 and len(second_part) <= 20 and 
-                        not any(char in first_part + second_part for char in '()[]{}')):
-                        # Take everything from the third part onwards, or second part if only 2 parts
-                        if len(parts) >= 3:
-                            alert_title = ' | '.join(parts[2:])
-                        else:
-                            alert_title = parts[1]
-                    else:
-                        # The parentheses are part of the actual alert content, keep the whole title
-                        alert_title = title
+                first_word_count = len(first_part.split())
+                second_word_count = len(second_part.split())
+                
+                if first_word_count <= 2 and second_word_count <= 2:
+                    # Remove the first two parts and join the rest
+                    alert_title = ' | '.join(parts[2:])
                 else:
-                    # Only 1 part - parentheses are part of the alert, keep the whole title
+                    # Keep the whole title if not both first two parts have ≤2 words
+                    alert_title = title
+            elif len(parts) == 2:
+                # Only 2 parts - check if first has 2 or fewer words
+                first_part = parts[0]
+                first_word_count = len(first_part.split())
+                
+                if first_word_count <= 2:
+                    # Remove the first part
+                    alert_title = parts[1]
+                else:
+                    # Keep the whole title if first part has more than 2 words
                     alert_title = title
             else:
-                # No parentheses found - look for patterns like "Brand | Region |" or "Brand |" at the start
-                parts = [part.strip() for part in title.split('|')]
-                
-                if len(parts) >= 2:
-                    # Check if we have 2+ parts and the first two look like brand/region
-                    # (simple heuristic: short, no special chars, likely brand names)
-                    first_part = parts[0]
-                    second_part = parts[1]
-                    
-                    # If first two parts are short and don't contain parentheses or special chars,
-                    # they're likely brand/region prefixes to remove
-                    if (len(first_part) <= 20 and len(second_part) <= 20 and 
-                        not any(char in first_part + second_part for char in '()[]{}')):
-                        # Take everything from the third part onwards, or second part if only 2 parts
-                        if len(parts) >= 3:
-                            alert_title = ' | '.join(parts[2:])
-                        else:
-                            alert_title = parts[1]
-                    else:
-                        # Fall back to taking everything after the last pipe
-                        last_pipe = title.rfind('|')
-                        if last_pipe != -1:
-                            alert_title = title[last_pipe + 1:].strip()
-                elif len(parts) == 2:
-                    # Only 2 parts - check if first looks like a brand prefix
-                    first_part = parts[0]
-                    if (len(first_part) <= 20 and 
-                        not any(char in first_part for char in '()[]{}')):
-                        alert_title = parts[1]
-                    else:
-                        # Keep original if first part doesn't look like a prefix
-                        alert_title = title
-                else:
-                    # Only 1 part or no pipes - keep as is
-                    alert_title = title
+                # Only 1 part or no pipes - keep as is
+                alert_title = title
             
             # Create notification message using template
             # Build bullet points based on update number and flags

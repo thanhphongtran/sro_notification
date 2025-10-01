@@ -269,6 +269,25 @@ Enable debug mode for more detailed error messages:
 uvicorn app.main:app --reload --log-level debug
 ```
 
+## Roadmap / TODO
+
+### Planned Features
+
+- [ ] **Attach username to PRs**
+- [ ] **Future Feature**
+
+### Bugs to Fix
+
+- [ ] **Bugs**
+
+### In Progress
+
+- [ ] **Fix history of status updates are truncated issue**
+
+### Completed
+
+- [x] **Completed Feature** - Already implemented
+
 ## License
 
 This project is part of your SRO notification system.

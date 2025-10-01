@@ -105,12 +105,6 @@ def main():
         else:
             print(f"Warning: Could not extract incident ID from incident details for {args.ticket_number}")
         
-        # TODO: Add other features later
-        # - Custom fields
-        # - Status updates  
-        # - Notes
-        # - Timeline
-        
     except Exception as e:
         print(f"Error: {e}")
         return
