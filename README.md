@@ -273,7 +273,6 @@ uvicorn app.main:app --reload --log-level debug
 
 ### Planned Features
 
-- [ ] **Attach username to PRs**
 - [ ] **Future Feature**
 
 ### Bugs to Fix
@@ -282,11 +281,12 @@ uvicorn app.main:app --reload --log-level debug
 
 ### In Progress
 
-- [ ] **Fix history of status updates are truncated issue**
+- [ ] **In Progress**
+- [ ] **Attach username to PRs**
 
 ### Completed
 
-- [x] **Completed Feature** - Already implemented
+- [X] **Fix history of status updates are truncated issue**
 
 ## License
 

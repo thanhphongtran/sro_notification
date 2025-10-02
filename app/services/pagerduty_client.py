@@ -973,3 +973,48 @@ class PagerDutyClient:
             raise Exception(f"Network error sending status update: {str(e)}")
         except Exception as e:
             raise Exception(f"Error sending status update: {str(e)}")
+    
+    def print_responders_data(self, responders_data: List[Dict]) -> str:
+        """
+        Format responders data for display.
+        
+        Args:
+            responders_data (list): List of responder data from PagerDuty
+            
+        Returns:
+            Formatted string representation of responders data
+        """
+        try:
+            if not responders_data:
+                return "No responders found."
+            
+            output_lines = []
+            
+            for responder in responders_data:
+                if "team_name" in responder:
+                    # Team-based responder
+                    team_name = responder["team_name"]
+                    users = responder["users"]
+                    
+                    output_lines.append(f"\n{team_name}:")
+                    for user in sorted(users, key=lambda x: x.get('name', '')):  # Sort users alphabetically by name
+                        output_lines.append(f"  - {user.get('name', 'Unknown')}")
+                        
+                elif "user_name" in responder:
+                    # Individual user with teams
+                    user_name = responder["user_name"]
+                    teams = responder["teams"]
+                    
+                    output_lines.append(f"\n{user_name}:")
+                    for team_data in teams:
+                        # Handle both old format (string) and new format (object with team and color)
+                        if isinstance(team_data, dict):
+                            team_name = team_data.get("team", "Unknown Team")
+                        else:
+                            team_name = team_data
+                        output_lines.append(f"  - {team_name}")
+            
+            return "\n".join(output_lines)
+        
+        except Exception as e:
+            return f"Error formatting responders data: {e}"
